@@ -75,6 +75,9 @@ var MailTemplateCreate = common.Shortcut{
 		return api
 	},
 	Validate: func(ctx context.Context, runtime *common.RuntimeContext) error {
+		if err := validateBotMailboxNotMe(runtime); err != nil {
+			return err
+		}
 		if strings.TrimSpace(runtime.Str("name")) == "" {
 			return output.ErrValidation("--name is required")
 		}
