@@ -72,11 +72,28 @@ func authLogoutRun(opts *LogoutOptions) error {
 		return nil
 	}
 
+	httpClient, httpErr := f.HttpClient()
+	appSecret, secretErr := core.ResolveSecretInput(app.AppSecret, f.Keychain)
+
 	for _, user := range app.Users {
+		if httpErr == nil && secretErr == nil {
+			if token := larkauth.GetStoredToken(app.AppId, user.UserOpenId); token != nil {
+				revokeToken := token.RefreshToken
+				tokenTypeHint := "refresh_token"
+				if revokeToken == "" {
+					revokeToken = token.AccessToken
+					tokenTypeHint = "access_token"
+				}
+				if revokeToken != "" {
+					_ = larkauth.RevokeToken(httpClient, app.AppId, appSecret, app.Brand, revokeToken, tokenTypeHint)
+				}
+			}
+		}
 		if err := larkauth.RemoveStoredToken(app.AppId, user.UserOpenId); err != nil {
 			fmt.Fprintf(f.IOStreams.ErrOut, "Warning: failed to remove token for %s: %v\n", user.UserOpenId, err)
 		}
 	}
+
 	app.Users = []core.AppUser{}
 	if err := core.SaveMultiAppConfig(multi); err != nil {
 		return errs.NewInternalError(errs.SubtypeStorage, "failed to save config: %v", err).WithCause(err)
