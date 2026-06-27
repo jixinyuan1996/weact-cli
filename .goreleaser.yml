@@ -1,5 +1,10 @@
 version: 2
 
+release:
+  github:
+    owner: jixinyuan1996
+    name: weact-cli
+
 before:
   hooks:
     - python3 scripts/fetch_meta.py
