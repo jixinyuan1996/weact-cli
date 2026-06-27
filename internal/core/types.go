@@ -3,23 +3,30 @@
 
 package core
 
+import "os"
+
 // LarkBrand represents the Lark platform brand.
-// "feishu" targets China-mainland, "lark" targets international.
-// Any other string is treated as a custom base URL.
+// "feishu" targets China-mainland, "lark" targets international,
+// "weact" targets WeAct private deployment.
 type LarkBrand string
 
 const (
 	BrandFeishu LarkBrand = "feishu"
 	BrandLark   LarkBrand = "lark"
+	BrandWeAct  LarkBrand = "weact"
 )
 
 // ParseBrand normalizes a brand string to a LarkBrand constant.
 // Unrecognized values default to BrandFeishu.
 func ParseBrand(value string) LarkBrand {
-	if value == "lark" {
+	switch value {
+	case "lark":
 		return BrandLark
+	case "weact":
+		return BrandWeAct
+	default:
+		return BrandFeishu
 	}
-	return BrandFeishu
 }
 
 // OAuthTokenV3Path is the unified OAuth 2.0 Token Endpoint path on the accounts
@@ -37,6 +44,8 @@ type Endpoints struct {
 }
 
 // ResolveEndpoints resolves endpoint URLs based on brand.
+// For BrandWeAct, endpoints are read from environment variables with sensible
+// defaults, allowing private deployment users to customize each endpoint.
 func ResolveEndpoints(brand LarkBrand) Endpoints {
 	switch brand {
 	case BrandLark:
@@ -45,6 +54,13 @@ func ResolveEndpoints(brand LarkBrand) Endpoints {
 			Accounts: "https://accounts.larksuite.com",
 			MCP:      "https://mcp.larksuite.com",
 			AppLink:  "https://applink.larksuite.com",
+		}
+	case BrandWeAct:
+		return Endpoints{
+			Open:     GetenvOrDefault("WEACT_OPEN_ENDPOINT", "https://open.weact.example.com"),
+			Accounts: GetenvOrDefault("WEACT_ACCOUNTS_ENDPOINT", "https://accounts.weact.example.com"),
+			MCP:      GetenvOrDefault("WEACT_MCP_ENDPOINT", "https://mcp.weact.example.com"),
+			AppLink:  GetenvOrDefault("WEACT_APPLINK_ENDPOINT", "https://applink.weact.example.com"),
 		}
 	default:
 		return Endpoints{
@@ -59,4 +75,13 @@ func ResolveEndpoints(brand LarkBrand) Endpoints {
 // ResolveOpenBaseURL returns the Open API base URL for the given brand.
 func ResolveOpenBaseURL(brand LarkBrand) string {
 	return ResolveEndpoints(brand).Open
+}
+
+// GetenvOrDefault returns the value of the environment variable named by key,
+// or fallback if the variable is empty or not set.
+func GetenvOrDefault(key, fallback string) string {
+	if v := os.Getenv(key); v != "" {
+		return v
+	}
+	return fallback
 }

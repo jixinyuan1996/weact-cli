@@ -124,26 +124,28 @@ func DetectWorkspaceFromEnv(getenv func(string) string) Workspace {
 }
 
 // GetBaseConfigDir returns the root config directory, ignoring workspace.
-// Priority: LARKSUITE_CLI_CONFIG_DIR env → ~/.lark-cli.
-// If the home directory cannot be determined and no override is set, a
-// warning is written to stderr and the path falls back to a relative
-// ".lark-cli" — callers will then see an explicit I/O error at first use
-// instead of a silent misconfiguration.
+// Priority: WEACT_CLI_CONFIG_DIR env → LARKSUITE_CLI_CONFIG_DIR env → ~/.weact-cli.
+// If the home directory cannot be determined and no override is set, the
+// path falls back to a relative ".weact-cli" — callers will then see an
+// explicit I/O error at first use instead of a silent misconfiguration.
 func GetBaseConfigDir() string {
+	if dir := os.Getenv("WEACT_CLI_CONFIG_DIR"); dir != "" {
+		return dir
+	}
 	if dir := os.Getenv("LARKSUITE_CLI_CONFIG_DIR"); dir != "" {
 		return dir
 	}
 	home, err := vfs.UserHomeDir()
 	if err != nil || home == "" {
-		// Fall back to a relative ".lark-cli" so the first I/O operation
+		// Fall back to a relative ".weact-cli" so the first I/O operation
 		// surfaces a clear "no such file or directory" error. We cannot
 		// emit a stderr warning here — this package has no IOStreams in
 		// scope, and direct writes to os.Stderr violate the IOStreams
 		// injection boundary (enforced by lint). Users who hit this path
-		// should set LARKSUITE_CLI_CONFIG_DIR explicitly.
+		// should set WEACT_CLI_CONFIG_DIR explicitly.
 		home = ""
 	}
-	return filepath.Join(home, ".lark-cli")
+	return filepath.Join(home, ".weact-cli")
 }
 
 // GetRuntimeDir returns the workspace-aware config directory.

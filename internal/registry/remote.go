@@ -79,6 +79,9 @@ func remoteMetaURL(version string) string {
 	switch configuredBrand {
 	case core.BrandLark:
 		base = "https://open.larksuite.com/api/tools/open/api_definition"
+	case core.BrandWeAct:
+		base = core.GetenvOrDefault("WEACT_API_DEFINITION_URL",
+			"https://open.weact.example.com/api/tools/open/api_definition")
 	default:
 		base = "https://open.feishu.cn/api/tools/open/api_definition"
 	}

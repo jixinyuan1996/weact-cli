@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"os/exec"
 	"strings"
 	"time"
@@ -50,6 +51,25 @@ var (
 	skillsIndexFetchTimeout = 10 * time.Second
 	officialSkillsIndexURL  = "https://open.feishu.cn/.well-known/skills/index.json"
 )
+
+// resolveSkillsIndexURL returns the skills index URL for the current brand,
+// overridable via WEACT_SKILLS_INDEX_URL for private deployments.
+func resolveSkillsIndexURL() string {
+	if u := os.Getenv("WEACT_SKILLS_INDEX_URL"); u != "" {
+		return u
+	}
+	return officialSkillsIndexURL
+}
+
+// resolveSkillsSource returns the skills registry source string used for
+// "npx skills add <source> ..." commands. For weact brand this defaults to
+// the open endpoint; overridable via WEACT_SKILLS_SOURCE env.
+func resolveSkillsSource() string {
+	if s := os.Getenv("WEACT_SKILLS_SOURCE"); s != "" {
+		return s
+	}
+	return "https://open.feishu.cn"
+}
 
 // DetectResult holds installation detection results.
 type DetectResult struct {
@@ -172,7 +192,7 @@ func (u *Updater) ListOfficialSkillsIndex() *NpmResult {
 	ctx, cancel := context.WithTimeout(context.Background(), skillsIndexFetchTimeout)
 	defer cancel()
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, officialSkillsIndexURL, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, resolveSkillsIndexURL(), nil)
 	if err != nil {
 		r.Err = err
 		return r
@@ -211,7 +231,8 @@ func (u *Updater) ListOfficialSkillsIndex() *NpmResult {
 }
 
 func (u *Updater) ListOfficialSkills() *NpmResult {
-	r := u.runSkillsListOfficial("https://open.feishu.cn")
+	source := resolveSkillsSource()
+	r := u.runSkillsListOfficial(source)
 	if r.Err != nil {
 		r = u.runSkillsListOfficial("larksuite/cli")
 	}
@@ -227,7 +248,8 @@ func (u *Updater) ListGlobalSkillsJSON() *NpmResult {
 }
 
 func (u *Updater) InstallSkill(nameList []string) *NpmResult {
-	r := u.runSkillsInstall("https://open.feishu.cn", nameList)
+	source := resolveSkillsSource()
+	r := u.runSkillsInstall(source, nameList)
 	if r.Err != nil {
 		r = u.runSkillsInstall("larksuite/cli", nameList)
 	}
@@ -235,7 +257,8 @@ func (u *Updater) InstallSkill(nameList []string) *NpmResult {
 }
 
 func (u *Updater) InstallAllSkills() *NpmResult {
-	r := u.runSkillsAdd("https://open.feishu.cn")
+	source := resolveSkillsSource()
+	r := u.runSkillsAdd(source)
 	if r.Err != nil {
 		r = u.runSkillsAdd("larksuite/cli")
 	}

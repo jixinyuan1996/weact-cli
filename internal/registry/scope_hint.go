@@ -60,8 +60,11 @@ func BuildConsoleScopeURL(brand core.LarkBrand, appID, scope string) string {
 		return ""
 	}
 	host := "open.feishu.cn"
-	if brand == core.BrandLark {
+	switch brand {
+	case core.BrandLark:
 		host = "open.larksuite.com"
+	case core.BrandWeAct:
+		host = core.GetenvOrDefault("WEACT_CONSOLE_HOST", "open.weact.example.com")
 	}
 	return fmt.Sprintf(
 		"https://%s/page/scope-apply?clientID=%s&scopes=%s",
