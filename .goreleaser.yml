@@ -5,11 +5,11 @@ before:
     - python3 scripts/fetch_meta.py
 
 builds:
-  - binary: lark-cli
+  - binary: weact-cli
     env:
       - CGO_ENABLED=0
     ldflags:
-      - -s -w -X github.com/larksuite/cli/internal/build.Version={{ .Version }} -X github.com/larksuite/cli/internal/build.Date={{ .Date }}
+      - -s -w -X github.com/larksuite/cli/internal/build.Version={{ .Version }} -X github.com/larksuite/cli/internal/build.Date={{ .Date }} -X github.com/larksuite/cli/internal/build.AppName=weact-cli
     goos:
       - darwin
       - linux
@@ -20,7 +20,7 @@ builds:
       - riscv64
 
 archives:
-  - name_template: "lark-cli-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+  - name_template: "weact-cli-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
     format_overrides:
       - goos: windows
         format: zip
