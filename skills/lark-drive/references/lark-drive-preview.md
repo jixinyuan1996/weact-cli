@@ -12,25 +12,25 @@
 
 ```bash
 # 列出可用预览候选项
-lark-cli drive +preview \
+weact-cli drive +preview \
   --file-token "<FILE_TOKEN>" \
   --list-only
 
 # 下载 PDF 预览
-lark-cli drive +preview \
+weact-cli drive +preview \
   --file-token "<FILE_TOKEN>" \
   --type pdf \
   --output ./artifacts/report
 
 # 下载文本预览，并在目标已存在时自动改名
-lark-cli drive +preview \
+weact-cli drive +preview \
   --file-token "<FILE_TOKEN>" \
   --type text \
   --output ./artifacts/report \
   --if-exists rename
 
 # 指定版本号查询/下载
-lark-cli drive +preview \
+weact-cli drive +preview \
   --file-token "<FILE_TOKEN>" \
   --version "12" \
   --type html \

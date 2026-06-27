@@ -52,13 +52,13 @@ func NewCmdAuthLogin(f *cmdutil.Factory, runF func(*LoginOptions) error) *cobra.
 For AI agents: this command blocks until the user completes authorization in the
 browser. If your harness or agent tool only delivers final turn messages, use --no-wait --json,
 send the verification URL (or QR code) to the user as your final message, end the turn, then
-run --device-code in a later step after the user confirms authorization. Use 'lark-cli auth qrcode'
+run --device-code in a later step after the user confirms authorization. Use 'weact-cli auth qrcode'
 to generate QR codes (supports ASCII and PNG formats).`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if mode := f.ResolveStrictMode(cmd.Context()); mode == core.StrictModeBot {
 				return errs.NewValidationError(errs.SubtypeInvalidArgument,
 					"strict mode is %q, user login is disabled in this profile", mode).
-					WithHint("if the user explicitly wants to switch to user identity, see `lark-cli config strict-mode --help` (confirm with the user before switching; switching does NOT require re-bind)")
+					WithHint("if the user explicitly wants to switch to user identity, see `weact-cli config strict-mode --help` (confirm with the user before switching; switching does NOT require re-bind)")
 			}
 			opts.Ctx = cmd.Context()
 			if runF != nil {
@@ -273,19 +273,19 @@ func authLoginRun(opts *LoginOptions) error {
 	// --no-wait: return immediately with device code and URL
 	if opts.NoWait {
 		if err := saveLoginRequestedScope(authResp.DeviceCode, finalScope); err != nil {
-			fmt.Fprintf(f.IOStreams.ErrOut, "[lark-cli] [WARN] auth login: failed to cache requested scopes: %v\n", err)
+			fmt.Fprintf(f.IOStreams.ErrOut, "[weact-cli] [WARN] auth login: failed to cache requested scopes: %v\n", err)
 		}
 		data := map[string]interface{}{
 			"verification_url": authResp.VerificationUriComplete,
 			"device_code":      authResp.DeviceCode,
 			"expires_in":       authResp.ExpiresIn,
-			"hint": "**MUST generate QR code AND display it:** You MUST call lark-cli auth qrcode to convert verification_url into a QR code. This is a required step, do NOT skip it. Prefer PNG QR code (--output); use ASCII (--ascii) only when the user explicitly requests it." +
+			"hint": "**MUST generate QR code AND display it:** You MUST call weact-cli auth qrcode to convert verification_url into a QR code. This is a required step, do NOT skip it. Prefer PNG QR code (--output); use ASCII (--ascii) only when the user explicitly requests it." +
 				"**CRITICAL: You MUST include the QR image in your response.** Generating the file alone is NOT enough—use image tags, inline images, or file attachments to display it." +
 				"**Display order:** Output the URL first, then place the QR code image below the URL." +
 				"**URL Output Rules:** Treat verification_url as an opaque string that cannot be modified. Do NOT URL-encode/decode or add spaces/punctuation." +
 				"For agent harnesses that only deliver final turn messages, make the QR code image (or URL) the final message of the turn and return control to the user; do not block on --device-code in the same turn. **Before ending the turn, tell the user to come back and notify you after completing authorization.**" +
-				"**After the user confirms authorization:** YOU must execute `lark-cli auth login --device-code <device_code>` yourself." +
-				"**Do NOT cache verification_url or device_code for future use.** Always run `lark-cli auth login --no-wait --json` fresh when authorization is needed.",
+				"**After the user confirms authorization:** YOU must execute `weact-cli auth login --device-code <device_code>` yourself." +
+				"**Do NOT cache verification_url or device_code for future use.** Always run `weact-cli auth login --no-wait --json` fresh when authorization is needed.",
 		}
 		encoder := json.NewEncoder(f.IOStreams.Out)
 		encoder.SetEscapeHTML(false)
@@ -400,11 +400,11 @@ func authLoginPollDeviceCode(opts *LoginOptions, config *core.CliConfig, msg *lo
 	}
 	requestedScope, err := loadLoginRequestedScope(opts.DeviceCode)
 	if err != nil {
-		fmt.Fprintf(f.IOStreams.ErrOut, "[lark-cli] [WARN] auth login: failed to load cached requested scopes: %v\n", err)
+		fmt.Fprintf(f.IOStreams.ErrOut, "[weact-cli] [WARN] auth login: failed to load cached requested scopes: %v\n", err)
 	}
 	cleanupRequestedScope := func() {
 		if err := removeLoginRequestedScope(opts.DeviceCode); err != nil {
-			fmt.Fprintf(f.IOStreams.ErrOut, "[lark-cli] [WARN] auth login: failed to remove cached requested scopes: %v\n", err)
+			fmt.Fprintf(f.IOStreams.ErrOut, "[weact-cli] [WARN] auth login: failed to remove cached requested scopes: %v\n", err)
 		}
 	}
 	// Skip the stderr hint in JSON mode (the --no-wait call that issued

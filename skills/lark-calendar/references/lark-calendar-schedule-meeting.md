@@ -119,7 +119,7 @@
 
 ```bash
 # 1. 如果需要会议室，提前查询会议室
-lark-cli calendar +room-find \
+weact-cli calendar +room-find \
   --slot "<start>~<end>" \
   --attendee-ids "<ids>" \
   --city "<city>" \
@@ -129,7 +129,7 @@ lark-cli calendar +room-find \
 
 # 2. 查询当前用户及其他参会人忙闲
 # （如果有多名参会人，需分别调用查询：--user-id "<ou_xxx>"）
-lark-cli calendar +freebusy --start "<start>" --end "<end>"
+weact-cli calendar +freebusy --start "<start>" --end "<end>"
 ```
 
 规则：
@@ -154,7 +154,7 @@ lark-cli calendar +freebusy --start "<start>" --end "<end>"
 详见 [`+suggestion`](./lark-calendar-suggestion.md)；若需要会议室，再结合 [`+room-find`](./lark-calendar-room-find.md)。
 
 ```bash
-lark-cli calendar +suggestion \
+weact-cli calendar +suggestion \
   --start "<range_start>" \
   --end "<range_end>" \
   --attendee-ids "<ids>" \
@@ -203,20 +203,20 @@ lark-cli calendar +suggestion \
 如果是更新既有日程，详见 [`+update`](./lark-calendar-update.md)。必须先定位目标 `event_id`，再按用户意图用 `+update` 独立执行字段更新、添加参会人/会议室、移除参会人/会议室，或组合这些动作。若用户意图是“新增会议室”，默认仅追加 `room_id`，不移除已有会议室。
 
 ```bash
-lark-cli calendar +create \
+weact-cli calendar +create \
   --summary "..." \
   --start "<start>" \
   --end "<end>" \
   --attendee-ids "ou_xxx,oc_xxx,omm_xxx"
 
-lark-cli calendar +update \
+weact-cli calendar +update \
   --event-id "<event_id>" \
   --start "<start>" \
   --end "<end>" \
   --add-attendee-ids "omm_new_room"
 
 # 仅当用户明确要求“更换会议室”时，才同时移除旧会议室并添加新会议室
-lark-cli calendar +update \
+weact-cli calendar +update \
   --event-id "<event_id>" \
   --remove-attendee-ids "omm_old_room" \
   --add-attendee-ids "omm_new_room"

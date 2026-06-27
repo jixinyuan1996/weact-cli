@@ -30,22 +30,22 @@
 
 ```bash
 # 按姓名搜,看候选确认是哪个张三
-lark-cli contact +search-user --query "张三" --has-chatted
+weact-cli contact +search-user --query "张三" --has-chatted
 
 # 按完整邮箱搜(命中通常唯一,适合作后续命令的输入)
-lark-cli contact +search-user --query "alice@example.com"
+weact-cli contact +search-user --query "alice@example.com"
 
 # 查看自己
-lark-cli contact +search-user --user-ids me
+weact-cli contact +search-user --user-ids me
 
 # 批量回填:已知一组 open_id,取姓名 / 邮箱 / 部门
-lark-cli contact +search-user --user-ids "ou_a,ou_b,ou_c" --format json
+weact-cli contact +search-user --user-ids "ou_a,ou_b,ou_c" --format json
 
 # 多 filter 组合:同租户的、有企业邮箱的「王」姓员工
-lark-cli contact +search-user --query "王" --exclude-external-users --has-enterprise-email
+weact-cli contact +search-user --query "王" --exclude-external-users --has-enterprise-email
 
 # filter-only 枚举:列出所有"聊过天的离职同事"(无关键词)
-lark-cli contact +search-user --has-chatted --left-organization
+weact-cli contact +search-user --has-chatted --left-organization
 ```
 
 ## 批量并行查询 (fanout)
@@ -53,7 +53,7 @@ lark-cli contact +search-user --has-chatted --left-organization
 一次查多个名字:
 
 ```bash
-lark-cli contact +search-user --queries "Alice,Bob,张三"
+weact-cli contact +search-user --queries "Alice,Bob,张三"
 ```
 
 - 每行 user 带 `matched_query`,标识来自哪个 query
@@ -62,10 +62,10 @@ lark-cli contact +search-user --queries "Alice,Bob,张三"
 
 ```bash
 # bool filter 对每个 query 都生效
-lark-cli contact +search-user --queries "Alice,Bob" --has-chatted
+weact-cli contact +search-user --queries "Alice,Bob" --has-chatted
 
 # 与 --query / --user-ids 互斥
-lark-cli contact +search-user --queries "a" --query "b"   # ❌ exit 2
+weact-cli contact +search-user --queries "a" --query "b"   # ❌ exit 2
 ```
 
 约束:
@@ -80,7 +80,7 @@ lark-cli contact +search-user --queries "a" --query "b"   # ❌ exit 2
 
 ```bash
 # 用 jq 按部门精筛
-lark-cli contact +search-user --query "张三" \
+weact-cli contact +search-user --query "张三" \
   --jq '.data.users[] | select(.department | contains("<部门关键词>"))'
 ```
 

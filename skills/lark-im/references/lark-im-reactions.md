@@ -39,16 +39,16 @@ It focuses on:
 ## Inspect Schema
 
 ```bash
-lark-cli schema im.reactions
-lark-cli schema im.reactions.create --format pretty
-lark-cli schema im.reactions.list --format pretty
-lark-cli schema im.reactions.delete --format pretty
+weact-cli schema im.reactions
+weact-cli schema im.reactions.create --format pretty
+weact-cli schema im.reactions.list --format pretty
+weact-cli schema im.reactions.delete --format pretty
 ```
 
 If your local build has already exposed the batch API in `schema`, also check:
 
 ```bash
-lark-cli schema im.reactions.batch_query --format pretty
+weact-cli schema im.reactions.batch_query --format pretty
 ```
 
 ## create
@@ -56,7 +56,7 @@ lark-cli schema im.reactions.batch_query --format pretty
 Add a reaction to one message.
 
 ```bash
-lark-cli im reactions create \
+weact-cli im reactions create \
   --params '{"message_id":"om_xxx"}' \
   --data '{"reaction_type":{"emoji_type":"SMILE"}}'
 ```
@@ -87,11 +87,11 @@ lark-cli im reactions create \
 List reaction records on one message.
 
 ```bash
-lark-cli im reactions list --params '{"message_id":"om_xxx"}'
-lark-cli im reactions list --params '{"message_id":"om_xxx","reaction_type":"SMILE"}'
-lark-cli im reactions list --params '{"message_id":"om_xxx","page_size":50}'
-lark-cli im reactions list --params '{"message_id":"om_xxx","page_token":"<PAGE_TOKEN>"}'
-lark-cli im reactions list --params '{"message_id":"om_xxx","user_id_type":"open_id"}'
+weact-cli im reactions list --params '{"message_id":"om_xxx"}'
+weact-cli im reactions list --params '{"message_id":"om_xxx","reaction_type":"SMILE"}'
+weact-cli im reactions list --params '{"message_id":"om_xxx","page_size":50}'
+weact-cli im reactions list --params '{"message_id":"om_xxx","page_token":"<PAGE_TOKEN>"}'
+weact-cli im reactions list --params '{"message_id":"om_xxx","user_id_type":"open_id"}'
 ```
 
 ### Request Parameters (`--params`)
@@ -155,7 +155,7 @@ lark-cli im reactions list --params '{"message_id":"om_xxx","user_id_type":"open
 Delete one specific reaction record from one message.
 
 ```bash
-lark-cli im reactions delete \
+weact-cli im reactions delete \
   --params '{"message_id":"om_xxx","reaction_id":"ZCaCIjUBVVWSrm5L-3ZTw_xxx"}'
 ```
 
@@ -178,7 +178,7 @@ The response shape is similar to `create`, and usually echoes:
 Query reactions for multiple messages in one request.
 
 ```bash
-lark-cli im reactions batch_query \
+weact-cli im reactions batch_query \
   --params '{"user_id_type":"open_id"}' \
   --data '{
     "queries":[
@@ -261,8 +261,8 @@ Reaction emoji identifiers are used in slightly different field names across the
 
 The following list is synchronized from the official Feishu reaction emoji documentation:
 
-- Source page: `https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message-reaction/emojis-introduce`
-- Markdown source: `https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message-reaction/emojis-introduce.md`
+- Source page: `https://open.weact.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message-reaction/emojis-introduce`
+- Markdown source: `https://open.weact.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message-reaction/emojis-introduce.md`
 
 Current count in the fetched source: `185`.
 
@@ -296,4 +296,4 @@ GoGoGo, ThanksFace, SaluteFace, Shrug, ClownFace, HappyDragon
 
 - [lark-im](../SKILL.md) - all IM commands
 - [lark-shared](../../lark-shared/SKILL.md) - authentication and global parameters
-- Official emoji doc: `https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message-reaction/emojis-introduce`
+- Official emoji doc: `https://open.weact.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message-reaction/emojis-introduce`

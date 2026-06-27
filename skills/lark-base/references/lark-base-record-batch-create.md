@@ -12,10 +12,10 @@
 ## 推荐命令
 
 ```bash
-lark-cli base +record-batch-create --base-token <base_token> --table-id <table_id> \
+weact-cli base +record-batch-create --base-token <base_token> --table-id <table_id> \
   --json '{"fields":["标题","状态"],"rows":[["任务 A","Open"],["任务 B","Done"]]}'
 
-lark-cli base +record-batch-create --base-token <base_token> --table-id <table_id> --json @batch-create.json
+weact-cli base +record-batch-create --base-token <base_token> --table-id <table_id> --json @batch-create.json
 ```
 
 ## 参数

@@ -1,6 +1,6 @@
 # apps +db-table-list
 
-列出妙搭应用某个数据库环境的数据表。运行时命令事实以 `lark-cli apps +db-table-list --help` 为准。
+列出妙搭应用某个数据库环境的数据表。运行时命令事实以 `weact-cli apps +db-table-list --help` 为准。
 
 ## 何时用
 
@@ -16,8 +16,8 @@
 ## 示例
 
 ```bash
-lark-cli apps +db-table-list --app-id app_xxx
-lark-cli apps +db-table-list --app-id app_xxx --env dev --page-size 50
+weact-cli apps +db-table-list --app-id app_xxx
+weact-cli apps +db-table-list --app-id app_xxx --env dev --page-size 50
 ```
 
 ## 输出契约

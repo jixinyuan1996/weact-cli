@@ -12,19 +12,19 @@
 
 ```bash
 # 删除普通文件
-lark-cli drive +delete \
+weact-cli drive +delete \
   --file-token <FILE_TOKEN> \
   --type file \
   --yes
 
 # 删除在线文档
-lark-cli drive +delete \
+weact-cli drive +delete \
   --file-token <DOCX_TOKEN> \
   --type docx \
   --yes
 
 # 删除文件夹（异步操作，会自动有限轮询任务状态）
-lark-cli drive +delete \
+weact-cli drive +delete \
   --file-token <FOLDER_TOKEN> \
   --type folder \
   --yes
@@ -43,20 +43,20 @@ lark-cli drive +delete \
 - **普通文件删除**：同步操作，成功时直接返回 `deleted=true`
 - **文件夹删除**：异步操作，接口返回 `task_id`，shortcut 会先做有限轮询；如果在轮询窗口内完成，则直接返回成功结果
 - **轮询超时不是失败**：文件夹删除内置最多轮询 30 次、每次间隔 2 秒；如果轮询结束任务仍未完成，会返回 `task_id`、`status`、`ready=false`、`timed_out=true` 和 `next_command`
-- **继续查询**：当看到 `next_command` 时，改用 `lark-cli drive +task_result --scenario task_check --task-id <TASK_ID>` 继续查询
+- **继续查询**：当看到 `next_command` 时，改用 `weact-cli drive +task_result --scenario task_check --task-id <TASK_ID>` 继续查询
 - **状态值**：`task_check` 的服务端状态通常是 `success`、`fail`、`process`
 
 ## 推荐续跑方式
 
 ```bash
 # 第一步：先直接删除文件夹
-lark-cli drive +delete \
+weact-cli drive +delete \
   --file-token <FOLDER_TOKEN> \
   --type folder \
   --yes
 
 # 如果返回 ready=false / timed_out=true，再继续查
-lark-cli drive +task_result \
+weact-cli drive +task_result \
   --scenario task_check \
   --task-id <TASK_ID>
 ```

@@ -42,20 +42,20 @@
 
 ```bash
 # 1) 建 app，拿 app_id（云端生成走 full_stack）
-lark-cli apps +create --name "待办应用" --app-type full_stack \
+weact-cli apps +create --name "待办应用" --app-type full_stack \
   --description "支持新增、完成、筛选待办"
 
 # 2) 在该 app 下建 session，拿 session_id
-lark-cli apps +session-create --app-id app_xxx
+weact-cli apps +session-create --app-id app_xxx
 
 # 3) 发消息发起一轮（异步入队，立即返回，无 turn_id）
-lark-cli apps +chat --app-id app_xxx --session-id sess_xxx --message "做一个待办清单页面"
+weact-cli apps +chat --app-id app_xxx --session-id sess_xxx --message "做一个待办清单页面"
 
 # 4) 轮询本轮状态；完成后从 latest_turn.messages 读取结果
-lark-cli apps +session-get --app-id app_xxx --session-id sess_xxx
+weact-cli apps +session-get --app-id app_xxx --session-id sess_xxx
 
 # 找该 app 已有的会话（续聊/不确定 session 时用）
-lark-cli apps +session-list --app-id app_xxx
+weact-cli apps +session-list --app-id app_xxx
 ```
 
 ## 完成态不等于发布态
@@ -91,8 +91,8 @@ lark-cli apps +session-list --app-id app_xxx
 
 1. 本地存在该 app 的项目目录（已 `+init` 或 clone 过），**且** git commit 数 > 2；
 2. 应用维度（云端）至少有一个已提交的版本，按以下任一信号判断：
-   - `lark-cli apps +session-get --app-id <app_id> --session-id <session_id>` 的返回里出现已提交版本信息；
-   - 在 `lark-cli apps +list`（必要时配 `--keyword <name>` 定位）的目标 app 条目里 `is_published: true`。
+   - `weact-cli apps +session-get --app-id <app_id> --session-id <session_id>` 的返回里出现已提交版本信息；
+   - 在 `weact-cli apps +list`（必要时配 `--keyword <name>` 定位）的目标 app 条目里 `is_published: true`。
 
 **未初始化**（两个条件同时成立）：
 

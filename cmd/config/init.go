@@ -61,7 +61,7 @@ completes setup in the browser. Run it in the background and retrieve the
 verification URL from its output.
 
 Inside an Agent context (OPENCLAW_HOME / HERMES_HOME set) this command
-refuses by default — use 'lark-cli config bind' to bind to the Agent's
+refuses by default — use 'weact-cli config bind' to bind to the Agent's
 existing app instead of creating a parallel one. Pass --force-init only
 if the user explicitly wants a separate app inside the Agent workspace.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -113,7 +113,7 @@ func validateInitLang(opts *ConfigInitOptions) error {
 
 // guardAgentWorkspace refuses 'config init' when run inside an OpenClaw or
 // Hermes Agent context, because the Agent has already provisioned an app
-// and 'config bind' is the right tool for hooking lark-cli into it.
+// and 'config bind' is the right tool for hooking weact-cli into it.
 // Running init here would create a parallel app under the agent's workspace
 // dir, breaking the binding the user actually wants. --force-init lets a
 // human user override when they really do want a separate app.
@@ -127,7 +127,7 @@ func guardAgentWorkspace(opts *ConfigInitOptions) error {
 	}
 	return errs.NewConfigError(errs.SubtypeNotConfigured,
 		"config init is refused inside %s context (would create a parallel app and shadow the existing %s binding)", ws.Display(), ws.Display()).
-		WithHint("see `lark-cli config bind --help` to bind lark-cli to the Agent's existing app instead. Pass --force-init only if the user explicitly wants a separate app in this workspace.")
+		WithHint("see `weact-cli config bind --help` to bind weact-cli to the Agent's existing app instead. Pass --force-init only if the user explicitly wants a separate app in this workspace.")
 }
 
 // hasAnyNonInteractiveFlag returns true if any non-interactive flag is set.
@@ -439,7 +439,7 @@ func configInitRun(opts *ConfigInitOptions) error {
 
 	// Non-terminal: cannot run interactive mode, guide user to --new
 	if !f.IOStreams.IsTerminal {
-		return errs.NewValidationError(errs.SubtypeInvalidArgument, "config init requires a terminal for interactive mode. Run with --new to create a new app:\n  lark-cli config init --new\nThis command blocks until setup is complete and outputs a verification URL. Run it in the background, then retrieve the URL from its output.")
+		return errs.NewValidationError(errs.SubtypeInvalidArgument, "config init requires a terminal for interactive mode. Run with --new to create a new app:\n  weact-cli config init --new\nThis command blocks until setup is complete and outputs a verification URL. Run it in the background, then retrieve the URL from its output.")
 	}
 
 	// Mode 5: Legacy interactive (readline fallback)

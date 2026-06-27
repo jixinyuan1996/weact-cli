@@ -7,7 +7,7 @@
 ## 命令
 
 ```bash
-lark-cli slides xml_presentations get --as user --params '<json_params>'
+weact-cli slides xml_presentations get --as user --params '<json_params>'
 ```
 
 ## 参数说明
@@ -35,19 +35,19 @@ lark-cli slides xml_presentations get --as user --params '<json_params>'
 ### 基础示例
 
 ```bash
-lark-cli slides xml_presentations get --as user --params '{"xml_presentation_id":"slides_example_presentation_id"}'
+weact-cli slides xml_presentations get --as user --params '{"xml_presentation_id":"slides_example_presentation_id"}'
 ```
 
 ### 结合 jq 格式化输出
 
 ```bash
-lark-cli slides xml_presentations get --as user --params '{"xml_presentation_id":"slides_example_presentation_id"}' | jq -r '.data.xml_presentation.content'
+weact-cli slides xml_presentations get --as user --params '{"xml_presentation_id":"slides_example_presentation_id"}' | jq -r '.data.xml_presentation.content'
 ```
 
 ### 保存到文件
 
 ```bash
-lark-cli slides xml_presentations get --as user --params '{"xml_presentation_id":"slides_example_presentation_id"}' > presentation_data.json
+weact-cli slides xml_presentations get --as user --params '{"xml_presentation_id":"slides_example_presentation_id"}' > presentation_data.json
 ```
 
 ## 返回值
@@ -86,7 +86,7 @@ lark-cli slides xml_presentations get --as user --params '{"xml_presentation_id"
 
 ## 注意事项
 
-1. **执行前必做**: 使用 `lark-cli schema slides.xml_presentations.get` 查看最新的参数结构
+1. **执行前必做**: 使用 `weact-cli schema slides.xml_presentations.get` 查看最新的参数结构
 2. 返回的 XML 在 `data.xml_presentation.content` 字段中
 3. 如果只需要部分信息，可以使用 `jq` 等工具过滤返回结果
 4. 建议将获取的 XML 保存为文件，便于后续编辑或备份

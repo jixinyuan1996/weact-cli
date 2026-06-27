@@ -24,12 +24,12 @@ func NewCmdConfigKeychainDowngrade(f *cmdutil.Factory) *cobra.Command {
 		Use:   "keychain-downgrade",
 		Short: "Downgrade keychain storage to a local file (macOS only)",
 		Long: `Materialize the master key from the macOS system Keychain into a local file
-under ~/Library/Application Support/lark-cli/master.key.file, then pin all
+under ~/Library/Application Support/weact-cli/master.key.file, then pin all
 subsequent reads to that file.
 
 Intended workflow: run this once from an interactive Terminal session on
 macOS (where the system Keychain is reachable). After it finishes,
-sandboxed / automation / CI runs of lark-cli on the same machine will read
+sandboxed / automation / CI runs of weact-cli on the same machine will read
 the master key from the local file and no longer need the OS Keychain.
 
 This is the supported fix for environments like the Codex sandbox where the

@@ -7,7 +7,7 @@
 ## 命令
 
 ```bash
-lark-cli slides +replace-pages \
+weact-cli slides +replace-pages \
   --as user \
   --presentation <slides_url_or_xml_presentation_id> \
   --pages @pages.json
@@ -48,7 +48,7 @@ lark-cli slides +replace-pages \
 ## Dry Run
 
 ```bash
-lark-cli slides +replace-pages --as user \
+weact-cli slides +replace-pages --as user \
   --presentation "$PID" \
   --pages @pages.json \
   --dry-run

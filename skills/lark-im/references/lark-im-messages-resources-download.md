@@ -6,25 +6,25 @@ Download image or file resources from a message. Supports **automatic chunked do
 
 > **Note:** read-only message commands render resource keys in message content, but they do not download binaries automatically. Use this command whenever you need to fetch the actual image/file bytes or save them to a specific path.
 
-This skill maps to the shortcut: `lark-cli im +messages-resources-download` (internally calls `GET /open-apis/im/v1/messages/{message_id}/resources/{file_key}`).
+This skill maps to the shortcut: `weact-cli im +messages-resources-download` (internally calls `GET /open-apis/im/v1/messages/{message_id}/resources/{file_key}`).
 
 ## Commands
 
 ```bash
 # Download an image (save to the current directory)
-lark-cli im +messages-resources-download --message-id om_xxx --file-key img_v3_xxx --type image
+weact-cli im +messages-resources-download --message-id om_xxx --file-key img_v3_xxx --type image
 
 # Download a file
-lark-cli im +messages-resources-download --message-id om_xxx --file-key file_v3_xxx --type file
+weact-cli im +messages-resources-download --message-id om_xxx --file-key file_v3_xxx --type file
 
 # Specify the output path
-lark-cli im +messages-resources-download --message-id om_xxx --file-key img_v3_xxx --type image --output ./photo.png
+weact-cli im +messages-resources-download --message-id om_xxx --file-key img_v3_xxx --type image --output ./photo.png
 
 # Download as a bot
-lark-cli im +messages-resources-download --message-id om_xxx --file-key img_v3_xxx --type image --as bot
+weact-cli im +messages-resources-download --message-id om_xxx --file-key img_v3_xxx --type image --as bot
 
 # Preview the request without executing it
-lark-cli im +messages-resources-download --message-id om_xxx --file-key img_v3_xxx --type image --dry-run
+weact-cli im +messages-resources-download --message-id om_xxx --file-key img_v3_xxx --type image --dry-run
 ```
 
 ## Parameters
@@ -71,11 +71,11 @@ Different resource markers in message content correspond to different `file_key`
 
 ```bash
 # Step 1: Fetch messages and find one containing an image
-lark-cli im +chat-messages-list --chat-id oc_xxx
+weact-cli im +chat-messages-list --chat-id oc_xxx
 # In the response you see: { "msg_type": "image", "content": "{\"image_key\":\"img_v3_xxx\"}" }
 
 # Step 2: Download the image
-lark-cli im +messages-resources-download --message-id om_xxx --file-key img_v3_xxx --type image
+weact-cli im +messages-resources-download --message-id om_xxx --file-key img_v3_xxx --type image
 ```
 
 ## Common Errors and Troubleshooting

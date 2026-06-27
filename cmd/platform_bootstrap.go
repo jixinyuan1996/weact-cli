@@ -21,12 +21,12 @@ import (
 )
 
 // userPolicyFileName is the conventional filename for the user-layer Rule.
-// Lives under ~/.lark-cli/ to match the rest of the CLI's user-state
+// Lives under ~/.weact-cli/ to match the rest of the CLI's user-state
 // directory.
 const userPolicyFileName = "policy.yml"
 
 // applyUserPolicyPruning resolves the user-layer Rule from plugin
-// contributions and/or ~/.lark-cli/policy.yml and installs denyStubs
+// contributions and/or ~/.weact-cli/policy.yml and installs denyStubs
 // for commands it rejects.
 //
 // Missing yaml is not an error -- the CLI runs with no user-layer
@@ -38,7 +38,7 @@ const userPolicyFileName = "policy.yml"
 func applyUserPolicyPruning(rootCmd *cobra.Command, pluginRules []cmdpolicy.PluginRule) error {
 	// Plugin rules shadow the yaml source entirely (Resolve: plugin >
 	// yaml). When a plugin contributed rules we therefore do NOT even
-	// read ~/.lark-cli/policy.yml: build.go fail-CLOSES on any policy
+	// read ~/.weact-cli/policy.yml: build.go fail-CLOSES on any policy
 	// error once a plugin is present, so reading a malformed yaml here
 	// would let an unrelated broken file on the user's machine abort a
 	// plugin-governed binary -- exactly the file the plugin is supposed
@@ -264,10 +264,10 @@ func splitCSV(s string) []string {
 // core.GetBaseConfigDir) so that test isolation, container deployments
 // and per-Agent config overrides all see a consistent policy location.
 // Using vfs.UserHomeDir directly here would silently bypass the env
-// override and route every test through the real ~/.lark-cli.
+// override and route every test through the real ~/.weact-cli.
 //
 // The error return is retained for caller compatibility but is always
-// nil today: GetBaseConfigDir falls back to a relative ".lark-cli" when
+// nil today: GetBaseConfigDir falls back to a relative ".weact-cli" when
 // the home dir can't be resolved, and the resolver already treats a
 // missing file as "no policy".
 func userPolicyPath() (string, error) {

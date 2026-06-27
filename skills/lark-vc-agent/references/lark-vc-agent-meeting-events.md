@@ -3,7 +3,7 @@
 
 查询一场正在进行的视频会议中的会中事件列表。该命令是**读操作**，必须沿用 `meeting_id` 的来源身份：用户身份发现的会议继续用用户身份读，应用身份发现或应用机器人入会得到的会议继续用应用身份读。对已结束会议，存在一个**结束后 5 分钟内的宽限窗口**；应用身份读取时，要求应用机器人曾经在这场会里出现过。
 
-本 skill 对应 shortcut：`lark-cli vc +meeting-events`（调用 `GET /open-apis/vc/v1/bots/events`）。
+本 skill 对应 shortcut：`weact-cli vc +meeting-events`（调用 `GET /open-apis/vc/v1/bots/events`）。
 
 可见性边界：
 
@@ -15,16 +15,16 @@
 
 ```bash
 # 默认用法：全量拉取当前可见事件
-lark-cli vc +meeting-events --as <same_identity> --meeting-id 69xxxxxxxxxxxxx28 --page-all --format pretty
+weact-cli vc +meeting-events --as <same_identity> --meeting-id 69xxxxxxxxxxxxx28 --page-all --format pretty
 
 # 指定时间范围，并拉全该时间窗内当前可见事件
-lark-cli vc +meeting-events --as <same_identity> --meeting-id 69xxxxxxxxxxxxx28 --start 2026-04-17T15:00:00+08:00 --end 2026-04-17T16:00:00+08:00 --page-all --format pretty
+weact-cli vc +meeting-events --as <same_identity> --meeting-id 69xxxxxxxxxxxxx28 --start 2026-04-17T15:00:00+08:00 --end 2026-04-17T16:00:00+08:00 --page-all --format pretty
 
 # 基于上一次保存的 page_token 继续查新增事件
-lark-cli vc +meeting-events --as <same_identity> --meeting-id 69xxxxxxxxxxxxx28 --page-token <last_page_token> --page-all --format pretty
+weact-cli vc +meeting-events --as <same_identity> --meeting-id 69xxxxxxxxxxxxx28 --page-token <last_page_token> --page-all --format pretty
 
 # 调试或控制返回体大小时，显式只查一页
-lark-cli vc +meeting-events --as <same_identity> --meeting-id 69xxxxxxxxxxxxx28 --page-size 20 --format json
+weact-cli vc +meeting-events --as <same_identity> --meeting-id 69xxxxxxxxxxxxx28 --page-size 20 --format json
 ```
 
 ## 参数
@@ -64,24 +64,24 @@ lark-cli vc +meeting-events --as <same_identity> --meeting-id 69xxxxxxxxxxxxx28 
 
 ```bash
 # 方式 1：先入会，直接记录返回的 meeting.id
-lark-cli vc +meeting-join --as bot --meeting-number 123456789
+weact-cli vc +meeting-join --as bot --meeting-number 123456789
 
 # 再查询事件
-lark-cli vc +meeting-events --as bot --meeting-id <meeting.id>
+weact-cli vc +meeting-events --as bot --meeting-id <meeting.id>
 ```
 
 如果应用机器人已经在会中，也可以先通过 active meeting 找会：
 
 ```bash
-lark-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format json
-lark-cli vc +meeting-events --as bot --meeting-id <meeting_id> --page-all --format pretty
+weact-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format json
+weact-cli vc +meeting-events --as bot --meeting-id <meeting_id> --page-all --format pretty
 ```
 
 如果只是查询当前登录用户所在会议：
 
 ```bash
-lark-cli vc +meeting-list-active --as user --format json
-lark-cli vc +meeting-events --as user --meeting-id <meeting_id> --page-all --format pretty
+weact-cli vc +meeting-list-active --as user --format json
+weact-cli vc +meeting-events --as user --meeting-id <meeting_id> --page-all --format pretty
 ```
 
 若应用机器人已离会、未入会、或会议已经无法再判断身份，后端通常会报：
@@ -104,9 +104,9 @@ lark-cli vc +meeting-events --as user --meeting-id <meeting_id> --page-all --for
 
 执行准则：
 
-- **默认命令模板**：`lark-cli vc +meeting-events --as <same_identity> --meeting-id <meeting.id> --page-all --format pretty`
+- **默认命令模板**：`weact-cli vc +meeting-events --as <same_identity> --meeting-id <meeting.id> --page-all --format pretty`
 - 如果你发现自己执行成了不带 `--page-all` 的单页查询，而响应里又出现 `has_more=true` / `more available` / 非空 `page_token`，应立刻意识到这只是部分结果。
-- 遇到上述情况，默认补救方式是继续使用返回的 `page_token` 续拉，例如：`lark-cli vc +meeting-events --as <same_identity> --meeting-id <meeting.id> --page-token <returned_page_token> --page-all --format pretty`
+- 遇到上述情况，默认补救方式是继续使用返回的 `page_token` 续拉，例如：`weact-cli vc +meeting-events --as <same_identity> --meeting-id <meeting.id> --page-token <returned_page_token> --page-all --format pretty`
 - 只有在用户明确要求“就看第一页”“先不要翻页”时，才不要默认带 `--page-all`
 - 只要你是基于 `+meeting-events` 来回答一场**正在进行中的会议内容**，就不能直接复用上一次查询结果。无论用户是在问“现在是谁在说话”“刚刚发生了什么”“最新事件有哪些”，还是让你“总结一下这个会议讲什么”，都必须先重新执行一次 `+meeting-events`，确认拿到的是最新事件流，再回答用户。只有在用户明确要求基于某次历史快照继续分析时，才可以复用旧结果。
 
@@ -133,9 +133,9 @@ lark-cli vc +meeting-events --as user --meeting-id <meeting_id> --page-all --for
 执行准则：
 
 - 如果上下文已有明确 `meeting_id` 和来源身份，直接用同一身份执行 `+meeting-events --page-all --format json`。
-- 如果上下文没有明确 `meeting_id`，先按用户当前意图选择身份：问“我/当前用户所在会议”用 `lark-cli vc +meeting-list-active --as user --format pretty`；问“应用机器人可见的目标用户会议”用 `lark-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format pretty`。返回多个会议时先让用户选择。
+- 如果上下文没有明确 `meeting_id`，先按用户当前意图选择身份：问“我/当前用户所在会议”用 `weact-cli vc +meeting-list-active --as user --format pretty`；问“应用机器人可见的目标用户会议”用 `weact-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format pretty`。返回多个会议时先让用户选择。
 - 如果上下文只有 9 位会议号，先按当前身份执行 `+meeting-list-active` 并按 `meeting_no` 匹配；匹配到唯一会议后再查事件。不要为了总结会议而自动调用 `+meeting-join`。
-- 这类问题拿到 `meeting_id` 后，用 `lark-cli vc +meeting-events --as <same_identity> --meeting-id <meeting.id> --page-all --format json` 拉取最新事件流。
+- 这类问题拿到 `meeting_id` 后，用 `weact-cli vc +meeting-events --as <same_identity> --meeting-id <meeting.id> --page-all --format json` 拉取最新事件流。
 - 如果事件中出现共享文档线索，例如：
   - `magic_share_started`
   - `share_doc.title`
@@ -201,30 +201,30 @@ lark-cli vc +meeting-events --as user --meeting-id <meeting_id> --page-all --for
 
 ```bash
 # 第 1 步：加入会议，记录返回的 meeting.id
-lark-cli vc +meeting-join --as bot --meeting-number 123456789
+weact-cli vc +meeting-join --as bot --meeting-number 123456789
 
 # 第 2 步：查询事件流
-lark-cli vc +meeting-events --as bot --meeting-id <meeting.id> --page-all --format pretty
+weact-cli vc +meeting-events --as bot --meeting-id <meeting.id> --page-all --format pretty
 ```
 
 ### 场景 1b：应用机器人已在会中，先发现 meeting_id 再读事件
 
 ```bash
-lark-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format json
-lark-cli vc +meeting-events --as bot --meeting-id <meeting_id> --page-all --format pretty
+weact-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format json
+weact-cli vc +meeting-events --as bot --meeting-id <meeting_id> --page-all --format pretty
 ```
 
 ### 场景 1c：当前登录用户正在会中，先发现 meeting_id 再读事件
 
 ```bash
-lark-cli vc +meeting-list-active --as user --format json
-lark-cli vc +meeting-events --as user --meeting-id <meeting_id> --page-all --format pretty
+weact-cli vc +meeting-list-active --as user --format json
+weact-cli vc +meeting-events --as user --meeting-id <meeting_id> --page-all --format pretty
 ```
 
 ### 场景 2：过滤某段时间内的事件
 
 ```bash
-lark-cli vc +meeting-events \
+weact-cli vc +meeting-events \
   --as <same_identity> \
   --meeting-id <meeting.id> \
   --start 2026-04-17T15:00:00+08:00 \
@@ -238,7 +238,7 @@ lark-cli vc +meeting-events \
 ```bash
 # 上一次查询结束后，保留最后返回的 page_token
 # 这次直接从该游标继续拉新增事件
-lark-cli vc +meeting-events \
+weact-cli vc +meeting-events \
   --as <same_identity> \
   --meeting-id <meeting.id> \
   --page-token <last_page_token> \
@@ -258,9 +258,9 @@ lark-cli vc +meeting-events \
 |---------|---------|---------|
 | `--meeting-id is required` | 未传入 `--meeting-id` | 传入长数字 `meeting.id` |
 | `not a 9-digit meeting number` | 把 9 位会议号误传给 `--meeting-id` | 如果只是查询会中内容，先用 `+meeting-list-active` 按 `meeting_no` 匹配拿长数字 `meeting_id`；只有用户明确要求入会时才用 `+meeting-join --as bot --meeting-number <9位号>` |
-| `10005 bot is not in meeting` | 使用应用身份读取，但应用机器人从未真实入会该会议；或会议已结束但应用机器人从未在会中出现过 | 如果本来是用户身份发现的 `meeting_id`，改回 `--as user`；如果确实要应用身份读取，先 `+meeting-join --as bot --meeting-number <9位号>` 真实入会再查。**如果只是想看参会人快照，改用 `lark-cli vc meeting get --params '{"meeting_id":"<meeting.id>"}' --with-participants`** |
+| `10005 bot is not in meeting` | 使用应用身份读取，但应用机器人从未真实入会该会议；或会议已结束但应用机器人从未在会中出现过 | 如果本来是用户身份发现的 `meeting_id`，改回 `--as user`；如果确实要应用身份读取，先 `+meeting-join --as bot --meeting-number <9位号>` 真实入会再查。**如果只是想看参会人快照，改用 `weact-cli vc meeting get --params '{"meeting_id":"<meeting.id>"}' --with-participants`** |
 | 用户身份不支持 | 当前事件读取接口不支持用用户身份访问 | 不要反复执行 `auth login`。改用应用身份流程：先通过 `+meeting-list-active --as bot --user-id <user_open_id>` 获取应用身份可读的 `meeting_id`，或在用户明确同意后让应用机器人入会，再用 `+meeting-events --as bot` 读取 |
-| `20001 meeting_status_MEETING_END` | 会议已结束且已超出后端允许的 5 分钟宽限窗口 | 本接口不再适合继续拉取事件。先用 `lark-cli vc +detail --meeting-ids <meeting.id>` 获取会议产物信息，再根据 `note_id` / `minute_token` 和用户意图选择纪要正文、逐字稿或妙记；参会人请用 `lark-cli vc meeting get --params '{"meeting_id":"<meeting.id>"}' --with-participants` |
+| `20001 meeting_status_MEETING_END` | 会议已结束且已超出后端允许的 5 分钟宽限窗口 | 本接口不再适合继续拉取事件。先用 `weact-cli vc +detail --meeting-ids <meeting.id>` 获取会议产物信息，再根据 `note_id` / `minute_token` 和用户意图选择纪要正文、逐字稿或妙记；参会人请用 `weact-cli vc meeting get --params '{"meeting_id":"<meeting.id>"}' --with-participants` |
 | `20002 meeting not exist` | `meeting_id` 错误，或会议实例当前已不可获取（常见于把 9 位会议号当 meeting_id 传） | 确认传入的是长数字 `meeting_id`，不是 9 位会议号 |
 | 应用身份权限不足 | 应用权限、租户安装、权限可访问的数据范围或 VC Agent privilege 未配置完整 | 不要执行 `auth login`。以 CLI 返回的 metadata / error envelope 为准确认缺失权限；检查应用发布/安装，以及开放平台“权限可访问的数据范围”：选择“按条件筛选”，条件为“会议的归属者 包含 与应用的可用范围一致”；仍失败再排查内测 privilege / 灰度 |
 | `HTTP 404` / `HTTP 500` | 服务端当前无法找到或处理该会议实例 | 换一个正在进行且 bot 可见的 meeting_id，或排查后端问题 |
@@ -269,7 +269,7 @@ lark-cli vc +meeting-events \
 
 - 这是**会中事件流**查询，不适合拿来搜历史会议记录；搜历史会议请用 `+search`。
 - 如果会议已经结束，不要卡在 `+meeting-events`：  
-  - 先用 `lark-cli vc +detail --meeting-ids <meeting.id>` 获取会议产物信息。
+  - 先用 `weact-cli vc +detail --meeting-ids <meeting.id>` 获取会议产物信息。
   - 再根据 `note_display_type`、`note_id`、`minute_token` 和用户意图，按 `lark-vc` 的产物决策读取纪要正文、逐字稿或妙记。
 - 事件列表是否完整，取决于应用机器人何时入会、何时离会，以及后端当前可见的会中事件范围。对于已结束会议，通常只在**结束后 5 分钟内**、且应用机器人**曾经在会中**时还能继续拉到事件。
 - 查询"谁参加过某会议"请用 `vc meeting get --params '{"meeting_id":"<id>","with_participants":true}'`——这是参会人**快照** API，不依赖 bot 是否参会，对已结束会议也可查；**不要** 用 `+meeting-events` 做参会人查询。

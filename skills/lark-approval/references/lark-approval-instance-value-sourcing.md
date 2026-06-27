@@ -6,7 +6,7 @@
 
 阅读顺序固定如下：
 
-1. `lark-cli schema approval.instances.create`
+1. `weact-cli schema approval.instances.create`
 2. `approval approvals get` 返回的 `form` / `node_list`
 3. [`lark-approval-instance-form-control-parameters.md`](./lark-approval-instance-form-control-parameters.md)
 4. 本文

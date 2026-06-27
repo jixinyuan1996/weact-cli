@@ -1,7 +1,7 @@
 # Copyright (c) 2026 Lark Technologies Pte. Ltd.
 # SPDX-License-Identifier: MIT
 
-BINARY   := lark-cli
+BINARY   := weact-cli
 MODULE   := github.com/larksuite/cli
 VERSION  := $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
 DATE     := $(shell date +%Y-%m-%d)
@@ -13,7 +13,7 @@ QUALITY_GATE_MANIFEST_OUT ?= $(QUALITY_GATE_DIR)/command-manifest.json
 QUALITY_GATE_COMMAND_INDEX_OUT ?= $(QUALITY_GATE_DIR)/command-index.json
 QUALITY_GATE_FACTS_OUT ?= $(QUALITY_GATE_DIR)/facts.json
 PUBLIC_CONTENT_METADATA ?= $(QUALITY_GATE_DIR)/public-content-metadata.json
-LDFLAGS  := -s -w -X $(MODULE)/internal/build.Version=$(VERSION) -X $(MODULE)/internal/build.Date=$(DATE)
+LDFLAGS  := -s -w -X $(MODULE)/internal/build.Version=$(VERSION) -X $(MODULE)/internal/build.Date=$(DATE) -X $(MODULE)/internal/build.AppName=$(BINARY)
 PREFIX   ?= /usr/local
 
 # The repository's Go 1.23 CI toolchain does not support -race on riscv64.

@@ -18,7 +18,7 @@
 读取普通文件夹：
 
 ```bash
-lark-cli drive files list \
+weact-cli drive files list \
   --params '{"folder_token":"<folder_token>","page_size":200}' \
   --format json
 ```
@@ -26,7 +26,7 @@ lark-cli drive files list \
 继续翻页：
 
 ```bash
-lark-cli drive files list \
+weact-cli drive files list \
   --params '{"folder_token":"<folder_token>","page_size":200,"page_token":"<PAGE_TOKEN>"}' \
   --format json
 ```
@@ -34,7 +34,7 @@ lark-cli drive files list \
 读取当前用户 Drive 根目录的直接子项：
 
 ```bash
-lark-cli drive files list \
+weact-cli drive files list \
   --params '{"folder_token":"","page_size":200}' \
   --format json
 ```
@@ -46,7 +46,7 @@ lark-cli drive files list \
 1. `folder_token` 必须放在 `--params` JSON 里；不要使用不存在的 `--folder-token` flag。
 2. `page_token` 必须放在 `--params` JSON 里；不要依赖 shell 变量拼接不完整的 JSON。
 3. `page_size` 建议显式设置为 `200`。如果服务端或环境返回参数错误，再降级到服务端允许的值，并记录降级原因。
-4. 调用前如果不确定字段结构，先运行 `lark-cli schema drive.files.list` 查看 `--params` 结构。
+4. 调用前如果不确定字段结构，先运行 `weact-cli schema drive.files.list` 查看 `--params` 结构。
 
 ## 返回结构与解析
 
@@ -152,7 +152,7 @@ while queue not empty:
 
 | 错误用法 | 问题 | 正确做法 |
 |----------|------|----------|
-| `lark-cli drive files list --folder-token <token>` | `files.list` 不提供 `--folder-token` flag | 使用 `--params '{"folder_token":"<token>"}'` |
+| `weact-cli drive files list --folder-token <token>` | `files.list` 不提供 `--folder-token` flag | 使用 `--params '{"folder_token":"<token>"}'` |
 | 根目录返回 N 项就认为云空间只有 N 项 | 根目录只返回直接子项，不是递归结果 | 对返回的子文件夹继续递归 |
 | `--page-all \| python json.loads(...)` | 自动翻页输出不适合作为单个 JSON 对象解析 | 手动使用 `page_token` 翻页并逐页解析 |
 | `cmd 2>&1` 后解析 JSON | stderr 提示污染 JSON 输入 | 只解析 stdout，stderr 作为日志处理 |

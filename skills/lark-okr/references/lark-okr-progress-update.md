@@ -8,24 +8,24 @@
 
 ```bash
 # 更新进展记录内容
-lark-cli okr +progress-update \
+weact-cli okr +progress-update \
   --progress-id 1234567890123456789 \
   --content '{"blocks":[{"block_element_type":"paragraph","paragraph":{"elements":[{"paragraph_element_type":"textRun","text_run":{"text":"更新后的进展内容"}}]}}]}'
 
 # 更新进展记录内容并同时更新进度
-lark-cli okr +progress-update \
+weact-cli okr +progress-update \
   --progress-id 1234567890123456789 \
   --content '{"blocks":[{"block_element_type":"paragraph","paragraph":{"elements":[{"paragraph_element_type":"textRun","text_run":{"text":"进度已更新至 90%"}}]}}]}' \
   --progress-percent 90 \
   --progress-status normal
 
 # 从文件读取 content（适用于较长的进展内容）
-lark-cli okr +progress-update \
+weact-cli okr +progress-update \
   --progress-id 1234567890123456789 \
   --content @updated_progress.json
 
 # 预览 API 调用而不实际执行
-lark-cli okr +progress-update \
+weact-cli okr +progress-update \
   --progress-id 1234567890123456789 \
   --content '{"blocks":[{"block_element_type":"paragraph","paragraph":{"elements":[{"paragraph_element_type":"textRun","text_run":{"text":"test"}}]}}]}' \
   --dry-run
@@ -47,7 +47,7 @@ lark-cli okr +progress-update \
 
 1. 使用 `+progress-get` 获取要更新的进展记录的 ID 和当前内容。
 2. 修改 ContentBlock JSON 格式的进展内容。请参考 [ContentBlock 格式](lark-okr-contentblock.md)。
-3. 执行 `lark-cli okr +progress-update --progress-id "..." --content "..."`。
+3. 执行 `weact-cli okr +progress-update --progress-id "..." --content "..."`。
 4. 报告结果：更新后的进展记录 ID、修改时间、进度百分比等。
 
 ## 输出

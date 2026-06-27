@@ -27,16 +27,16 @@
 
 ```bash
 # 遍历评论卡片，并把 reaction 一起拿回来
-lark-cli drive file.comments list \
+weact-cli drive file.comments list \
   --params '{"file_token":"<DOC_TOKEN>","file_type":"docx","need_reaction":true}'
 
 # 已知 comment_id，批量查询评论卡片 reaction
-lark-cli drive file.comments batch_query \
+weact-cli drive file.comments batch_query \
   --params '{"file_token":"<DOC_TOKEN>","file_type":"docx"}' \
   --data '{"comment_ids":["<COMMENT_ID>"],"need_reaction":true}'
 
 # 继续翻某张评论卡片下的 replies，并把 reaction 一起拿回来
-lark-cli drive file.comment.replys list \
+weact-cli drive file.comment.replys list \
   --params '{"file_token":"<DOC_TOKEN>","comment_id":"<COMMENT_ID>","file_type":"docx","need_reaction":true}'
 ```
 
@@ -51,12 +51,12 @@ lark-cli drive file.comment.replys list \
 
 ```bash
 # 给某条 reply 添加一个点赞 reaction
-lark-cli drive file.comment.reply.reactions update_reaction \
+weact-cli drive file.comment.reply.reactions update_reaction \
   --params '{"file_token":"<DOC_TOKEN>","file_type":"docx"}' \
   --data '{"action":"add","reply_id":"<REPLY_ID>","reaction_type":"THUMBSUP"}'
 
 # 删除某条 reply 上已有的 DONE reaction
-lark-cli drive file.comment.reply.reactions update_reaction \
+weact-cli drive file.comment.reply.reactions update_reaction \
   --params '{"file_token":"<DOC_TOKEN>","file_type":"docx"}' \
   --data '{"action":"delete","reply_id":"<REPLY_ID>","reaction_type":"DONE"}'
 ```

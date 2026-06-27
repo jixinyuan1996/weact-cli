@@ -14,47 +14,47 @@
 
 ```bash
 # 导出新版文档为 pdf，默认保存到当前目录
-lark-cli drive +export \
+weact-cli drive +export \
   --token "<DOCX_TOKEN>" \
   --doc-type docx \
   --file-extension pdf
 
 # 导出旧版文档为 docx
-lark-cli drive +export \
+weact-cli drive +export \
   --token "<DOC_TOKEN>" \
   --doc-type doc \
   --file-extension docx
 
 # 导出 docx 为 markdown（Lark-flavored Markdown）
 # 注意：markdown 只支持 docx
-lark-cli drive +export \
+weact-cli drive +export \
   --token "<DOCX_TOKEN>" \
   --doc-type docx \
   --file-extension markdown
 
 # 导出电子表格为 xlsx
-lark-cli drive +export \
+weact-cli drive +export \
   --token "<SHEET_TOKEN>" \
   --doc-type sheet \
   --file-extension xlsx \
   --output-dir ./exports
 
 # 导出幻灯片为 pptx
-lark-cli drive +export \
+weact-cli drive +export \
   --token "<SLIDES_TOKEN>" \
   --doc-type slides \
   --file-extension pptx \
   --output-dir ./exports
 
 # 导出幻灯片为 pdf
-lark-cli drive +export \
+weact-cli drive +export \
   --token "<SLIDES_TOKEN>" \
   --doc-type slides \
   --file-extension pdf \
   --output-dir ./exports
 
 # 指定本地文件名（会按导出格式自动补扩展名）
-lark-cli drive +export \
+weact-cli drive +export \
   --token "<DOCX_TOKEN>" \
   --doc-type docx \
   --file-extension pdf \
@@ -62,7 +62,7 @@ lark-cli drive +export \
   --output-dir ./exports
 
 # 导出电子表格或多维表格为 csv 时，必须传 sub_id
-lark-cli drive +export \
+weact-cli drive +export \
   --token "<SHEET_OR_BITABLE_TOKEN>" \
   --doc-type "<sheet|bitable>" \
   --file-extension csv \
@@ -70,14 +70,14 @@ lark-cli drive +export \
   --output-dir ./exports
 
 # 导出多维表格为 .base 快照（只支持 bitable）
-lark-cli drive +export \
+weact-cli drive +export \
   --token "<BITABLE_TOKEN>" \
   --doc-type bitable \
   --file-extension base \
   --output-dir ./exports
 
 # 导出多维表格结构为 .base 快照（仅导出表结构，不导出记录数据）
-lark-cli drive +export \
+weact-cli drive +export \
   --token "<BITABLE_TOKEN>" \
   --doc-type bitable \
   --file-extension base \
@@ -85,7 +85,7 @@ lark-cli drive +export \
   --output-dir ./exports
 
 # 允许覆盖已存在文件
-lark-cli drive +export \
+weact-cli drive +export \
   --token "<DOCX_TOKEN>" \
   --doc-type docx \
   --file-extension pdf \
@@ -120,20 +120,20 @@ lark-cli drive +export \
 
 ```bash
 # 第一步：先尝试直接导出
-lark-cli drive +export \
+weact-cli drive +export \
   --token "<DOCX_TOKEN>" \
   --doc-type docx \
   --file-extension pdf \
   --file-name "weekly-report.pdf"
 
 # 如果返回 ready=false / timed_out=true，再继续查
-lark-cli drive +task_result \
+weact-cli drive +task_result \
   --scenario export \
   --ticket "<TICKET>" \
   --file-token "<DOCX_TOKEN>"
 
 # 查到 file_token 后下载
-lark-cli drive +export-download \
+weact-cli drive +export-download \
   --file-token "<EXPORTED_FILE_TOKEN>" \
   --file-name "weekly-report.pdf" \
   --output-dir ./exports

@@ -5,7 +5,7 @@
 ## 命令
 
 ```bash
-lark-cli note +detail --note-id <note_id>
+weact-cli note +detail --note-id <note_id>
 ```
 
 ## `note_id` 来源

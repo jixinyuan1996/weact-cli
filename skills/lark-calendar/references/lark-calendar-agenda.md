@@ -11,19 +11,19 @@
 
 ```bash
 # 查看今天日程（默认）
-lark-cli calendar +agenda
+weact-cli calendar +agenda
 
 # 自定义时间范围（ISO 8601）
-lark-cli calendar +agenda --start "2026-03-10T00:00+08:00" --end "2026-03-17T00:00+08:00"
+weact-cli calendar +agenda --start "2026-03-10T00:00+08:00" --end "2026-03-17T00:00+08:00"
 
 # 自定义时间范围（仅日期）
-lark-cli calendar +agenda --start 2026-03-10 --end 2026-03-17
+weact-cli calendar +agenda --start 2026-03-10 --end 2026-03-17
 
 # 人类可读格式输出
-lark-cli calendar +agenda --format pretty
+weact-cli calendar +agenda --format pretty
 
 # 指定日历
-lark-cli calendar +agenda --calendar-id cal_xxx
+weact-cli calendar +agenda --calendar-id cal_xxx
 ```
 
 ## 参数
@@ -70,7 +70,7 @@ lark-cli calendar +agenda --calendar-id cal_xxx
 - 已取消的日程会自动过滤，无需额外处理。
 - 如无日程，告知用户"日程清空"。
 - 大于 40 天的时间范围会自动拆分查询并合并结果。
-- 查看多个日历：先用 `lark-cli calendar calendars list --page-all` 列出日历列表，再逐个查询。
+- 查看多个日历：先用 `weact-cli calendar calendars list --page-all` 列出日历列表，再逐个查询。
 
 ## 参考
 

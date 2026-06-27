@@ -89,7 +89,7 @@ func doctorRun(opts *DoctorOptions) error {
 	if err != nil {
 		// For "config not present" cases, prefer the workspace-aware
 		// NotConfiguredError message + hint (e.g. "openclaw context
-		// detected but lark-cli is not bound to it" → bind --help) over
+		// detected but weact-cli is not bound to it" → bind --help) over
 		// the OS-level "open ... no such file or directory".
 		// For other errors (parse, perms), keep the raw error so the
 		// underlying problem is still visible.
@@ -129,7 +129,7 @@ func doctorRun(opts *DoctorOptions) error {
 	if diagnostics.Bot.Available || diagnostics.User.Available {
 		checks = append(checks, pass("identity_ready", "at least one identity is available"))
 	} else {
-		checks = append(checks, fail("identity_ready", "no usable bot or user identity is available", "run: lark-cli auth status --verify"))
+		checks = append(checks, fail("identity_ready", "no usable bot or user identity is available", "run: weact-cli auth status --verify"))
 	}
 
 	// ── 4 & 5. Endpoint reachability ──
@@ -220,7 +220,7 @@ func checkCLIUpdate() []checkResult {
 	if update.IsNewer(latest, current) {
 		return []checkResult{warn("cli_update",
 			fmt.Sprintf("%s → %s available", current, latest),
-			"run: lark-cli update")}
+			"run: weact-cli update")}
 	}
 	return []checkResult{pass("cli_update", latest+" (up to date)")}
 }

@@ -21,7 +21,7 @@ Use `+data-query` when the user asks for server-side:
 Count records by a category field:
 
 ```bash
-lark-cli base +data-query \
+weact-cli base +data-query \
   --base-token <base_token> \
   --dsl '{"datasource":{"type":"table","table":{"tableId":"<table_id>"}},"dimensions":[{"field_name":"Status","alias":"status"}],"measures":[{"field_name":"Status","aggregation":"count","alias":"count"}],"shaper":{"format":"flat"}}'
 ```
@@ -29,7 +29,7 @@ lark-cli base +data-query \
 Sum a number field by category and return Top 10:
 
 ```bash
-lark-cli base +data-query \
+weact-cli base +data-query \
   --base-token <base_token> \
   --dsl '{"datasource":{"type":"table","table":{"tableId":"<table_id>"}},"dimensions":[{"field_name":"Region","alias":"region"}],"measures":[{"field_name":"Amount","aggregation":"sum","alias":"total_amount"}],"sort":[{"field_name":"total_amount","order":"desc"}],"pagination":{"limit":10},"shaper":{"format":"flat"}}'
 ```
@@ -37,7 +37,7 @@ lark-cli base +data-query \
 Aggregate only records matching a filter:
 
 ```bash
-lark-cli base +data-query \
+weact-cli base +data-query \
   --base-token <base_token> \
   --dsl '{"datasource":{"type":"table","table":{"tableId":"<table_id>"}},"dimensions":[{"field_name":"Owner","alias":"owner"}],"measures":[{"field_name":"Amount","aggregation":"sum","alias":"total_amount"}],"filters":{"type":1,"conjunction":"and","conditions":[{"field_name":"Status","operator":"is","value":["Done"]}]},"shaper":{"format":"flat"}}'
 ```
@@ -45,7 +45,7 @@ lark-cli base +data-query \
 Use `tableName` when the table ID is unavailable but the table name is known:
 
 ```bash
-lark-cli base +data-query \
+weact-cli base +data-query \
   --base-token <base_token> \
   --dsl '{"datasource":{"type":"table","table":{"tableName":"Orders"}},"measures":[{"field_name":"Amount","aggregation":"sum","alias":"total_amount"}],"shaper":{"format":"flat"}}'
 ```

@@ -10,7 +10,7 @@
 >
 > 此时结果里会额外返回 `permission_grant` 字段，明确说明授权结果：
 > - `status = granted`：当前 CLI 用户已获得该导入结果的可管理权限
-> - `status = skipped`：本地没有可用的当前用户 `open_id`，或最终结果缺少可授权的在线文档目标，因此不会自动授权；可提示用户先完成 `lark-cli auth login`，再让 AI / agent 继续使用应用身份（bot）授予当前用户权限
+> - `status = skipped`：本地没有可用的当前用户 `open_id`，或最终结果缺少可授权的在线文档目标，因此不会自动授权；可提示用户先完成 `weact-cli auth login`，再让 AI / agent 继续使用应用身份（bot）授予当前用户权限
 > - `status = failed`：导入结果已就绪，但自动授权用户失败；会带上失败原因，并提示稍后重试或继续使用 bot 身份处理该文档
 >
 > `permission_grant.perm = full_access` 表示该资源已授予“可管理权限”。
@@ -21,28 +21,28 @@
 
 ```bash
 # 查询导入任务结果
-lark-cli drive +task_result \
+weact-cli drive +task_result \
   --scenario import \
   --ticket <IMPORT_TICKET>
 
 # 查询导出任务结果
-lark-cli drive +task_result \
+weact-cli drive +task_result \
   --scenario export \
   --ticket <EXPORT_TICKET> \
   --file-token <SOURCE_DOC_TOKEN>
 
 # 查询移动/删除文件夹任务状态
-lark-cli drive +task_result \
+weact-cli drive +task_result \
   --scenario task_check \
   --task-id <TASK_ID>
 
 # 查询 Wiki 移动任务结果（wiki +move 异步超时后的续跑）
-lark-cli drive +task_result \
+weact-cli drive +task_result \
   --scenario wiki_move \
   --task-id <TASK_ID>
 
 # 查询 Wiki 删除知识空间任务结果（wiki +delete-space 异步超时后的续跑）
-lark-cli drive +task_result \
+weact-cli drive +task_result \
   --scenario wiki_delete_space \
   --task-id <TASK_ID>
 ```
@@ -81,7 +81,7 @@ lark-cli drive +task_result \
   "job_status_label": "success",
   "job_error_msg": "success",
   "token": "<IMPORTED_DOC_TOKEN>",
-  "url": "https://example.feishu.cn/sheets/<IMPORTED_DOC_TOKEN>",
+  "url": "https://example.weact.cn/sheets/<IMPORTED_DOC_TOKEN>",
   "extra": ["2000"],
   "permission_grant": {
     "status": "granted",
@@ -221,12 +221,12 @@ lark-cli drive +task_result \
 
 ```bash
 # 1. 创建导入任务
-lark-cli drive +import --file ./data.xlsx --type sheet
+weact-cli drive +import --file ./data.xlsx --type sheet
 # 若任务很快完成：直接返回 token / url
 # 若内置轮询超时：返回 ready=false、ticket 和 next_command
 
 # 2. 轮询导入结果
-lark-cli drive +task_result --scenario import --ticket <IMPORT_TICKET>
+weact-cli drive +task_result --scenario import --ticket <IMPORT_TICKET>
 # 如果这里返回 ready=true 且使用 --as bot，结果还会包含 permission_grant
 ```
 
@@ -234,24 +234,24 @@ lark-cli drive +task_result --scenario import --ticket <IMPORT_TICKET>
 
 ```bash
 # 1. 移动文件夹（异步操作）
-lark-cli drive +move --file-token <FOLDER_TOKEN> --type folder --folder-token <TARGET_FOLDER_TOKEN>
+weact-cli drive +move --file-token <FOLDER_TOKEN> --type folder --folder-token <TARGET_FOLDER_TOKEN>
 # 若轮询窗口内完成：直接返回 ready=true
 # 若内置轮询结束仍未完成：返回 ready=false、task_id 和 next_command
 
 # 2. 轮询移动结果
-lark-cli drive +task_result --scenario task_check --task-id <TASK_ID>
+weact-cli drive +task_result --scenario task_check --task-id <TASK_ID>
 ```
 
 ### 配合 wiki +move 使用
 
 ```bash
 # 1. 把 Drive 文档迁入 Wiki（异步任务可能返回 task_id）
-lark-cli wiki +move --obj-type docx --obj-token <DOC_TOKEN> --target-space-id <TARGET_SPACE_ID>
+weact-cli wiki +move --obj-type docx --obj-token <DOC_TOKEN> --target-space-id <TARGET_SPACE_ID>
 # 若内置轮询窗口内完成：直接返回 ready=true 和 wiki_token
 # 若轮询窗口结束仍未完成：返回 ready=false、task_id、timed_out=true 和 next_command
 
 # 2. 续跑查询 Wiki 移动结果（next_command 即下面这条）
-lark-cli drive +task_result --scenario wiki_move --task-id <TASK_ID> --as user
+weact-cli drive +task_result --scenario wiki_move --task-id <TASK_ID> --as user
 ```
 
 > **身份保持一致**：续跑命令的 `--as` 必须与原 `wiki +move` 调用一致；`wiki +move` 的 `next_command` 已自动带上正确的 `--as`。
@@ -260,27 +260,27 @@ lark-cli drive +task_result --scenario wiki_move --task-id <TASK_ID> --as user
 
 ```bash
 # 1. 删除知识空间（高风险写操作，必须显式带 --yes；接口可能同步返回空 task_id，也可能返回异步 task_id）
-lark-cli wiki +delete-space --space-id <SPACE_ID> --yes
+weact-cli wiki +delete-space --space-id <SPACE_ID> --yes
 # 若同步返回：直接 ready=true
 # 若轮询窗口结束仍未完成：返回 ready=false、task_id、timed_out=true 和 next_command
 
 # 2. 续跑查询 Wiki 删除结果（next_command 即下面这条）
-lark-cli drive +task_result --scenario wiki_delete_space --task-id <TASK_ID> --as user
+weact-cli drive +task_result --scenario wiki_delete_space --task-id <TASK_ID> --as user
 ```
 
 ### 配合 +export 使用
 
 ```bash
 # 1. 发起导出
-lark-cli drive +export --token <SOURCE_DOC_TOKEN> --doc-type docx --file-extension pdf
+weact-cli drive +export --token <SOURCE_DOC_TOKEN> --doc-type docx --file-extension pdf
 # 若轮询窗口内完成：直接下载本地文件
 # 若内置轮询结束仍未完成：返回 ready=false、ticket 和 next_command
 
 # 2. 继续查询导出结果
-lark-cli drive +task_result --scenario export --ticket <EXPORT_TICKET> --file-token <SOURCE_DOC_TOKEN>
+weact-cli drive +task_result --scenario export --ticket <EXPORT_TICKET> --file-token <SOURCE_DOC_TOKEN>
 
 # 3. 拿到 file_token 后下载
-lark-cli drive +export-download --file-token <EXPORTED_FILE_TOKEN>
+weact-cli drive +export-download --file-token <EXPORTED_FILE_TOKEN>
 ```
 
 ## 权限要求

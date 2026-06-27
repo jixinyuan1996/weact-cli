@@ -1,6 +1,6 @@
 # apps +create
 
-创建妙搭应用。运行时命令事实以 `lark-cli apps +create --help` 为准。
+创建妙搭应用。运行时命令事实以 `weact-cli apps +create --help` 为准。
 
 ## 何时用
 
@@ -15,12 +15,12 @@
 ## 示例
 
 ```bash
-lark-cli apps +create --name "客户调研问卷" --app-type html
+weact-cli apps +create --name "客户调研问卷" --app-type html
 
-lark-cli apps +create --name "审批系统" --app-type full_stack \
+weact-cli apps +create --name "审批系统" --app-type full_stack \
   --description "部门审批系统，支持登录、提交申请、多级审批"
 
-lark-cli apps +create --name "Demo" --app-type html --dry-run
+weact-cli apps +create --name "Demo" --app-type html --dry-run
 ```
 
 ## 输出契约

@@ -94,8 +94,8 @@ type bindMsg struct {
 }
 
 var bindMsgZh = &bindMsg{
-	SelectSource:      "你想在哪个 Agent 中使用 lark-cli?",
-	SelectSourceDesc:  "从你选择的 Agent 中获取%s应用信息，并配置到 lark-cli 中",
+	SelectSource:      "你想在哪个 Agent 中使用 weact-cli?",
+	SelectSourceDesc:  "从你选择的 Agent 中获取%s应用信息，并配置到 weact-cli 中",
 	SourceOpenClaw:    "OpenClaw — 配置文件: %s",
 	SourceHermes:      "Hermes — 配置文件: %s",
 	SourceLarkChannel: "Lark Channel — 配置文件: %s",
@@ -103,13 +103,13 @@ var bindMsgZh = &bindMsg{
 	SelectAccount: "检测到 %s 中已配置多个%s应用，请选择一个",
 
 	ConflictTitle:     "检测到已有配置",
-	ConflictDesc:      "%q 已配置 lark-cli:\n  App ID:  %s\n  品牌:    %s\n  配置文件: %s",
+	ConflictDesc:      "%q 已配置 weact-cli:\n  App ID:  %s\n  品牌:    %s\n  配置文件: %s",
 	ConflictForce:     "修改配置",
 	ConflictCancel:    "保留当前配置",
 	ConflictCancelled: "已保留当前配置",
 
 	MessageBotOnly:     "已绑定应用 %s 到 %s，可立即以应用（bot）身份调用%s API，现在可以继续执行用户的请求。",
-	MessageUserDefault: "已绑定应用 %s 到 %s。请接着在此 %s 对话中运行 `lark-cli auth login --recommend`。该命令会在 stderr 打出 verification_url 后阻塞等待用户授权；请将此链接原样发给用户在其浏览器中完成授权（不要自己调 browser_navigate 之类的工具打开，授权必须在用户的浏览器里完成），命令会在用户授权完成后自动返回。",
+	MessageUserDefault: "已绑定应用 %s 到 %s。请接着在此 %s 对话中运行 `weact-cli auth login --recommend`。该命令会在 stderr 打出 verification_url 后阻塞等待用户授权；请将此链接原样发给用户在其浏览器中完成授权（不要自己调 browser_navigate 之类的工具打开，授权必须在用户的浏览器里完成），命令会在用户授权完成后自动返回。",
 
 	SelectIdentity:      "你希望 AI 如何与你协作？",
 	IdentityBotOnly:     "以机器人身份",
@@ -118,18 +118,18 @@ var bindMsgZh = &bindMsg{
 	IdentityUserDefaultDesc: "AI 将在%s中以你的名义执行所有操作，如读写文档、搜索消息、修改日程等，建议仅限个人使用。\n" +
 		"⚠️  请勿将此机器人分享给他人或拉入群聊中使用，以免泄露你的%s数据。",
 
-	BindSuccessHeader: "配置成功！lark-cli 已可在 %s 中使用。",
-	BindSuccessNotice: "注意：这是一次性同步，后续 Agent 配置变更不会自动更新到 lark-cli。如需重新同步，请执行 `lark-cli config bind`",
+	BindSuccessHeader: "配置成功！weact-cli 已可在 %s 中使用。",
+	BindSuccessNotice: "注意：这是一次性同步，后续 Agent 配置变更不会自动更新到 weact-cli。如需重新同步，请执行 `weact-cli config bind`",
 
 	IdentityEscalationMessage: "你正在从应用身份切换到用户身份 —— 切换后 AI 将以你的名义在飞书中执行所有操作（读写文档、搜索消息、修改日程等）。⚠️ 请勿将此机器人分享给他人或拉入群聊中使用，以免泄露你的飞书数据。",
-	IdentityEscalationHint:    "若用户确认切换，附加 --force 重新运行：`lark-cli config bind --identity user-default --force`",
+	IdentityEscalationHint:    "若用户确认切换，附加 --force 重新运行：`weact-cli config bind --identity user-default --force`",
 
 	LangPreferenceSet: "语言偏好已设置：%s",
 }
 
 var bindMsgEn = &bindMsg{
 	SelectSource:      "Which Agent are you running?",
-	SelectSourceDesc:  "lark-cli will read your %s app credentials from the selected Agent and apply them automatically.",
+	SelectSourceDesc:  "weact-cli will read your %s app credentials from the selected Agent and apply them automatically.",
 	SourceOpenClaw:    "OpenClaw — config: %s",
 	SourceHermes:      "Hermes — config: %s",
 	SourceLarkChannel: "Lark Channel — config: %s",
@@ -139,13 +139,13 @@ var bindMsgEn = &bindMsg{
 	SelectAccount: "Multiple %[2]s apps configured in %[1]s — select one to continue.",
 
 	ConflictTitle:     "Existing configuration found",
-	ConflictDesc:      "lark-cli is already set up for %q:\n  App ID:  %s\n  Brand:   %s\n  Config:  %s",
+	ConflictDesc:      "weact-cli is already set up for %q:\n  App ID:  %s\n  Brand:   %s\n  Config:  %s",
 	ConflictForce:     "Update config",
 	ConflictCancel:    "Keep current config",
 	ConflictCancelled: "Current config kept. No changes made.",
 
 	MessageBotOnly:     "Bound app %s to %s. The %s app (bot) identity is ready — you can now continue with the user's request.",
-	MessageUserDefault: "Bound app %s to %s. Next, in this %s chat, run `lark-cli auth login --recommend`. The command prints the verification URL to stderr and then blocks until the user authorizes it; relay the URL to the user so they can approve it in their own browser (do not call browser_navigate or any tool that opens a browser yourself — your browser is sandboxed and cannot complete the authorization). The command returns automatically once authorization completes.",
+	MessageUserDefault: "Bound app %s to %s. Next, in this %s chat, run `weact-cli auth login --recommend`. The command prints the verification URL to stderr and then blocks until the user authorizes it; relay the URL to the user so they can approve it in their own browser (do not call browser_navigate or any tool that opens a browser yourself — your browser is sandboxed and cannot complete the authorization). The command returns automatically once authorization completes.",
 
 	SelectIdentity:      "How should the AI work with you?",
 	IdentityBotOnly:     "As bot",
@@ -154,11 +154,11 @@ var bindMsgEn = &bindMsg{
 	IdentityUserDefaultDesc: "Works under your identity in %s, managing docs, messages, calendar, and more on your behalf. Personal use only.\n" +
 		"⚠️  Don't share this bot with others or add it to group chats. It has access to your personal %s data.",
 
-	BindSuccessHeader: "All set! lark-cli is now ready to use in %s.",
-	BindSuccessNotice: "Note: This is a one-time sync. To re-sync future changes, run `lark-cli config bind`",
+	BindSuccessHeader: "All set! weact-cli is now ready to use in %s.",
+	BindSuccessNotice: "Note: This is a one-time sync. To re-sync future changes, run `weact-cli config bind`",
 
 	IdentityEscalationMessage: "you are switching from bot-only to user-default — the AI will then act under your Feishu identity for all operations (docs, messages, calendar, etc.). ⚠️ Don't share this bot with others or add it to group chats. It has access to your personal Feishu data.",
-	IdentityEscalationHint:    "if the user confirms the switch, re-run with --force: `lark-cli config bind --identity user-default --force`",
+	IdentityEscalationHint:    "if the user confirms the switch, re-run with --force: `weact-cli config bind --identity user-default --force`",
 
 	LangPreferenceSet: "Language preference set to: %s",
 }

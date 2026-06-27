@@ -9,7 +9,7 @@
 ## 命令
 
 ```bash
-lark-cli slides xml_presentation.slide replace --as user --params '<json_params>' --data '<json_data>'
+weact-cli slides xml_presentation.slide replace --as user --params '<json_params>' --data '<json_data>'
 ```
 
 ## 参数说明
@@ -77,7 +77,7 @@ lark-cli slides xml_presentation.slide replace --as user --params '<json_params>
 ### block_replace：换一个 shape 的整体内容
 
 ```bash
-lark-cli slides xml_presentation.slide replace --as user --params '{
+weact-cli slides xml_presentation.slide replace --as user --params '{
   "xml_presentation_id": "slides_example_presentation_id",
   "slide_id": "slide_example_id"
 }' --data '{
@@ -95,9 +95,9 @@ lark-cli slides xml_presentation.slide replace --as user --params '{
 
 ```bash
 # 先拿 file_token
-TOKEN=$(lark-cli slides +media-upload --file ./pic.png --presentation "$PID" --as user | jq -r '.data.file_token')
+TOKEN=$(weact-cli slides +media-upload --file ./pic.png --presentation "$PID" --as user | jq -r '.data.file_token')
 
-lark-cli slides xml_presentation.slide replace --as user --params "{
+weact-cli slides xml_presentation.slide replace --as user --params "{
   \"xml_presentation_id\": \"$PID\",
   \"slide_id\": \"$SID\"
 }" --data "$(jq -n --arg token "$TOKEN" '{
@@ -113,7 +113,7 @@ lark-cli slides xml_presentation.slide replace --as user --params "{
 ### 多条 parts 原子执行
 
 ```bash
-lark-cli slides xml_presentation.slide replace --as user --params '{
+weact-cli slides xml_presentation.slide replace --as user --params '{
   "xml_presentation_id": "slides_example_presentation_id",
   "slide_id": "slide_example_id"
 }' --data '{
@@ -177,7 +177,7 @@ lark-cli slides xml_presentation.slide replace --as user --params '{
 5. **`block_replace` 要求 `replacement` 根元素带 `id="<block_id>"`**：底层 API 的硬约束，缺失会返回 3350001。推荐走 shortcut [`+replace-slide`](lark-slides-replace-slide.md)——它会自动把 `id` 注入到 `replacement` 根元素上，用户写 XML 时不用自己加。
 6. **`<shape>` 必须有 `<content/>` 子元素**：SML 2.0 schema 要求，缺失同样触发 3350001。shortcut [`+replace-slide`](lark-slides-replace-slide.md) 会自动注入 `<content/>`，直接调底层 API 需要自己加。
 7. **`<whiteboard>` 返回结构不含内部数据**：`slide.get` 返回的 whiteboard 块只有外层标签和位置属性，SVG / Mermaid 内容不会随 XML 一起返回。但 `block_replace` 仍然可以强行覆盖——直接写入完整新 whiteboard XML 即可。
-8. **执行前必做**：`lark-cli schema slides.xml_presentation.slide.replace` 查看最新参数结构。
+8. **执行前必做**：`weact-cli schema slides.xml_presentation.slide.replace` 查看最新参数结构。
 
 ## 相关命令
 

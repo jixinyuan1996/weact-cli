@@ -44,10 +44,10 @@ Both keys use a **Custom schema** (flat output) and carry a **PreConsume hook** 
 ### Example
 
 ```bash
-lark-cli event consume vc.meeting.participant_meeting_ended_v1 --as user
+weact-cli event consume vc.meeting.participant_meeting_ended_v1 --as user
 
 # Project meeting topic and end time only
-lark-cli event consume vc.meeting.participant_meeting_ended_v1 --as user \
+weact-cli event consume vc.meeting.participant_meeting_ended_v1 --as user \
   --jq '{meeting: .meeting_id, topic: .topic, ended: .end_time}'
 ```
 
@@ -82,13 +82,13 @@ Fires when a note is generated — not just from meetings, but also from realtim
 ### Example
 
 ```bash
-lark-cli event consume vc.note.generated_v1 --as user
+weact-cli event consume vc.note.generated_v1 --as user
 
 # Only notes with enriched tokens, skip incomplete ones
-lark-cli event consume vc.note.generated_v1 --as user \
+weact-cli event consume vc.note.generated_v1 --as user \
   --jq 'select(.note_token != "") | {note_id, note_token, verbatim_token}'
 
 # Filter to meeting-sourced notes only
-lark-cli event consume vc.note.generated_v1 --as user \
+weact-cli event consume vc.note.generated_v1 --as user \
   --jq 'select(.note_source.source_type == "meeting") | {note_id, meeting_id: .note_source.source_entity_id}'
 ```

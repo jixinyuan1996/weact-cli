@@ -1,6 +1,6 @@
 # apps +release-create
 
-为妙搭应用创建发布 release。运行时命令事实以 `lark-cli apps +release-create --help` 为准。
+为妙搭应用创建发布 release。运行时命令事实以 `weact-cli apps +release-create --help` 为准。
 
 ## 何时用
 
@@ -15,8 +15,8 @@
 ## 示例
 
 ```bash
-lark-cli apps +release-create --app-id app_xxx
-lark-cli apps +release-create --app-id app_xxx --branch sprint/default --dry-run
+weact-cli apps +release-create --app-id app_xxx
+weact-cli apps +release-create --app-id app_xxx --branch sprint/default --dry-run
 ```
 
 ## 输出契约

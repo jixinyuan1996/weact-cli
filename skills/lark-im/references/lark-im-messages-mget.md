@@ -8,22 +8,22 @@ By default the response also carries a `reactions` block (counts + details from 
 
 > **Supports both `--as user` (default) and `--as bot`.**
 
-This skill maps to the shortcut: `lark-cli im +messages-mget` (internally calls `GET /open-apis/im/v1/messages/mget`).
+This skill maps to the shortcut: `weact-cli im +messages-mget` (internally calls `GET /open-apis/im/v1/messages/mget`).
 
 ## Commands
 
 ```bash
 # Fetch a single message
-lark-cli im +messages-mget --message-ids om_xxx
+weact-cli im +messages-mget --message-ids om_xxx
 
 # Fetch multiple messages in batch (comma-separated)
-lark-cli im +messages-mget --message-ids "om_aaa,om_bbb,om_ccc"
+weact-cli im +messages-mget --message-ids "om_aaa,om_bbb,om_ccc"
 
 # JSON output
-lark-cli im +messages-mget --message-ids "om_aaa,om_bbb" --format json
+weact-cli im +messages-mget --message-ids "om_aaa,om_bbb" --format json
 
 # Preview the request without executing it
-lark-cli im +messages-mget --message-ids "om_aaa" --dry-run
+weact-cli im +messages-mget --message-ids "om_aaa" --dry-run
 ```
 
 ## Parameters
@@ -56,13 +56,13 @@ Each message contains:
 ### Scenario 1: Fetch the full content of a specific message
 
 ```bash
-lark-cli im +messages-mget --message-ids om_xxx --format json
+weact-cli im +messages-mget --message-ids om_xxx --format json
 ```
 
 ### Scenario 2: Fetch multiple messages in one batch
 
 ```bash
-lark-cli im +messages-mget --message-ids "om_aaa,om_bbb,om_ccc"
+weact-cli im +messages-mget --message-ids "om_aaa,om_bbb,om_ccc"
 ```
 
 ### Scenario 3: Use together with the message list command
@@ -71,10 +71,10 @@ First get message IDs via `+chat-messages-list`, then fetch full content via `+m
 
 ```bash
 # Get the message list
-lark-cli im +chat-messages-list --chat-id oc_xxx --format json
+weact-cli im +chat-messages-list --chat-id oc_xxx --format json
 
 # Fetch specific message details
-lark-cli im +messages-mget --message-ids "om_aaa,om_bbb"
+weact-cli im +messages-mget --message-ids "om_aaa,om_bbb"
 ```
 
 ## Common Errors and Troubleshooting

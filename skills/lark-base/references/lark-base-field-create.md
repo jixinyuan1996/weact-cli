@@ -15,17 +15,17 @@
 ## 推荐命令
 
 ```bash
-lark-cli base +field-create \
+weact-cli base +field-create \
   --base-token <base_token> \
   --table-id <table_id> \
   --json '{"name":"预算","type":"number","style":{"type":"plain","precision":2}}'
 
-lark-cli base +field-create \
+weact-cli base +field-create \
   --base-token <base_token> \
   --table-id <table_id> \
   --json '{"name":"状态","type":"select","multiple":false,"options":[{"name":"Todo","hue":"Blue","lightness":"Lighter"},{"name":"Done","hue":"Green","lightness":"Light"}]}'
 
-lark-cli base +field-create \
+weact-cli base +field-create \
   --base-token <base_token> \
   --table-id <table_id> \
   --json '{"name":"负责人","type":"user","multiple":false,"description":"用于标记记录的直接负责人；协作约定可参考[团队字段约定](https://example.com/field-spec)"}'

@@ -105,7 +105,7 @@ func runConsume(cmd *cobra.Command, f *cmdutil.Factory, eventKey string, o consu
 			return errs.NewValidationError(errs.SubtypeInvalidArgument, "%s", err).
 				WithParam("--jq").
 				WithCause(err).
-				WithHint("see `lark-cli event consume --help` EXAMPLES for common patterns, or `lark-cli event schema %s` for valid field paths", eventKey)
+				WithHint("see `weact-cli event consume --help` EXAMPLES for common patterns, or `weact-cli event schema %s` for valid field paths", eventKey)
 		}
 	}
 
@@ -297,7 +297,7 @@ func scopeRemediationHint(brand core.LarkBrand, appID string, identity core.Iden
 			addonsHintURL(brand, appID, missingScopeAddons(identity, missing)))
 	}
 	return fmt.Sprintf(
-		"run `lark-cli auth login --scope \"%s\"` in the background. It blocks and outputs a verification URL — retrieve the URL and open it in a browser to complete login.",
+		"run `weact-cli auth login --scope \"%s\"` in the background. It blocks and outputs a verification URL — retrieve the URL and open it in a browser to complete login.",
 		strings.Join(missing, " "))
 }
 
@@ -379,7 +379,7 @@ func resolveTenantToken(ctx context.Context, f *cmdutil.Factory, appID string) (
 	if result == nil || result.Token == "" {
 		return "", errs.NewAuthenticationError(errs.SubtypeTokenMissing,
 			"no tenant access token available for app %s", appID).
-			WithHint("Check that app_secret is configured (lark-cli config show) and try 'lark-cli auth login'.")
+			WithHint("Check that app_secret is configured (weact-cli config show) and try 'weact-cli auth login'.")
 	}
 	return result.Token, nil
 }

@@ -3,7 +3,7 @@
 
 通过 9 位会议号让应用机器人加入一场正在进行的视频会议。这是一次**写操作**，会实际让应用机器人加入会议。
 
-本 skill 对应 shortcut：`lark-cli vc +meeting-join`（调用 `POST /open-apis/vc/v1/bots/join`）。
+本 skill 对应 shortcut：`weact-cli vc +meeting-join`（调用 `POST /open-apis/vc/v1/bots/join`）。
 
 > **不要把 9 位会议号等同于入会意图。** 用户给出 9 位会议号并询问“会议讲了什么 / 查会中事件”时，先用 `+meeting-list-active` 查当前 active meetings 并按 `meeting_no` 匹配；只有用户明确要求“入会 / 让应用机器人旁听 / 代我参会”时才调用本命令。
 
@@ -11,19 +11,19 @@
 
 ```bash
 # 仅指定会议号（无密码）
-lark-cli vc +meeting-join --as bot --meeting-number 123456789
+weact-cli vc +meeting-join --as bot --meeting-number 123456789
 
 # 指定会议号 + 密码
-lark-cli vc +meeting-join --as bot --meeting-number 123456789 --password 8888
+weact-cli vc +meeting-join --as bot --meeting-number 123456789 --password 8888
 
 # 从邀请事件透传 call_id（参见「如何获取输入参数」）
-lark-cli vc +meeting-join --as bot --meeting-number 123456789 --call-id a08e06bf-9a41-44e4-a89c-a7871899e783
+weact-cli vc +meeting-join --as bot --meeting-number 123456789 --call-id a08e06bf-9a41-44e4-a89c-a7871899e783
 
 # 输出格式
-lark-cli vc +meeting-join --as bot --meeting-number 123456789 --format json
+weact-cli vc +meeting-join --as bot --meeting-number 123456789 --format json
 
 # 预览 API 调用（不实际加入会议）
-lark-cli vc +meeting-join --as bot --meeting-number 123456789 --dry-run
+weact-cli vc +meeting-join --as bot --meeting-number 123456789 --dry-run
 ```
 
 ## 参数
@@ -87,26 +87,26 @@ lark-cli vc +meeting-join --as bot --meeting-number 123456789 --dry-run
 
 ```bash
 # 第 1 步：加入会议，记录返回的 meeting.id
-lark-cli vc +meeting-join --as bot --meeting-number 123456789
+weact-cli vc +meeting-join --as bot --meeting-number 123456789
 
 # 第 2 步：使用返回的 meeting.id 查询会中事件
-lark-cli vc +meeting-events --as bot --meeting-id <meeting.id> --page-all --format pretty
+weact-cli vc +meeting-events --as bot --meeting-id <meeting.id> --page-all --format pretty
 ```
 
 如果 bot 已经在会中，也可以通过 active meeting 找回 `meeting_id`：
 
 ```bash
-lark-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format json
+weact-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format json
 ```
 
 ### 场景 2：加入会议 → 会后进入 lark-vc 获取会议产物信息
 
 ```bash
 # 第 1 步：加入并参会
-lark-cli vc +meeting-join --as bot --meeting-number 123456789
+weact-cli vc +meeting-join --as bot --meeting-number 123456789
 
 # 第 2 步：会议结束后，先查询会议产物
-lark-cli vc +detail --meeting-ids <meeting.id>
+weact-cli vc +detail --meeting-ids <meeting.id>
 ```
 
 后续按 `lark-vc` 的产物决策处理：根据 `note_display_type`、`note_id`、`minute_token` 和用户意图选择纪要正文、逐字稿或妙记。

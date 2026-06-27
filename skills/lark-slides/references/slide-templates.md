@@ -3,7 +3,7 @@
 可直接复制使用的 slide XML 模板。纯文本/形状模板可使用 `jq` 包装后传给 `xml_presentation.slide.create`：
 
 ```bash
-lark-cli slides xml_presentation.slide create --as user \
+weact-cli slides xml_presentation.slide create --as user \
   --params '{"xml_presentation_id":"YOUR_ID"}' \
   --data "$(jq -n --arg content 'PASTE_XML_HERE' '{slide:{content:$content}}')"
 ```

@@ -26,45 +26,41 @@ import (
 	"github.com/spf13/pflag"
 )
 
-const rootLong = `lark-cli — Lark/Feishu CLI tool.
+const rootLong = `weact-cli — WeAct CLI tool.
 
 USAGE:
-    lark-cli <command> [subcommand] [method] [options]
-    lark-cli api <method> <path> [--params <json>] [--data <json>]
-    lark-cli schema <service.resource.method>
+    weact-cli <command> [subcommand] [method] [options]
+    weact-cli api <method> <path> [--params <json>] [--data <json>]
+    weact-cli schema <service.resource.method>
 
 EXAMPLES:
     # View upcoming events
-    lark-cli calendar +agenda
+    weact-cli calendar +agenda
 
     # List calendar events
-    lark-cli calendar events instance_view --params '{"calendar_id":"primary","start_time":"1700000000","end_time":"1700086400"}'
+    weact-cli calendar events instance_view --params '{"calendar_id":"primary","start_time":"1700000000","end_time":"1700086400"}'
 
     # Search users
-    lark-cli contact +search-user --query "John"
+    weact-cli contact +search-user --query "John"
 
     # Generic API call
-    lark-cli api GET /open-apis/calendar/v4/calendars
+    weact-cli api GET /open-apis/calendar/v4/calendars
 
 AI AGENT SKILLS:
-    lark-cli pairs with AI agent skills (Claude Code, etc.) that
-    teach the agent Lark API patterns, best practices, and workflows.
+    weact-cli pairs with AI agent skills (Claude Code, etc.) that
+    teach the agent WeAct API patterns, best practices, and workflows.
 
     Install all skills:
-        npx skills add larksuite/cli -g -y
+        npx skills add weact/cli -g -y
 
     Or pick specific domains:
-        npx skills add larksuite/cli -s lark-calendar -y
-        npx skills add larksuite/cli -s lark-im -y
-
-    Learn more: https://github.com/larksuite/cli#agent-skills
+        npx skills add weact/cli -s lark-calendar -y
+        npx skills add weact/cli -s lark-im -y
 
 COMMUNITY:
-    GitHub:     https://github.com/larksuite/cli
-    Issues:     https://github.com/larksuite/cli/issues
-    Docs:       https://open.feishu.cn/document/
+    Docs:       https://open.weact.cn/document/
 
-More help: lark-cli <command> --help`
+More help: weact-cli <command> --help`
 
 // Execute runs the root command and returns the process exit code.
 // rawInvocationArgs holds os.Args[1:] captured at Execute() entry. cobra's
@@ -153,7 +149,7 @@ func composePendingNotice() map[string]interface{} {
 			"current": info.Current,
 			"latest":  info.Latest,
 			"message": info.Message(),
-			"command": "lark-cli update",
+			"command": "weact-cli update",
 		}
 	}
 	if stale := skillscheck.GetPending(); stale != nil {
@@ -161,14 +157,14 @@ func composePendingNotice() map[string]interface{} {
 			"current": stale.Current,
 			"target":  stale.Target,
 			"message": stale.Message(),
-			"command": "lark-cli update",
+			"command": "weact-cli update",
 		}
 	}
 	if dep := deprecation.GetPending(); dep != nil {
 		entry := map[string]interface{}{
 			"command": dep.Command,
 			"message": dep.Message(),
-			"action":  "lark-cli update",
+			"action":  "weact-cli update",
 		}
 		if dep.Replacement != "" {
 			entry["replacement"] = dep.Replacement
@@ -462,7 +458,7 @@ func flagKnownOnGroup(cmd *cobra.Command, name string) bool {
 // a subcommand of cmd but not on cmd itself/inherited — flags supplied while
 // omitting the subcommand they belong to (`im --format json`). Global flags
 // valid on the bare group (e.g. --profile) are excluded so
-// `lark-cli --profile p im` still prints help rather than erroring.
+// `weact-cli --profile p im` still prints help rather than erroring.
 func subcommandOnlyFlagTokens(cmd *cobra.Command, rawArgs []string) []string {
 	var misplaced []string
 	for _, a := range flagTokensInArgs(rawArgs) {
@@ -600,7 +596,7 @@ func visibleFlagNames(c *cobra.Command) []string {
 // when a command has tips set via cmdutil.SetTips. It also force-shows global
 // flags that are normally hidden in single-app mode (currently --profile)
 // when rendering the root command's own help, so users discovering the CLI
-// still see them at `lark-cli --help`.
+// still see them at `weact-cli --help`.
 func installTipsHelpFunc(root *cobra.Command) {
 	defaultHelp := root.HelpFunc()
 	root.SetHelpFunc(func(cmd *cobra.Command, args []string) {

@@ -1,11 +1,11 @@
 ---
 name: lark-event
 version: 1.0.0
-description: "Lark/Feishu real-time event listening / subscribing / consuming: stream events as NDJSON via `lark-cli event consume <EventKey>` (covers IM messages/reactions/chat changes, Task updates, VC meeting ended, Minutes generated, Whiteboard updated, etc.). Use for Lark bots, real-time message processing, long-running subscribers, streaming webhook/push handlers. Supports `--max-events` / `--timeout` bounded runs and a stderr ready-marker contract — designed for AI agents running as subprocesses."
+description: "WeAct real-time event listening / subscribing / consuming: stream events as NDJSON via `weact-cli event consume <EventKey>` (covers IM messages/reactions/chat changes, Task updates, VC meeting ended, Minutes generated, Whiteboard updated, etc.). Use for Lark bots, real-time message processing, long-running subscribers, streaming webhook/push handlers. Supports `--max-events` / `--timeout` bounded runs and a stderr ready-marker contract — designed for AI agents running as subprocesses."
 metadata:
   requires:
-    bins: ["lark-cli"]
-  cliHelp: "lark-cli event --help"
+    bins: ["weact-cli"]
+  cliHelp: "weact-cli event --help"
 ---
 
 # Lark Events
@@ -16,11 +16,11 @@ metadata:
 
 | Command | Purpose |
 |------|------|
-| `lark-cli event list [--json]` | List all subscribable EventKeys |
-| `lark-cli event schema <EventKey> [--json]` | Show an EventKey's params and output schema |
-| `lark-cli event consume <EventKey> [flags]` | Blocking consume; events → stdout NDJSON |
-| `lark-cli event status [--json] [--fail-on-orphan]` | Inspect the local bus daemon status |
-| `lark-cli event stop [--all] [--force]` | Stop the bus daemon |
+| `weact-cli event list [--json]` | List all subscribable EventKeys |
+| `weact-cli event schema <EventKey> [--json]` | Show an EventKey's params and output schema |
+| `weact-cli event consume <EventKey> [flags]` | Blocking consume; events → stdout NDJSON |
+| `weact-cli event status [--json] [--fail-on-orphan]` | Inspect the local bus daemon status |
+| `weact-cli event stop [--all] [--force]` | Stop the bus daemon |
 
 
 ## Common flags
@@ -40,26 +40,26 @@ metadata:
 
 ```bash
 # Default: stream every event for the key (no filter, no projection)
-lark-cli event consume im.message.receive_v1 --as bot
+weact-cli event consume im.message.receive_v1 --as bot
 
 # Grab one sample event to inspect payload shape
-lark-cli event consume im.message.receive_v1 --max-events 1 --timeout 30s --as bot
+weact-cli event consume im.message.receive_v1 --max-events 1 --timeout 30s --as bot
 
 # Run for 10 minutes then auto-exit
-lark-cli event consume im.message.receive_v1 --timeout 10m --as bot
+weact-cli event consume im.message.receive_v1 --timeout 10m --as bot
 
 # Consume multiple EventKeys concurrently (one shape per process, no dispatcher)
-lark-cli event consume im.message.receive_v1          --as bot > receive.ndjson &
-lark-cli event consume im.message.reaction.created_v1 --as bot > reaction.ndjson &
+weact-cli event consume im.message.receive_v1          --as bot > receive.ndjson &
+weact-cli event consume im.message.reaction.created_v1 --as bot > reaction.ndjson &
 wait
 
 ```
 
 ## Call flow
 
-1. `lark-cli event list --json` → pick a legal key
-2. `lark-cli event schema <key> --json` → read `resolved_output_schema` + `jq_root_path` to determine field paths
-3. `lark-cli event consume <key> [--jq '<expr>']` → consume
+1. `weact-cli event list --json` → pick a legal key
+2. `weact-cli event schema <key> --json` → read `resolved_output_schema` + `jq_root_path` to determine field paths
+3. `weact-cli event consume <key> [--jq '<expr>']` → consume
 
 ## Subprocess contract
 

@@ -7,7 +7,7 @@ Copy a wiki node (including its content) to a target space or under a target par
 ## Usage
 
 ```bash
-lark-cli wiki +node-copy \
+weact-cli wiki +node-copy \
   --space-id <source_space_id> \
   --node-token <source_node_token> \
   (--target-space-id <target_space_id> | --target-parent-node-token <token>) \
@@ -52,10 +52,10 @@ To migrate a subtree from one space to another:
 
 ```bash
 # 1. List nodes in the source space
-lark-cli wiki +node-list --space-id source_space_id
+weact-cli wiki +node-list --space-id source_space_id
 
 # 2. Copy each node to the target space
-lark-cli wiki +node-copy \
+weact-cli wiki +node-copy \
   --space-id <source_space_id> \
   --node-token wikcn_EXAMPLE_TOKEN \
   --target-space-id <target_space_id> \

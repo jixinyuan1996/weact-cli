@@ -114,12 +114,12 @@ Sub Agent 需要携带以下的最小上下文，以及后续的 [SVG 设计 Wor
 
 ###### 3.插入后审查
 
-插入画板后，可以从返回值使用 lark-cli 指令，将画板内容导出为 png
+插入画板后，可以从返回值使用 weact-cli 指令，将画板内容导出为 png
 图片。若是对设计不满意，可以修改后，删除原来的画板再重新插入，或是调用 [
 `../../lark-whiteboard/SKILL.md`](../../lark-whiteboard/SKILL.md) 编辑。
 
 ```bash
-lark-cli whiteboard +query \
+weact-cli whiteboard +query \
   --whiteboard-token "wbcnxxxxxxxx" \
   --output_as image \
   --output ./preview.png

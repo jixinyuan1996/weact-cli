@@ -8,12 +8,12 @@
 
 ```bash
 # 获取目标的所有进展记录
-lark-cli okr +progress-list \
+weact-cli okr +progress-list \
   --target-id 1234567890123456789 \
   --target-type objective
 
 # 获取关键结果的所有进展记录
-lark-cli okr +progress-list \
+weact-cli okr +progress-list \
   --target-id 9876543210987654321 \
   --target-type key_result
 ```
@@ -32,7 +32,7 @@ lark-cli okr +progress-list \
 ## 工作流程
 
 1. 使用 `+cycle-list` 和 `+cycle-detail` 获取目标或关键结果的 ID。
-2. 执行 `lark-cli okr +progress-list --target-id "..." --target-type objective`。
+2. 执行 `weact-cli okr +progress-list --target-id "..." --target-type objective`。
 3. 获取该目标或关键结果下的所有进展记录列表。
 
 ## 输出

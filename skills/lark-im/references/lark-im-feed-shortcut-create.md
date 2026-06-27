@@ -2,7 +2,7 @@
 
 > **Prerequisite:** Read [`../lark-shared/SKILL.md`](../../lark-shared/SKILL.md) for authentication, global parameters, and security rules.
 
-This skill maps to shortcut: `lark-cli im +feed-shortcut-create`. Underlying API: `POST /open-apis/im/v2/feed_shortcuts`.
+This skill maps to shortcut: `weact-cli im +feed-shortcut-create`. Underlying API: `POST /open-apis/im/v2/feed_shortcuts`.
 
 ## What it does
 
@@ -17,17 +17,17 @@ Adds one or more chats to the **current user's** feed shortcuts — equivalent t
 
 ```bash
 # Add a single chat as a feed shortcut (defaults to head/top insertion)
-lark-cli im +feed-shortcut-create --as user --chat-id oc_xxx
+weact-cli im +feed-shortcut-create --as user --chat-id oc_xxx
 
 # Add multiple chats; comma-separated or repeated flag both work
-lark-cli im +feed-shortcut-create --as user --chat-id oc_a,oc_b,oc_c
-lark-cli im +feed-shortcut-create --as user --chat-id oc_a --chat-id oc_b
+weact-cli im +feed-shortcut-create --as user --chat-id oc_a,oc_b,oc_c
+weact-cli im +feed-shortcut-create --as user --chat-id oc_a --chat-id oc_b
 
 # Append at the bottom of the shortcut list instead of the top
-lark-cli im +feed-shortcut-create --as user --chat-id oc_xxx --tail
+weact-cli im +feed-shortcut-create --as user --chat-id oc_xxx --tail
 
 # Preview the request without sending
-lark-cli im +feed-shortcut-create --as user --chat-id oc_xxx --dry-run
+weact-cli im +feed-shortcut-create --as user --chat-id oc_xxx --dry-run
 ```
 
 ## Parameters

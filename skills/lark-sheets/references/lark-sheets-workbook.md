@@ -150,7 +150,7 @@ _公共：URL/token（无 sheet 定位） · 系统：`--dry-run`_
 | --- | --- | --- | --- |
 | `--file-extension` | string | optional | 导出文件格式；`csv` 模式必须配 `--sheet-id`（可选值：`xlsx` / `csv`）（默认 `xlsx`） |
 | `--sheet-id` | string | optional | 仅 csv 模式必填：指定要导出哪张 sheet 为 CSV。这是 `+workbook-export` 专有 flag，与公共四件套的 sheet 定位无关（本 shortcut 不接受公共 sheet 定位） |
-| `--output-path` | string | optional | 本地保存路径；省略时**只触发并轮询导出任务、不下载文件**（返回 file_token / status，便于稍后续传）。要落盘传具体路径（如 `./out.xlsx`）或目录（如 `.`，服务端给的文件名落在该目录下）。注意：对应的 `lark-cli drive +export --doc-type sheet` 走 `--output-dir` / `--file-name` / `--overwrite` 三 flag 且默认下载到当前目录——本 wrapper 把它们合成单一 `--output-path` 简化常见用例，但默认不下载，需要的话也可改用 `drive +export`。 |
+| `--output-path` | string | optional | 本地保存路径；省略时**只触发并轮询导出任务、不下载文件**（返回 file_token / status，便于稍后续传）。要落盘传具体路径（如 `./out.xlsx`）或目录（如 `.`，服务端给的文件名落在该目录下）。注意：对应的 `weact-cli drive +export --doc-type sheet` 走 `--output-dir` / `--file-name` / `--overwrite` 三 flag 且默认下载到当前目录——本 wrapper 把它们合成单一 `--output-path` 简化常见用例，但默认不下载，需要的话也可改用 `drive +export`。 |
 
 ### `+workbook-import`
 
@@ -204,12 +204,12 @@ _一个或多个子表的 typed 数据，每个数组元素写入一张子表；
 ```bash
 # 1) untyped：--values（一个二维数组，表头并入第一行；值原样写、类型由飞书自动识别，
 #    日期会落成文本，配 --styles 控制格式）
-lark-cli sheets +workbook-create --title "销售" \
+weact-cli sheets +workbook-create --title "销售" \
   --values '[["门店","销售额"],["北京",259874]]'
 
 # 2) typed JSON：--sheets（一步建表 + 类型保真）。date 列落成真日期（可排序/透视）、
 #    number 不丢精度、string 列保前导零（如订单号 00123）；多子表一次建。
-lark-cli sheets +workbook-create --title "交易" --sheets '{
+weact-cli sheets +workbook-create --title "交易" --sheets '{
   "sheets":[
     {"name":"明细",
      "columns":["日期","金额","单号"],
@@ -239,7 +239,7 @@ lark-cli sheets +workbook-create --title "交易" --sheets '{
 
 ```bash
 # 3) untyped：仍用 {"styles":[...]}，只有一个子表样式项（name 忽略）；range 覆盖 --values 初始区域
-lark-cli sheets +workbook-create --title "销售" \
+weact-cli sheets +workbook-create --title "销售" \
   --values '[["门店","销售额"],["北京",259874],["上海",198320]]' \
   --styles '{
     "styles":[
@@ -251,7 +251,7 @@ lark-cli sheets +workbook-create --title "销售" \
   }'
 
 # 4) typed 单子表：--styles.styles[0].name 必须对应 --sheets.sheets[0].name
-lark-cli sheets +workbook-create --title "交易" --sheets '{
+weact-cli sheets +workbook-create --title "交易" --sheets '{
   "sheets":[
     {"name":"明细",
      "columns":["日期","金额"],
@@ -274,7 +274,7 @@ lark-cli sheets +workbook-create --title "交易" --sheets '{
   }'
 
 # 5) typed 多子表：styles 数组和 sheets 数组长度、顺序、name 都必须一致
-lark-cli sheets +workbook-create --title "经营看板" --sheets '{
+weact-cli sheets +workbook-create --title "经营看板" --sheets '{
   "sheets":[
     {"name":"收入","columns":["月份","收入"],"dtypes":{"收入":"int64"},"formats":{"收入":"#,##0"},"data":[["2026-05",1200000]]},
     {"name":"成本","columns":["月份","成本"],"dtypes":{"成本":"int64"},"formats":{"成本":"#,##0"},"data":[["2026-05",730000]]}
@@ -300,14 +300,14 @@ lark-cli sheets +workbook-create --title "经营看板" --sheets '{
 
 ```bash
 # 导入到云空间根目录；表格名默认取本地文件名（去掉扩展名）
-lark-cli sheets +workbook-import --file ./data.xlsx
+weact-cli sheets +workbook-import --file ./data.xlsx
 
 # 指定目标文件夹与导入后表格名
-lark-cli sheets +workbook-import --file ./report.csv --folder-token <FOLDER_TOKEN> --name "月度报表"
+weact-cli sheets +workbook-import --file ./report.csv --folder-token <FOLDER_TOKEN> --name "月度报表"
 ```
 
 - **不接受任何 spreadsheet / sheet 定位 flag**（它是新建，不操作已有表）：只有 `--file`（必填）/ `--folder-token` / `--name`。
-- 本地表格文件 → 飞书电子表格一律用本命令，**不要**用 `drive +import` 导电子表格——它是 sheets 之外的通用导入、还需额外指定 `--type`，绕路且更易错。只有要把本地表格导入成**多维表格**（bitable）时，才改用 `lark-cli drive +import --type bitable`。
+- 本地表格文件 → 飞书电子表格一律用本命令，**不要**用 `drive +import` 导电子表格——它是 sheets 之外的通用导入、还需额外指定 `--type`，绕路且更易错。只有要把本地表格导入成**多维表格**（bitable）时，才改用 `weact-cli drive +import --type bitable`。
 - 返回 `token` / `url`（导入完成的新表格）/ `ticket` / `ready` / `job_status`；未在内置轮询窗口内完成时返回 `timed_out=true` 与续查命令 `next_command`。
 
 ### `+workbook-export`
@@ -316,16 +316,16 @@ lark-cli sheets +workbook-import --file ./report.csv --folder-token <FOLDER_TOKE
 
 ```bash
 # 1) 只创建并轮询导出任务，不下载（默认）：返回 file_token / status 便于稍后续传
-lark-cli sheets +workbook-export --url "https://example.feishu.cn/sheets/shtXXX"
+weact-cli sheets +workbook-export --url "https://example.weact.cn/sheets/shtXXX"
 
 # 2) 下载到具体文件名
-lark-cli sheets +workbook-export --url "..." --output-path ./report.xlsx
+weact-cli sheets +workbook-export --url "..." --output-path ./report.xlsx
 
 # 3) 下载到目录（保留服务端给的文件名）
-lark-cli sheets +workbook-export --url "..." --output-path ./downloads/
+weact-cli sheets +workbook-export --url "..." --output-path ./downloads/
 
 # 4) csv 模式必须传 --sheet-id（API 一次只导一张子表）
-lark-cli sheets +workbook-export --url "..." --file-extension csv --sheet-id "$SID" --output-path ./sheet.csv
+weact-cli sheets +workbook-export --url "..." --file-extension csv --sheet-id "$SID" --output-path ./sheet.csv
 ```
 
 > ⚠️ **默认不下载**：省略 `--output-path` 时只触发并轮询导出任务，不写本地文件——给「先排队再续传」用例留出口。要落盘必须显式给 `--output-path`。
@@ -337,7 +337,7 @@ lark-cli sheets +workbook-export --url "..." --file-extension csv --sheet-id "$S
 示例：
 
 ```bash
-lark-cli sheets +sheet-create --url "https://example.feishu.cn/sheets/shtXXX" \
+weact-cli sheets +sheet-create --url "https://example.weact.cn/sheets/shtXXX" \
   --title "汇总" --index 0
 ```
 
@@ -350,7 +350,7 @@ lark-cli sheets +sheet-create --url "https://example.feishu.cn/sheets/shtXXX" \
 ### `+sheet-rename`
 
 ```bash
-lark-cli sheets +sheet-rename --url "..." --sheet-id "$SID" --title "汇总"
+weact-cli sheets +sheet-rename --url "..." --sheet-id "$SID" --title "汇总"
 ```
 
 ### `+sheet-move`
@@ -363,29 +363,29 @@ standalone 路径在缺 `--source-index` / 只给 `--sheet-name` 时会自动发
 
 ```bash
 # --title 省略时由服务端生成副本名
-lark-cli sheets +sheet-copy --url "..." --sheet-id "$SID" --title "副本"
+weact-cli sheets +sheet-copy --url "..." --sheet-id "$SID" --title "副本"
 ```
 
 ### `+sheet-hide` / `+sheet-unhide`
 
 ```bash
-lark-cli sheets +sheet-hide   --url "..." --sheet-id "$SID"
-lark-cli sheets +sheet-unhide --url "..." --sheet-id "$SID"
+weact-cli sheets +sheet-hide   --url "..." --sheet-id "$SID"
+weact-cli sheets +sheet-unhide --url "..." --sheet-id "$SID"
 ```
 
 ### `+sheet-set-tab-color`
 
 ```bash
 # Hex 色值；传空字符串 "" 清除标签色
-lark-cli sheets +sheet-set-tab-color --url "..." --sheet-id "$SID" --color "#FF0000"
+weact-cli sheets +sheet-set-tab-color --url "..." --sheet-id "$SID" --color "#FF0000"
 ```
 
 ### `+sheet-show-gridline` / `+sheet-hide-gridline`
 
 ```bash
 # 切换子表网格线显隐；二态语义在命令名里，无需额外参数（同 +sheet-hide/+sheet-unhide）
-lark-cli sheets +sheet-show-gridline --url "..." --sheet-id "$SID"
-lark-cli sheets +sheet-hide-gridline --url "..." --sheet-id "$SID"
+weact-cli sheets +sheet-show-gridline --url "..." --sheet-id "$SID"
+weact-cli sheets +sheet-hide-gridline --url "..." --sheet-id "$SID"
 ```
 
 ### Validate / DryRun / Execute 约束

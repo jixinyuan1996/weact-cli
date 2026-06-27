@@ -15,11 +15,11 @@
 
 ```bash
 # 新建 full_stack 应用
-lark-cli apps +create --name "审批系统" --app-type full_stack \
+weact-cli apps +create --name "审批系统" --app-type full_stack \
   --description "支持登录、提交申请、多级审批、状态查询"
 
 # 初始化本地仓库（--dir 取值见下方「领域规则」，勿照抄此处示例值）
-lark-cli apps +init --app-id app_xxx --dir ./approval-app
+weact-cli apps +init --app-id app_xxx --dir ./approval-app
 
 # 进入仓库后按项目脚手架启动
 cd ./approval-app
@@ -31,7 +31,7 @@ npm run dev
 git add <本次开发的文件>          # 提交粒度见下方「改完代码后部署上线」
 git commit -m "feat: ..."
 git push origin sprint/default
-lark-cli apps +release-create --app-id app_xxx
+weact-cli apps +release-create --app-id app_xxx
 ```
 
 `+init` 是推荐便捷入口；想逐步手动控制时，先 `+git-credential-init` 拿 `repository_url`，再用原生 `git clone` / `git checkout sprint/default`。
@@ -44,8 +44,8 @@ lark-cli apps +release-create --app-id app_xxx
 
 1. `git status` 看本次改动；`git add <本次相关文件>` 暂存后 `git commit` 提交。只提交本次任务相关的改动即可，无关的零散文件不必强求清空——发布门禁是「**本次相关改动已提交并推送**」，不是「工作区绝对干净」。
 2. `git push origin sprint/default` 把工作分支推到云端（遇非 fast-forward：先 `git pull --rebase origin sprint/default` 解决冲突再推，绝不 force-push）。
-3. `lark-cli apps +release-create --app-id <app_id>` 发起部署上线，记下返回的 `release_id`。
-4. `lark-cli apps +release-get --app-id <app_id> --release-id <release_id>` 轮询：`publishing` 继续轮询；`finished` 成功时该命令输出已含 `online_url`，直接读取它返回给用户（这是本轮发布完成后的可分享链接），无需再调 `+list`；`failed` 时该命令输出已含 `error_logs`，直接据此给出失败原因（`+list` 仅作独立查询入口）。
+3. `weact-cli apps +release-create --app-id <app_id>` 发起部署上线，记下返回的 `release_id`。
+4. `weact-cli apps +release-get --app-id <app_id> --release-id <release_id>` 轮询：`publishing` 继续轮询；`finished` 成功时该命令输出已含 `online_url`，直接读取它返回给用户（这是本轮发布完成后的可分享链接），无需再调 `+list`；`failed` 时该命令输出已含 `error_logs`，直接据此给出失败原因（`+list` 仅作独立查询入口）。
 
 ## 领域规则
 
@@ -65,7 +65,7 @@ lark-cli apps +release-create --app-id app_xxx
 已有项目目录先读 `.spark/meta.json` 取 `app_id`；没有本地项目但知道应用名时用：
 
 ```bash
-lark-cli apps +list --keyword "应用名"
+weact-cli apps +list --keyword "应用名"
 ```
 
 拿到 `app_id` 后再 `+init` 或 `+git-credential-init`。

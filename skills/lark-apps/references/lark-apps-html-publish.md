@@ -1,6 +1,6 @@
 # apps +html-publish
 
-把本地 HTML 文件或静态目录发布为妙搭应用访问 URL。运行时命令事实以 `lark-cli apps +html-publish --help` 为准。
+把本地 HTML 文件或静态目录发布为妙搭应用访问 URL。运行时命令事实以 `weact-cli apps +html-publish --help` 为准。
 
 ## 何时用
 
@@ -16,9 +16,9 @@
 ## 示例
 
 ```bash
-lark-cli apps +create --name "Demo" --app-type html
-lark-cli apps +html-publish --app-id app_xxx --path ./dist
-lark-cli apps +html-publish --app-id app_xxx --path ./index.html --dry-run
+weact-cli apps +create --name "Demo" --app-type html
+weact-cli apps +html-publish --app-id app_xxx --path ./dist
+weact-cli apps +html-publish --app-id app_xxx --path ./index.html --dry-run
 ```
 
 ## 输出契约
@@ -29,7 +29,7 @@ lark-cli apps +html-publish --app-id app_xxx --path ./index.html --dry-run
 
 ## 链接边界
 
-- 开发态链接可由 `app_id` 拼出：`https://miaoda.feishu.cn/app/{app_id}`，用于进入妙搭编辑/开发态。
+- 开发态链接可由 `app_id` 拼出：`https://miaoda.weact.cn/app/{app_id}`，用于进入妙搭编辑/开发态。
 - 发布态访问链接以本命令成功返回的 `data.url` 为准。
 - 重新发布前，`+list` 的 `is_published=true` 只能说明历史上发布过，不代表当前本地产物已经部署。
 

@@ -1,6 +1,6 @@
 # apps +db-execute
 
-经妙搭服务端在应用数据库执行 SQL。运行时命令事实以 `lark-cli apps +db-execute --help` 为准。
+经妙搭服务端在应用数据库执行 SQL。运行时命令事实以 `weact-cli apps +db-execute --help` 为准。
 
 ## 何时用
 
@@ -18,10 +18,10 @@
 ## 示例
 
 ```bash
-lark-cli apps +db-execute --app-id app_xxx --env dev --sql "select * from orders limit 5" --yes
-lark-cli apps +db-execute --app-id app_xxx --env dev --file ./migration.sql --dry-run
+weact-cli apps +db-execute --app-id app_xxx --env dev --sql "select * from orders limit 5" --yes
+weact-cli apps +db-execute --app-id app_xxx --env dev --file ./migration.sql --dry-run
 # 绝对路径文件 / cwd 不固定：经 stdin 传入
-lark-cli apps +db-execute --app-id app_xxx --env dev --sql - --yes < /Users/.../migrations/0001_init.sql
+weact-cli apps +db-execute --app-id app_xxx --env dev --sql - --yes < /Users/.../migrations/0001_init.sql
 ```
 
 ## 输出契约

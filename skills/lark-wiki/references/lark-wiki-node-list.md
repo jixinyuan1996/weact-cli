@@ -6,25 +6,25 @@ List wiki nodes in a space or under a specific parent node. **Default fetches a 
 
 ```bash
 # Default: single page of root nodes
-lark-cli wiki +node-list --space-id <SPACE_ID>
+weact-cli wiki +node-list --space-id <SPACE_ID>
 
 # Drill into a sub-directory (still single page by default)
-lark-cli wiki +node-list --space-id <SPACE_ID> --parent-node-token <NODE_TOKEN>
+weact-cli wiki +node-list --space-id <SPACE_ID> --parent-node-token <NODE_TOKEN>
 
 # Personal document library (user identity only)
-lark-cli wiki +node-list --space-id my_library --as user
+weact-cli wiki +node-list --space-id my_library --as user
 
 # Walk every page (capped by --page-limit, default 10)
-lark-cli wiki +node-list --space-id <SPACE_ID> --page-all
+weact-cli wiki +node-list --space-id <SPACE_ID> --page-all
 
 # Walk every page with a higher cap
-lark-cli wiki +node-list --space-id <SPACE_ID> --page-all --page-limit 30
+weact-cli wiki +node-list --space-id <SPACE_ID> --page-all --page-limit 30
 
 # Resume from a cursor
-lark-cli wiki +node-list --space-id <SPACE_ID> --page-token <TOKEN>
+weact-cli wiki +node-list --space-id <SPACE_ID> --page-token <TOKEN>
 
 # Pretty / table output
-lark-cli wiki +node-list --space-id <SPACE_ID> --format pretty
+weact-cli wiki +node-list --space-id <SPACE_ID> --format pretty
 ```
 
 ## Flags
@@ -73,10 +73,10 @@ To list all content recursively, call `+node-list` again with each node's `node_
 
 ```bash
 # Step 1: list root nodes
-lark-cli wiki +node-list --space-id 6946843325487912356
+weact-cli wiki +node-list --space-id 6946843325487912356
 
 # Step 2: drill into a node that has children
-lark-cli wiki +node-list --space-id 6946843325487912356 --parent-node-token wikcn_EXAMPLE_TOKEN
+weact-cli wiki +node-list --space-id 6946843325487912356 --parent-node-token wikcn_EXAMPLE_TOKEN
 ```
 
 ## Notes

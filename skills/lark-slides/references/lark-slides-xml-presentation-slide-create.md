@@ -7,7 +7,7 @@
 ## 命令
 
 ```bash
-lark-cli slides xml_presentation.slide create --as user --params '<json_params>' --data '<json_data>'
+weact-cli slides xml_presentation.slide create --as user --params '<json_params>' --data '<json_data>'
 ```
 
 ## 参数说明
@@ -74,7 +74,7 @@ lark-cli slides xml_presentation.slide create --as user --params '<json_params>'
 ### 在末尾添加幻灯片
 
 ```bash
-lark-cli slides xml_presentation.slide create --as user --params '{
+weact-cli slides xml_presentation.slide create --as user --params '{
   "xml_presentation_id": "slides_example_presentation_id"
 }' --data '{
   "slide": {
@@ -86,7 +86,7 @@ lark-cli slides xml_presentation.slide create --as user --params '{
 ### 在指定页面前插入幻灯片
 
 ```bash
-lark-cli slides xml_presentation.slide create --as user --params '{
+weact-cli slides xml_presentation.slide create --as user --params '{
   "xml_presentation_id": "slides_example_presentation_id"
 }' --data '{
   "slide": {
@@ -99,7 +99,7 @@ lark-cli slides xml_presentation.slide create --as user --params '{
 ### 带图形元素的幻灯片
 
 ```bash
-lark-cli slides xml_presentation.slide create --as user --params '{
+weact-cli slides xml_presentation.slide create --as user --params '{
   "xml_presentation_id": "slides_example_presentation_id"
 }' --data '{
   "slide": {
@@ -130,7 +130,7 @@ cat > slide.xml << 'EOF'
 EOF
 
 # 然后创建幻灯片
-lark-cli slides xml_presentation.slide create --as user \
+weact-cli slides xml_presentation.slide create --as user \
   --params '{"xml_presentation_id":"slides_example_presentation_id"}' \
   --data "$(jq -n --arg content "$(cat slide.xml)" '{slide:{content:$content}}')"
 ```
@@ -182,7 +182,7 @@ lark-cli slides xml_presentation.slide create --as user \
 
 ## 注意事项
 
-1. **执行前必做**: 使用 `lark-cli schema slides.xml_presentation.slide.create` 查看最新的参数结构
+1. **执行前必做**: 使用 `weact-cli schema slides.xml_presentation.slide.create` 查看最新的参数结构
 2. **slide.content 格式**: 必须是完整的 `<slide>` 元素，不是整个 presentation
 3. **命名空间建议**: 协议标准写法应带 `xmlns`，例如 `<slide xmlns="http://www.larkoffice.com/sml/2.0">`；当前服务端实现可能兼容不带 `xmlns` 的输入，但不作为协议保证
 4. **fill / border 写法**: 颜色填充使用 `<fill><fillColor color="..."/></fill>`，边框常用 `<border color="..." width="2"/>`
@@ -207,7 +207,7 @@ declare -a slides=(
 
 for slide_xml in "${slides[@]}"; do
   payload=$(jq -n --arg content "$slide_xml" '{slide:{content:$content}}')
-  lark-cli slides xml_presentation.slide create --as user --params "{\"xml_presentation_id\":\"$PRESENTATION_ID\"}" --data "$payload"
+  weact-cli slides xml_presentation.slide create --as user --params "{\"xml_presentation_id\":\"$PRESENTATION_ID\"}" --data "$payload"
 done
 ```
 

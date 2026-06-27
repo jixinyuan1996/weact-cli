@@ -8,13 +8,13 @@ Update an existing task in Lark.
 
 ```bash
 # Update task summary
-lark-cli task +update --task-id "<task_guid>" --summary "New Summary"
+weact-cli task +update --task-id "<task_guid>" --summary "New Summary"
 
 # Update multiple tasks' due dates
-lark-cli task +update --task-id "<task_guid>,<another_task_guid>" --due "+2d"
+weact-cli task +update --task-id "<task_guid>,<another_task_guid>" --due "+2d"
 
 # Update with JSON data
-lark-cli task +update --task-id "<task_guid>" --data '{"description": "New description"}'
+weact-cli task +update --task-id "<task_guid>" --data '{"description": "New description"}'
 ```
 
 ## Parameters
@@ -30,7 +30,7 @@ lark-cli task +update --task-id "<task_guid>" --data '{"description": "New descr
 ## Workflow
 
 1. Confirm with the user the tasks to update and the fields.
-2. Execute `lark-cli task +update --task-id "..." ...`
+2. Execute `weact-cli task +update --task-id "..." ...`
 3. Report the successful updates.
 
 > [!CAUTION]

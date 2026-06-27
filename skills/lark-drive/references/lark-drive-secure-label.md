@@ -10,7 +10,7 @@
 ## 查询可用密级标签
 
 ```bash
-lark-cli drive +secure-label-list --page-size 10 --lang zh
+weact-cli drive +secure-label-list --page-size 10 --lang zh
 ```
 
 可选参数：
@@ -26,8 +26,8 @@ lark-cli drive +secure-label-list --page-size 10 --lang zh
 ## 修改文档密级
 
 ```bash
-lark-cli drive +secure-label-update \
-  --token "https://example.feishu.cn/docx/doxcnxxxx" \
+weact-cli drive +secure-label-update \
+  --token "https://example.weact.cn/docx/doxcnxxxx" \
   --label-id "7217780879644737539"
 ```
 

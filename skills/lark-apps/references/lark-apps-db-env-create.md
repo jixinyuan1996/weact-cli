@@ -1,6 +1,6 @@
 # apps +db-env-create
 
-把存量单库应用初始化为 `dev` / `online` 多环境数据库。运行时命令事实以 `lark-cli apps +db-env-create --help` 为准。
+把存量单库应用初始化为 `dev` / `online` 多环境数据库。运行时命令事实以 `weact-cli apps +db-env-create --help` 为准。
 
 ## 何时用
 
@@ -16,8 +16,8 @@
 ## 示例
 
 ```bash
-lark-cli apps +db-env-create --app-id app_xxx --env dev --dry-run
-lark-cli apps +db-env-create --app-id app_xxx --env dev --sync-data --yes
+weact-cli apps +db-env-create --app-id app_xxx --env dev --dry-run
+weact-cli apps +db-env-create --app-id app_xxx --env dev --sync-data --yes
 ```
 
 ## 输出契约

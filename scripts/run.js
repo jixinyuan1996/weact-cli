@@ -7,7 +7,7 @@ const fs = require("fs");
 const path = require("path");
 
 const ext = process.platform === "win32" ? ".exe" : "";
-const bin = path.join(__dirname, "..", "bin", "lark-cli" + ext);
+const bin = path.join(__dirname, "..", "bin", "weact-cli" + ext);
 
 // On Windows, a crashed self-update may have left the binary renamed to .old.
 // Recover it before proceeding so the CLI remains functional.
@@ -56,7 +56,7 @@ if (args[0] === "install") {
       });
     } catch (_) {
       console.error(
-        `\nFailed to auto-install lark-cli binary.\n` +
+        `\nFailed to auto-install weact-cli binary.\n` +
         `To fix, run the install script manually:\n` +
         `  node "${path.join(__dirname, "install.js")}"\n`
       );

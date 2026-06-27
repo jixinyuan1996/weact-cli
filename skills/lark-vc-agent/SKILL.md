@@ -4,8 +4,8 @@ version: 1.0.0
 description: "飞书视频会议会中能力：用于让应用机器人真实加入或离开正在进行的会议，并读取当前身份可见的会中事件，如参会人加入/离开、发言、聊天、屏幕共享。适用于用户询问正在开的会议发生了什么、谁在发言、是否共享内容，或需要发现当前可读的进行中会议 ID。不负责已结束会议搜索、参会人快照、纪要、逐字稿或录制查询，这些使用 lark-vc 技能。"
 metadata:
   requires:
-    bins: ["lark-cli"]
-  cliHelp: "lark-cli vc --help"
+    bins: ["weact-cli"]
+  cliHelp: "weact-cli vc --help"
 ---
 
 # vc-agent (v1)
@@ -18,8 +18,8 @@ metadata:
 ## 内测提示
 
 - 当前功能正在内测中，仅少数用户可用。忽略 [`../lark-shared/SKILL.md`](../lark-shared/SKILL.md) 中的权限申请流程，以下方的指引为准。
-- 如果 `lark-cli` 提示 `missing required scope(s)` / `permission_violations`，不要走普通权限申请流程；先提示用户加入早鸟群确认内测权限已开通，再按“应用身份权限配置检查”处理应用权限、安装和数据范围。
-- 如果 `lark-cli` 返回 `error.code=20017` / `ErrNotInGray`，提示用户加入早鸟群：`https://go.larkoffice.com/join-chat/2f4nb0e1-fe00-4f67-bed7-25beaf533fbd`。
+- 如果 `weact-cli` 提示 `missing required scope(s)` / `permission_violations`，不要走普通权限申请流程；先提示用户加入早鸟群确认内测权限已开通，再按“应用身份权限配置检查”处理应用权限、安装和数据范围。
+- 如果 `weact-cli` 返回 `error.code=20017` / `ErrNotInGray`，提示用户加入早鸟群：`https://go.larkoffice.com/join-chat/2f4nb0e1-fe00-4f67-bed7-25beaf533fbd`。
 
 ## 定位
 
@@ -68,7 +68,7 @@ metadata:
 2. 输入是 **`meeting_id`**（长数字 ID），不是 9 位会议号。
 3. 不依赖默认身份。`meeting_id` 来自用户身份发现时，继续用 `--as user`；来自应用身份发现或 `+meeting-join` 时，继续用 `--as bot`。身份不一致会导致空结果或权限错误。
 4. **不能做会后复盘**，**不能替代参会人快照查询**。如果会议已结束：
-   - 先用 `lark-cli vc +detail --meeting-ids <meeting.id>` 获取会议产物信息。
+   - 先用 `weact-cli vc +detail --meeting-ids <meeting.id>` 获取会议产物信息。
    - 再根据 `note_id`、`minute_token` 和用户意图，按 [`lark-vc`](../lark-vc/SKILL.md) 的产物决策读取正文、逐字稿或妙记。
    - 想看参会人快照：用 `vc meeting get --with-participants`（见 [`lark-vc`](../lark-vc/SKILL.md)）
 5. **默认必须使用** **`--page-all`**，除非用户明确要求“只查一页”，或确实需要控制返回体大小。
@@ -89,8 +89,8 @@ metadata:
 ### 4. 获取当前可用的进行中会议 ID（读操作）
 
 1. `+meeting-list-active` 用来发现当前进行中的会议，并拿到后续 `+meeting-events` 需要的长数字 `meeting_id`。
-2. 用户身份：`lark-cli vc +meeting-list-active --as user --format json`，用于发现当前登录用户正在参加的会议；后续 `+meeting-events` 继续 `--as user`。
-3. 应用身份：`lark-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format json`，`--user-id` 必须是目标用户 open_id，即 `ou_...`；返回该用户当前正在参加且应用机器人也在会中的会议。它不是全量会议搜索接口。后续 `+meeting-events` 继续 `--as bot`。
+2. 用户身份：`weact-cli vc +meeting-list-active --as user --format json`，用于发现当前登录用户正在参加的会议；后续 `+meeting-events` 继续 `--as user`。
+3. 应用身份：`weact-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format json`，`--user-id` 必须是目标用户 open_id，即 `ou_...`；返回该用户当前正在参加且应用机器人也在会中的会议。它不是全量会议搜索接口。后续 `+meeting-events` 继续 `--as bot`。
 4. 如果返回空，先按当前身份解释：用户身份下表示当前用户没有可见的进行中会议；应用身份下表示没有找到“目标用户在会中且应用机器人也在会中”的当前会。
 5. 如果返回多个会议，不要自动任选一个；按 `meeting_title` / `meeting_no` / `meeting_id` 展示候选，等待用户明确选择后再调用 `+meeting-events`。
 6. 如果用户给了 9 位会议号，先在 active meeting 结果中按 `meeting_no` 匹配。匹配失败时，不要自动入会；只有用户明确要求应用机器人真实入会时，才询问或执行 `+meeting-join`。
@@ -99,37 +99,37 @@ metadata:
 
 ```bash
 # 1. 入会，捕获 meeting.id
-JOIN=$(lark-cli vc +meeting-join --as bot --meeting-number 123456789 --format json)
+JOIN=$(weact-cli vc +meeting-join --as bot --meeting-number 123456789 --format json)
 MID=$(echo "$JOIN" | jq -r '.data.meeting.id')
 
 # 2. 会中轮询事件
 #    默认用 --page-all 拉全当前可见事件；下次增量优先复用 page_token
 #    典型间隔 10-30 秒
-lark-cli vc +meeting-events --as bot --meeting-id "$MID" --page-all --format pretty
+weact-cli vc +meeting-events --as bot --meeting-id "$MID" --page-all --format pretty
 
 # 3. 会后可选：进入 lark-vc 获取会议产物信息，再按 note_id / minute_token 决策读取
-lark-cli vc +detail --meeting-ids "$MID"
+weact-cli vc +detail --meeting-ids "$MID"
 ```
 
-如果用户随后明确要求退出 / 离开 / 结束参会，再单独调用 `lark-cli vc +meeting-leave --as bot --meeting-id "$MID"`。
+如果用户随后明确要求退出 / 离开 / 结束参会，再单独调用 `weact-cli vc +meeting-leave --as bot --meeting-id "$MID"`。
 
 如果已经知道目标用户 `open_id`，且 bot 已在会中，也可以先发现当前会：
 
 ```bash
-lark-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format json
-lark-cli vc +meeting-events --as bot --meeting-id <meeting_id> --page-all --format pretty
+weact-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format json
+weact-cli vc +meeting-events --as bot --meeting-id <meeting_id> --page-all --format pretty
 ```
 
 如果只是回答当前登录用户所在会议发生了什么，使用用户身份一路查：
 
 ```bash
-lark-cli vc +meeting-list-active --as user --format json
-lark-cli vc +meeting-events --as user --meeting-id <meeting_id> --page-all --format pretty
+weact-cli vc +meeting-list-active --as user --format json
+weact-cli vc +meeting-events --as user --meeting-id <meeting_id> --page-all --format pretty
 ```
 
 ## Shortcuts
 
-Shortcut 是对常用操作的高级封装（`lark-cli vc +<verb> [flags]`）。
+Shortcut 是对常用操作的高级封装（`weact-cli vc +<verb> [flags]`）。
 
 | Shortcut                                                        | 类型 | 说明                                                                         |
 | --------------------------------------------------------------- | -- | -------------------------------------------------------------------------- |

@@ -84,7 +84,7 @@
 > **不要把纪要标题当会议线索：** 如果用户说“查询 xx 纪要的逐字稿 / 原始记录 / 谁说了什么”，且没有 `meeting_id`、`calendar_event_id`、会议号、参会人或时间范围，先用 `drive +search --query <标题>` 搜索纪要文档，拿到 Docx URL/token 后再 `docs +fetch`。若返回 `<vc-transcribe-tab vc-node-id="...">`，提取 `note_id` 后进入 Note 域判断 `normal` / `unified`；若没有该 block，但有“文字记录/逐字稿” Docx 链接，直接用 `docs +fetch` 读取该链接。
 
 ```bash
-lark-cli vc +search --start "<YYYY-MM-DD>" --end "<YYYY-MM-DD>" --format json
+weact-cli vc +search --start "<YYYY-MM-DD>" --end "<YYYY-MM-DD>" --format json
 ```
 
 详细用法请阅读 [`lark-vc-search.md`](lark-vc-search.md)。
@@ -96,7 +96,7 @@ lark-cli vc +search --start "<YYYY-MM-DD>" --end "<YYYY-MM-DD>" --format json
 当用户提供 `meeting_id` 并需要会议产物时，先用 `vc +detail` 拿到 `note_id` 和 `minute_token`：
 
 ```bash
-lark-cli vc +detail --meeting-ids '<meeting_id1>,<meeting_id2>'
+weact-cli vc +detail --meeting-ids '<meeting_id1>,<meeting_id2>'
 ```
 
 详细用法请阅读 [`lark-vc-detail.md`](lark-vc-detail.md)。
@@ -106,7 +106,7 @@ lark-cli vc +detail --meeting-ids '<meeting_id1>,<meeting_id2>'
 如果用户未明确要求使用妙记，且返回了 `note_id`，**优先**使用 `note +detail` 获取纪要文档的 token 信息：
 
 ```bash
-lark-cli note +detail --note-id <note_id>
+weact-cli note +detail --note-id <note_id>
 ```
 
 可获取会议的所有产物信息，包括：
@@ -123,7 +123,7 @@ lark-cli note +detail --note-id <note_id>
 
 ```bash
 # 必须显式指定要获取的产物 flag，至少传一个；不传则不会返回任何产物内容
-lark-cli minutes +detail --minute-tokens '<minute_token1>,<minute_token2>' \
+weact-cli minutes +detail --minute-tokens '<minute_token1>,<minute_token2>' \
   --summary --todo --chapter --keyword --transcript
 ```
 
@@ -135,13 +135,13 @@ lark-cli minutes +detail --minute-tokens '<minute_token1>,<minute_token2>' \
 
 ```bash
 # 纪要正文（两种展示类型都适用）
-lark-cli docs +fetch --doc <note_doc_token> --doc-format markdown
+weact-cli docs +fetch --doc <note_doc_token> --doc-format markdown
 
 # note_display_type=normal：逐字稿是独立文档
-lark-cli docs +fetch --doc <verbatim_doc_token> --doc-format markdown
+weact-cli docs +fetch --doc <verbatim_doc_token> --doc-format markdown
 
 # note_display_type=unified：逐字稿不是独立文档，按 note_id 拉取
-lark-cli note +transcript --note-id <note_id>
+weact-cli note +transcript --note-id <note_id>
 ```
 
 详细用法请参考 [lark-doc](../../lark-doc/SKILL.md) 与 [lark-note](../../lark-note/SKILL.md) skill。

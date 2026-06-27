@@ -272,7 +272,7 @@ func writeStatusText(out io.Writer, statuses []appStatus) {
 			if s.PID == 0 {
 				fmt.Fprintln(out, "  Bus:     orphan (PID unknown — bus.pid file unreadable)")
 				fmt.Fprintln(out, "  Issue:   live bus detected but pid file is missing or corrupt")
-				fmt.Fprintln(out, "  Action:  inspect ~/.lark-cli/events/<app>/bus.pid and kill manually")
+				fmt.Fprintln(out, "  Action:  inspect ~/.weact-cli/events/<app>/bus.pid and kill manually")
 				break
 			}
 			fmt.Fprintf(out, "  Bus:     orphan (PID %d, started %s)\n",

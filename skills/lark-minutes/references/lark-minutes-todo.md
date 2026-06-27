@@ -1,12 +1,12 @@
 # minutes +todo
 
-> **路由**：本命令操作**妙记内的 AI 待办**，不是飞书任务（Task）。用户说「在妙记里新建待办」时**必须**用本命令，**禁止**走 `lark-cli task` / `tasklists list` / `task +create`。详见 [lark-minutes/SKILL.md](../SKILL.md) 第 6 节。
+> **路由**：本命令操作**妙记内的 AI 待办**，不是飞书任务（Task）。用户说「在妙记里新建待办」时**必须**用本命令，**禁止**走 `weact-cli task` / `tasklists list` / `task +create`。详见 [lark-minutes/SKILL.md](../SKILL.md) 第 6 节。
 
 > **前置条件：** 先阅读 [`../lark-shared/SKILL.md`](../../lark-shared/SKILL.md) 了解认证、全局参数和安全规则。
 
 对妙记中的待办做新增 / 更新 / 删除（单条或批量）。写操作。
 
-本 skill 对应 shortcut：`lark-cli minutes +todo`（调用 `POST /open-apis/minutes/v1/minutes/{minute_token}/todo`）。
+本 skill 对应 shortcut：`weact-cli minutes +todo`（调用 `POST /open-apis/minutes/v1/minutes/{minute_token}/todo`）。
 
 ## 典型触发表达
 
@@ -22,30 +22,30 @@
 
 ```bash
 # 单条：新增
-lark-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --operation add --todo "跟进预算审批" --is-done=false --as user
+weact-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --operation add --todo "跟进预算审批" --is-done=false --as user
 
 # 批量：一次新增两条
-lark-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --as user --todos '[
+weact-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --as user --todos '[
   {"operation":"add","content":"晚上好1","is_done":true},
   {"operation":"add","content":"晚上好2","is_done":false}
 ]'
 
 # 批量：混合增删改
-lark-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --as user --todos '[
+weact-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --as user --todos '[
   {"operation":"add","content":"新待办","is_done":false},
   {"operation":"update","todo_id":"1234567890","content":"已更新","is_done":true},
   {"operation":"delete","todo_id":"9876543210"}
 ]'
 
 # 从文件读取
-lark-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --as user --todos @todos.json
+weact-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --as user --todos @todos.json
 
 # 单条：更新 / 删除
-lark-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --operation update --todo-id 1234567890 --todo "整理会议纪要" --is-done --as user
-lark-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --operation delete --todo-id 1234567890 --as user
+weact-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --operation update --todo-id 1234567890 --todo "整理会议纪要" --is-done --as user
+weact-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --operation delete --todo-id 1234567890 --as user
 
 # 预览
-lark-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --operation add --todo "新待办" --is-done --dry-run --as user
+weact-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --operation add --todo "新待办" --is-done --dry-run --as user
 ```
 
 ## 参数
@@ -94,7 +94,7 @@ lark-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --operation add -
 
 ### 1. 先读后写，待办 id 如何获取
 
-更新 / 删除前先用 `lark-cli minutes +detail --minute-tokens <token> --todo` 读取当前待办。返回的每条待办带 `todo_id` 字段。
+更新 / 删除前先用 `weact-cli minutes +detail --minute-tokens <token> --todo` 读取当前待办。返回的每条待办带 `todo_id` 字段。
 
 > 待办 id 仅用于程序内部定位，不必展示给用户。
 
@@ -128,7 +128,7 @@ lark-cli minutes +todo --minute-token obcnxxxxxxxxxxxxxxxxxxxx --operation add -
 | `--todos` 与单条 flags 冲突 | 二选一 |
 | `todos[i]` 校验失败 | 检查该条 `operation` 与字段组合 |
 | `error.type` = `no_edit_permission` | **妙记资源无编辑权**：向妙记所有者申请该妙记的编辑/协作权限；**不要**走 `auth login --scope` |
-| 缺少 OAuth scope（`permission_violations` 含 `minutes:minutes:update`） | `lark-cli auth login --scope "minutes:minutes:update"` |
+| 缺少 OAuth scope（`permission_violations` 含 `minutes:minutes:update`） | `weact-cli auth login --scope "minutes:minutes:update"` |
 
 ## 参考
 

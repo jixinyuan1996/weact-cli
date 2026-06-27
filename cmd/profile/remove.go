@@ -46,7 +46,7 @@ func profileRemoveRun(f *cmdutil.Factory, name string) error {
 
 	if len(multi.Apps) == 1 {
 		return errs.NewValidationError(errs.SubtypeFailedPrecondition, "cannot remove the only profile").
-			WithHint("add another profile first: lark-cli profile add")
+			WithHint("add another profile first: weact-cli profile add")
 	}
 
 	app := &multi.Apps[idx]

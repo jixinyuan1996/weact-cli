@@ -8,7 +8,7 @@
 
 ```bash
 # 批量创建 2 个 Objective，各带 2 个 KR。
-lark-cli okr +batch-create \
+weact-cli okr +batch-create \
   --cycle-id 7000000000000000001 \
   --input '[
     {
@@ -30,13 +30,13 @@ lark-cli okr +batch-create \
   --as user
 
 # 从文件读取输入
-lark-cli okr +batch-create \
+weact-cli okr +batch-create \
   --cycle-id 7000000000000000001 \
   --input @okr_batch.json \
   --as user
 
 # 预览 API 调用（Dry-run）
-lark-cli okr +batch-create \
+weact-cli okr +batch-create \
   --cycle-id 7000000000000000001 \
   --input @okr_batch.json \
   --dry-run \
@@ -76,7 +76,7 @@ lark-cli okr +batch-create \
 
 1. 使用 `+cycle-list` 获取可用的 OKR 周期 ID
 2. 构造 `--input` JSON 数组，包含要创建的 Objective 和 KR
-3. 执行 `lark-cli okr +batch-create --cycle-id <id> --input '...'`
+3. 执行 `weact-cli okr +batch-create --cycle-id <id> --input '...'`
 
 ## 输出
 

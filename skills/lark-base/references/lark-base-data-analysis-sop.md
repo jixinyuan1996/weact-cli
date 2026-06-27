@@ -47,7 +47,7 @@ Base 数据查询与分析任务的执行契约。覆盖记录读取、筛选、
 Example: string/number 条件 + TopN：
 
 ```bash
-lark-cli base +record-list \
+weact-cli base +record-list \
   --base-token <base_token> \
   --table-id <table_id> \
   --filter-json '{"logic":"and","conditions":[["Title","==","Launch plan"],["Score",">=",80]]}' \
@@ -61,7 +61,7 @@ lark-cli base +record-list \
 Example: 复杂筛选从文件读取：
 
 ```bash
-lark-cli base +record-list \
+weact-cli base +record-list \
   --base-token <base_token> \
   --table-id <table_id> \
   --filter-json @filter.json \
@@ -110,7 +110,7 @@ lark-cli base +record-list \
 使用 `+record-search` 做关键词命中，结构化条件仍用 `--filter-json` 下推：
 
 ```bash
-lark-cli base +record-search \
+weact-cli base +record-search \
   --base-token <base_token> \
   --table-id <table_id> \
   --keyword Alice \
@@ -137,7 +137,7 @@ lark-cli base +record-search \
 Example: 分组计数：
 
 ```bash
-lark-cli base +data-query \
+weact-cli base +data-query \
   --base-token <base_token> \
   --dsl '{"datasource":{"type":"table","table":{"tableId":"<table_id>"}},"dimensions":[{"field_name":"Status","alias":"status"}],"measures":[{"field_name":"Status","aggregation":"count","alias":"count"}],"shaper":{"format":"flat"}}'
 ```
@@ -145,7 +145,7 @@ lark-cli base +data-query \
 Example: 过滤后汇总并取 TopN：
 
 ```bash
-lark-cli base +data-query \
+weact-cli base +data-query \
   --base-token <base_token> \
   --dsl '{"datasource":{"type":"table","table":{"tableId":"<table_id>"}},"dimensions":[{"field_name":"Owner","alias":"owner"}],"measures":[{"field_name":"Amount","aggregation":"sum","alias":"total_amount"}],"filters":{"type":1,"conjunction":"and","conditions":[{"field_name":"Status","operator":"is","value":["Done"]}]},"sort":[{"field_name":"total_amount","order":"desc"}],"pagination":{"limit":10},"shaper":{"format":"flat"}}'
 ```
@@ -157,13 +157,13 @@ lark-cli base +data-query \
 Example: 将已验证的筛选排序写入视图：
 
 ```bash
-lark-cli base +view-set-filter \
+weact-cli base +view-set-filter \
   --base-token <base_token> \
   --table-id <table_id> \
   --view-id <view_id> \
   --json @filter.json
 
-lark-cli base +view-set-sort \
+weact-cli base +view-set-sort \
   --base-token <base_token> \
   --table-id <table_id> \
   --view-id <view_id> \

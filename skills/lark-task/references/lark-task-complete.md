@@ -8,7 +8,7 @@ Mark a task as completed.
 
 ```bash
 # Complete a task
-lark-cli task +complete --task-id "<task_guid>"
+weact-cli task +complete --task-id "<task_guid>"
 ```
 
 ## Parameters

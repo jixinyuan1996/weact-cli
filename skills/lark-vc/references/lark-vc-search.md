@@ -24,24 +24,24 @@
 
 ```bash
 # 关键词搜索
-lark-cli vc +search --query "周会"
+weact-cli vc +search --query "周会"
 
 # 查询某一天开过的会（单日查询时，start 和 end 必须填写同一天）
-lark-cli vc +search --start 2026-03-10 --end 2026-03-10
+weact-cli vc +search --start 2026-03-10 --end 2026-03-10
 
 # 按时间范围搜索
-lark-cli vc +search --start "2026-03-10T00:00+08:00" --end "2026-03-17T00:00+08:00"
+weact-cli vc +search --start "2026-03-10T00:00+08:00" --end "2026-03-17T00:00+08:00"
 
 # 按组织者 / 参与者 / 会议室（逗号分隔）
-lark-cli vc +search --organizer-ids "ou_user1,ou_user2"
-lark-cli vc +search --participant-ids "ou_user1,ou_user2"
-lark-cli vc +search --room-ids "123,456"
+weact-cli vc +search --organizer-ids "ou_user1,ou_user2"
+weact-cli vc +search --participant-ids "ou_user1,ou_user2"
+weact-cli vc +search --room-ids "123,456"
 
 # 多条件组合
-lark-cli vc +search --organizer-ids "ou_user1" --room-ids "123" --start "2026-03-10T00:00+08:00"
+weact-cli vc +search --organizer-ids "ou_user1" --room-ids "123" --start "2026-03-10T00:00+08:00"
 
 # 翻页
-lark-cli vc +search --query "周会" --page-token "<PAGE_TOKEN>"
+weact-cli vc +search --query "周会" --page-token "<PAGE_TOKEN>"
 ```
 
 ## 参数
@@ -74,7 +74,7 @@ lark-cli vc +search --query "周会" --page-token "<PAGE_TOKEN>"
 
 ### 3. 仅支持 user 身份
 
-该接口仅支持 `user` 身份，使用前需完成 `lark-cli auth login` 并具备 `vc:meeting.search:read` 权限。
+该接口仅支持 `user` 身份，使用前需完成 `weact-cli auth login` 并具备 `vc:meeting.search:read` 权限。
 
 ### 4. 支持分页
 
@@ -125,10 +125,10 @@ lark-cli vc +search --query "周会" --page-token "<PAGE_TOKEN>"
 
 ```bash
 # First page
-lark-cli vc +search --query "周会" --page-size 15
+weact-cli vc +search --query "周会" --page-size 15
 
 # Next page
-lark-cli vc +search --query "周会" --page-size 15 --page-token "<PAGE_TOKEN>"
+weact-cli vc +search --query "周会" --page-size 15 --page-token "<PAGE_TOKEN>"
 ```
 
 ## 搜索结果中的下一步
@@ -137,12 +137,12 @@ lark-cli vc +search --query "周会" --page-size 15 --page-token "<PAGE_TOKEN>"
 
 ```bash
 # 如果要会议纪要 / 逐字稿 / AI 总结 / 待办 / 章节
-lark-cli vc +detail --meeting-ids <MEETING_ID>
+weact-cli vc +detail --meeting-ids <MEETING_ID>
 
 # 如果要会议对应的妙记信息 / minute_token / 妙记链接
-lark-cli vc +recording --meeting-ids <MEETING_ID>
+weact-cli vc +recording --meeting-ids <MEETING_ID>
 # 然后再用返回的 minute_token 调用：
-lark-cli minutes minutes get --params '{"minute_token":"<MINUTE_TOKEN>"}'
+weact-cli minutes minutes get --params '{"minute_token":"<MINUTE_TOKEN>"}'
 ```
 
 ## 常见错误与排查

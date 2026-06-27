@@ -4,8 +4,8 @@ version: 1.0.0
 description: "飞书日历：管理日历日程和会议室。查看/搜索日程、创建/更新日程、管理参会人、查询忙闲和推荐时段、预定会议室。当用户需要查看日程安排、创建/修改会议、查询/预定会议室时使用。不负责：查询过去的视频会议记录（走 lark-vc）、待办任务（走 lark-task）。"
 metadata:
   requires:
-    bins: ["lark-cli"]
-  cliHelp: "lark-cli calendar --help"
+    bins: ["weact-cli"]
+  cliHelp: "weact-cli calendar --help"
 ---
 
 # calendar (v4)
@@ -20,10 +20,10 @@ metadata:
 
 ```bash
 # BAD — bot 身份查用户日程，返回空列表
-lark-cli calendar +agenda --as bot
+weact-cli calendar +agenda --as bot
 
 # GOOD — user 身份查日程
-lark-cli calendar +agenda --as user
+weact-cli calendar +agenda --as user
 ```
 
 ## Shortcuts
@@ -95,7 +95,7 @@ lark-cli calendar +agenda --as user
 ## API Resources
 
 ```bash
-lark-cli calendar <resource> <method> [flags]
+weact-cli calendar <resource> <method> [flags]
 ```
 
 ### calendars

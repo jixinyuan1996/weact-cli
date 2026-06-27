@@ -20,10 +20,10 @@
 
 ```bash
 # 默认查询：仅未解决评论
-lark-cli drive file.comments list --params '{"file_token":"xxx","file_type":"docx","is_solved":false}'
+weact-cli drive file.comments list --params '{"file_token":"xxx","file_type":"docx","is_solved":false}'
 
 # 包含已解决评论：仅当用户明确要求时使用
-lark-cli drive file.comments list --params '{"file_token":"xxx","file_type":"docx"}'
+weact-cli drive file.comments list --params '{"file_token":"xxx","file_type":"docx"}'
 ```
 
 ## 评论卡片与统计
@@ -65,8 +65,8 @@ lark-cli drive file.comments list --params '{"file_token":"xxx","file_type":"doc
 需要更底层地直接调用评论 V2 协议时，先查看 schema，再调用原生命令。全文评论省略 `anchor`，局部评论传 `anchor.block_id`。
 
 ```bash
-lark-cli schema drive.file.comments.create_v2
-lark-cli drive file.comments create_v2 \
+weact-cli schema drive.file.comments.create_v2
+weact-cli drive file.comments create_v2 \
   --params '{"file_token":"<DOC_TOKEN>"}' \
   --data '{"file_type":"docx","reply_elements":[{"type":"text","text":"全文评论内容"}]}'
 ```

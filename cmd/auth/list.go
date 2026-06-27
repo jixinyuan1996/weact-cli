@@ -80,7 +80,7 @@ func authListRun(opts *ListOptions) error {
 			})
 			return nil
 		}
-		fmt.Fprintln(f.IOStreams.ErrOut, "No logged-in users. Run `lark-cli auth login` to log in.")
+		fmt.Fprintln(f.IOStreams.ErrOut, "No logged-in users. Run `weact-cli auth login` to log in.")
 		return nil
 	}
 

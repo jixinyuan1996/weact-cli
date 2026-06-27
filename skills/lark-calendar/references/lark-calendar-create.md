@@ -11,20 +11,20 @@
 
 ```bash
 # 创建日程 + 邀请参会人（ISO 8601 时间）
-lark-cli calendar +create \
+weact-cli calendar +create \
   --summary "产品评审" \
   --start "2026-03-12T14:00+08:00" \
   --end "2026-03-12T15:00+08:00" \
   --attendee-ids ou_aaa,ou_bbb
 
 # 无参会人
-lark-cli calendar +create \
+weact-cli calendar +create \
   --summary "午餐" \
   --start "2026-03-12T12:00+08:00" \
   --end "2026-03-12T13:00+08:00"
 
 # 指定日历
-lark-cli calendar +create --summary "..." --start "..." --end "..." \
+weact-cli calendar +create --summary "..." --start "..." --end "..." \
   --calendar-id cal_xxx
 ```
 
@@ -57,9 +57,9 @@ lark-cli calendar +create --summary "..." --start "..." --end "..." \
 ```bash
 # 第一步：创建日程（含高级参数）
 ## 查看完整参数定义
-lark-cli schema calendar.events.create
+weact-cli schema calendar.events.create
 ## 创建日程
-lark-cli calendar events create \
+weact-cli calendar events create \
   --params '{"calendar_id":"<CALENDAR_ID>"}' \
   --data '{
   "summary": "技术分享：CLI 架构设计",
@@ -69,17 +69,17 @@ lark-cli calendar events create \
 
 # 第二步：添加参会人（使用第一步返回的 calendar_id 和 event_id）
 ## 查看完整参数定义
-lark-cli schema calendar.event.attendees.create
+weact-cli schema calendar.event.attendees.create
 ## 添加参会人
-lark-cli calendar event.attendees create \
+weact-cli calendar event.attendees create \
   --params '{"calendar_id":"<CALENDAR_ID>","event_id":"<EVENT_ID>"}' \
   --data '{"attendees": [{"type": "user", "user_id": "ou_xxx"}]}'
 
 # 可选第三步（推荐）：若第二步失败，回滚删除空日程
 ## 查看完整参数定义
-lark-cli schema calendar.events.delete
+weact-cli schema calendar.events.delete
 ## 删除空日程
-lark-cli calendar events delete \
+weact-cli calendar events delete \
   --params '{"calendar_id":"<CALENDAR_ID>","event_id":"<EVENT_ID>","need_notification":false}'
 
 ```

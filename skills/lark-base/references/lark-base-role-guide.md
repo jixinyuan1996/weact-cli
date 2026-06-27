@@ -29,7 +29,7 @@ Use these fewshots for simple role changes. For table, field, record, dashboard,
 Create a custom role that keeps copy/download disabled:
 
 ```bash
-lark-cli base +role-create \
+weact-cli base +role-create \
   --base-token <base_token> \
   --json '{"role_name":"Reviewer","role_type":"custom_role","base_rule_map":{"copy":false,"download":false}}'
 ```
@@ -37,7 +37,7 @@ lark-cli base +role-create \
 Rename a role while preserving its type:
 
 ```bash
-lark-cli base +role-update \
+weact-cli base +role-update \
   --base-token <base_token> \
   --role-id <role_id> \
   --json '{"role_name":"Finance Reviewer","role_type":"custom_role"}' \
@@ -47,7 +47,7 @@ lark-cli base +role-update \
 Grant read-only access to one table:
 
 ```bash
-lark-cli base +role-update \
+weact-cli base +role-update \
   --base-token <base_token> \
   --role-id <role_id> \
   --json '{"role_name":"Finance Reviewer","role_type":"custom_role","table_rule_map":{"Orders":{"perm":"read_only"}}}' \

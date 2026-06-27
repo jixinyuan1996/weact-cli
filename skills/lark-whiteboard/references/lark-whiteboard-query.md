@@ -25,7 +25,7 @@
 ### 示例 1：导出画板为预览图片
 
 ```bash
-lark-cli whiteboard +query \
+weact-cli whiteboard +query \
   --whiteboard-token "wbcnxxxxxxxx" \
   --output_as image \
   --output ./preview.png
@@ -34,7 +34,7 @@ lark-cli whiteboard +query \
 ### 示例 2：提取画板中的代码并直接输出
 
 ```bash
-lark-cli whiteboard +query \
+weact-cli whiteboard +query \
   --whiteboard-token "wbcnxxxxxxxx" \
   --output_as code
 ```
@@ -42,7 +42,7 @@ lark-cli whiteboard +query \
 ### 示例 3：导出画板为 SVG 矢量图
 
 ```bash
-lark-cli whiteboard +query \
+weact-cli whiteboard +query \
   --whiteboard-token "wbcnxxxxxxxx" \
   --output_as svg \
   --output ./whiteboard.svg \
@@ -52,7 +52,7 @@ lark-cli whiteboard +query \
 ### 示例 4：导出画板原始节点结构到文件
 
 ```bash
-lark-cli whiteboard +query \
+weact-cli whiteboard +query \
   --whiteboard-token "wbcnxxxxxxxx" \
   --output_as raw \
   --output ./nodes.json \

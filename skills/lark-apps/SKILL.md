@@ -4,8 +4,8 @@ version: 1.0.0
 description: "妙搭（Spark/Miaoda）应用开发与托管：应用创建、HTML静态站点发布、本地全栈开发、云端生成迭代。当用户要开发/新建一个系统·工具·平台·应用，或要本地开发 / 云端开发 / 修改 / 部署 / 发布 / 上线 / 拿可分享链接，或用 HTML 做页面·网站·部署到妙搭，或提到妙搭/Spark/Miaoda（应用运行时域名形如 *.aiforce.cloud）、应用数据库、可见范围时使用。不负责普通云盘文件上传（lark-drive）、飞书文档编辑（lark-doc）、原生幻灯片创建（lark-slides）。"
 metadata:
   requires:
-    bins: ["lark-cli"]
-  cliHelp: "lark-cli apps --help; lark-cli apps +<cmd> --help"
+    bins: ["weact-cli"]
+  cliHelp: "weact-cli apps --help; weact-cli apps +<cmd> --help"
 ---
 
 # apps (v1)
@@ -48,24 +48,24 @@ metadata:
 
 - **发布意图判定**：用户要"可访问 / 线上 / 分享 / 新链接 / 上线" = 发布意图，先走发布链路、确认完成再给链接。
 - 完成 ≠ 发布：云端会话完成 / `+list is_published=true` 都不代表最新内容已部署。
-- 开发态链接 `https://miaoda.feishu.cn/app/{app_id}`：进应用编辑/开发态、管理与继续开发应用的入口。发布成功后，连同发布态链接一并提供给用户（说明"管理 / 继续开发去这里"）；但它仅进编辑态，**不能**顶替发布态链接当分享链接。
+- 开发态链接 `https://miaoda.weact.cn/app/{app_id}`：进应用编辑/开发态、管理与继续开发应用的入口。发布成功后，连同发布态链接一并提供给用户（说明"管理 / 继续开发去这里"）；但它仅进编辑态，**不能**顶替发布态链接当分享链接。
 - 发布态链接来源：html → `+html-publish` 的 `data.url`；全栈 → `+release-get` 轮询 `finished` 给 `online_url` / `failed` 给 `error_logs`。
 - **可见范围**：发布态链接（html 的 `data.url`、全栈的 `online_url`）默认仅**创建者可见**，发给他人对方会无权限打不开。当可分享链接交付给用户前，先告知当前仅本人可见，再询问是否用 `+access-scope-set`（`tenant`/`public`/`specific`）放开（可先 `+access-scope-get` 查当前范围）。
 
 ## 能力边界
 
-- lark-cli **不支持**配置应用的权限（应用内 RBAC、成员角色、协作者权限）/ 自动化 / 插件。`+access-scope-*` 只管运行时可见范围（谁能打开应用），不是角色权限。
+- weact-cli **不支持**配置应用的权限（应用内 RBAC、成员角色、协作者权限）/ 自动化 / 插件。`+access-scope-*` 只管运行时可见范围（谁能打开应用），不是角色权限。
 - 用户要配置权限 / 自动化 / 插件时，引导其使用开发态连接前往云端开发（妙搭 web）处理。
 
 ## app_id 获取
 
-`app_id` 必须是妙搭应用 ID（`app_` 开头）。`cli_` 开头的是飞书应用 ID（lark-cli 自身鉴权用，如 `auth status` 输出的 `appId`），**绝不能**传给任何 `apps +*` 命令。
+`app_id` 必须是妙搭应用 ID（`app_` 开头）。`cli_` 开头的是飞书应用 ID（weact-cli 自身鉴权用，如 `auth status` 输出的 `appId`），**绝不能**传给任何 `apps +*` 命令。
 
 按顺序尝试，不要一上来要求用户手填：
 
 1. 用户给出 `app_xxx` 或妙搭链接（如 `/app/app_xxx`）时直接提取。
 2. 当前目录是已初始化项目时读取 `.spark/meta.json` 的 `app_id`。
-3. 用户只给应用名/描述时用 `lark-cli apps +list --keyword "<关键词>"` 定位；多候选再让用户确认。
+3. 用户只给应用名/描述时用 `weact-cli apps +list --keyword "<关键词>"` 定位；多候选再让用户确认。
 
 ## 失败处理（error.hint）
 

@@ -98,8 +98,8 @@ func NewCmdUpdate(f *cmdutil.Factory) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "update",
-		Short: "Update lark-cli to the latest version",
-		Long: `Update lark-cli to the latest version.
+		Short: "Update weact-cli to the latest version",
+		Long: `Update weact-cli to the latest version.
 
 Detects the installation method automatically:
   - npm install: runs npm install -g @larksuite/cli@<version>
@@ -189,7 +189,7 @@ func reportCheckResult(opts *UpdateOptions, io *cmdutil.IOStreams, cur, latest s
 			"ok": true, "previous_version": cur, "current_version": cur,
 			"latest_version": latest, "action": "update_available",
 			"auto_update": canAutoUpdate,
-			"message":     fmt.Sprintf("lark-cli %s %s %s available", cur, symArrow(), latest),
+			"message":     fmt.Sprintf("weact-cli %s %s %s available", cur, symArrow(), latest),
 			"url":         releaseURL(latest), "changelog": changelogURL(),
 		}
 		applySkillsStatus(out, cur)
@@ -200,7 +200,7 @@ func reportCheckResult(opts *UpdateOptions, io *cmdutil.IOStreams, cur, latest s
 	fmt.Fprintf(io.ErrOut, "  Release:   %s\n", releaseURL(latest))
 	fmt.Fprintf(io.ErrOut, "  Changelog: %s\n", changelogURL())
 	if canAutoUpdate {
-		fmt.Fprintf(io.ErrOut, "\nRun `lark-cli update` to install.\n")
+		fmt.Fprintf(io.ErrOut, "\nRun `weact-cli update` to install.\n")
 	} else {
 		fmt.Fprintf(io.ErrOut, "\nDownload the release above to update manually.\n")
 	}
@@ -239,7 +239,7 @@ func doNpmUpdate(opts *UpdateOptions, io *cmdutil.IOStreams, cur, latest string,
 	}
 
 	if !opts.JSON {
-		fmt.Fprintf(io.ErrOut, "Updating lark-cli %s %s %s via npm ...\n", cur, symArrow(), latest)
+		fmt.Fprintf(io.ErrOut, "Updating weact-cli %s %s %s via npm ...\n", cur, symArrow(), latest)
 	}
 
 	npmResult := updater.RunNpmInstall(latest)
@@ -293,7 +293,7 @@ func doNpmUpdate(opts *UpdateOptions, io *cmdutil.IOStreams, cur, latest string,
 		result := map[string]interface{}{
 			"ok": true, "previous_version": cur, "current_version": latest,
 			"latest_version": latest, "action": "updated",
-			"message": fmt.Sprintf("lark-cli updated from %s to %s", cur, latest),
+			"message": fmt.Sprintf("weact-cli updated from %s to %s", cur, latest),
 			"url":     releaseURL(latest), "changelog": changelogURL(),
 		}
 		applySkillsResult(result, skillsResult)
@@ -301,7 +301,7 @@ func doNpmUpdate(opts *UpdateOptions, io *cmdutil.IOStreams, cur, latest string,
 		return nil
 	}
 
-	fmt.Fprintf(io.ErrOut, "\n%s Successfully updated lark-cli from %s to %s\n", symOK(), cur, latest)
+	fmt.Fprintf(io.ErrOut, "\n%s Successfully updated weact-cli from %s to %s\n", symOK(), cur, latest)
 	fmt.Fprintf(io.ErrOut, "  Changelog: %s\n", changelogURL())
 	if skillsResult != nil {
 		fmt.Fprintf(io.ErrOut, "\nUpdating skills ...\n")
@@ -312,7 +312,7 @@ func doNpmUpdate(opts *UpdateOptions, io *cmdutil.IOStreams, cur, latest string,
 
 func permissionHint(npmOutput string) string {
 	if strings.Contains(npmOutput, "EACCES") && !isWindows() {
-		return "Permission denied. Try: sudo lark-cli update, or adjust your npm global prefix: https://docs.npmjs.com/resolving-eacces-permissions-errors"
+		return "Permission denied. Try: sudo weact-cli update, or adjust your npm global prefix: https://docs.npmjs.com/resolving-eacces-permissions-errors"
 	}
 	return ""
 }
@@ -351,7 +351,7 @@ func reportAlreadyUpToDate(opts *UpdateOptions, io *cmdutil.IOStreams, cur, late
 		out := map[string]interface{}{
 			"ok": true, "previous_version": cur, "current_version": cur,
 			"latest_version": latest, "action": "already_up_to_date",
-			"message": fmt.Sprintf("lark-cli %s is already up to date", cur),
+			"message": fmt.Sprintf("weact-cli %s is already up to date", cur),
 		}
 		if check {
 			applySkillsStatus(out, cur)
@@ -361,7 +361,7 @@ func reportAlreadyUpToDate(opts *UpdateOptions, io *cmdutil.IOStreams, cur, late
 		output.PrintJson(io.Out, out)
 		return nil
 	}
-	fmt.Fprintf(io.ErrOut, "%s lark-cli %s is already up to date\n", symOK(), cur)
+	fmt.Fprintf(io.ErrOut, "%s weact-cli %s is already up to date\n", symOK(), cur)
 	if !check {
 		emitSkillsTextHints(io, skillsResult)
 	}
@@ -425,13 +425,13 @@ func emitSkillsTextHints(io *cmdutil.IOStreams, r *skillscheck.SyncResult) {
 		if len(r.Failed) > 0 {
 			fmt.Fprintf(io.ErrOut, "  Failed skills: %s\n", strings.Join(r.Failed, ", "))
 		}
-		fmt.Fprintf(io.ErrOut, "  To retry all official skills: lark-cli update --force\n")
+		fmt.Fprintf(io.ErrOut, "  To retry all official skills: weact-cli update --force\n")
 	case r.Force:
 		fmt.Fprintf(io.ErrOut, "%s Skills updated: restored all %d official skills\n", symOK(), len(r.Official))
 	default:
 		fmt.Fprintf(io.ErrOut, "%s Skills updated: %d official, %d updated, %d added, %d skipped because deleted locally\n", symOK(), len(r.Official), len(r.Updated), len(r.Added), len(r.SkippedDeleted))
 		if len(r.SkippedDeleted) > 0 {
-			fmt.Fprintf(io.ErrOut, "  To restore all official skills: lark-cli update --force\n")
+			fmt.Fprintf(io.ErrOut, "  To restore all official skills: weact-cli update --force\n")
 		}
 	}
 }

@@ -109,10 +109,10 @@ func addEffectiveVerification(result map[string]interface{}, d identitydiag.Resu
 func addStatusNote(result map[string]interface{}, d identitydiag.Result) {
 	switch {
 	case !d.User.Available && d.Bot.Available:
-		result["note"] = "User identity is " + identitydiag.StatusMessage(d.User.Status) + "; bot identity is ready for bot/tenant API calls. Run `lark-cli auth login` to enable user identity."
+		result["note"] = "User identity is " + identitydiag.StatusMessage(d.User.Status) + "; bot identity is ready for bot/tenant API calls. Run `weact-cli auth login` to enable user identity."
 	case d.User.Status == identitydiag.StatusNeedsRefresh:
 		result["note"] = "User identity needs refresh and will be refreshed automatically on the next user API call."
 	case !d.User.Available && !d.Bot.Available:
-		result["note"] = "No usable identity is available. Configure bot credentials or run `lark-cli auth login`."
+		result["note"] = "No usable identity is available. Configure bot credentials or run `weact-cli auth login`."
 	}
 }

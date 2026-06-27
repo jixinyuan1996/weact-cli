@@ -24,4 +24,15 @@ const (
 	CliProxyEnable  = "LARKSUITE_CLI_PROXY_ENABLE"
 	CliProxyAddress = "LARKSUITE_CLI_PROXY_ADDRESS"
 	CliCAPath       = "LARKSUITE_CLI_CA_PATH"
+
+	// WeAct endpoint overrides (used by internal/core/types.go)
+	WeActOpenEndpoint     = "WEACT_OPEN_ENDPOINT"
+	WeActAccountsEndpoint = "WEACT_ACCOUNTS_ENDPOINT"
+	WeActMCPEndpoint      = "WEACT_MCP_ENDPOINT"
+	WeActAppLinkEndpoint  = "WEACT_APPLINK_ENDPOINT"
+	WeActAPIDefinitionURL = "WEACT_API_DEFINITION_URL"
+	WeActConsoleHost      = "WEACT_CONSOLE_HOST"
+	WeActSkillsIndexURL   = "WEACT_SKILLS_INDEX_URL"
+	WeActSkillsSource     = "WEACT_SKILLS_SOURCE"
+	WeActConfigDir        = "WEACT_CLI_CONFIG_DIR"
 )

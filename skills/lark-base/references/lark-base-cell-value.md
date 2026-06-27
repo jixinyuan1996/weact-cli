@@ -1,6 +1,6 @@
 # base CellValue 规范（lark-base-cell-value）
 
-> 适用命令：`lark-cli base +record-upsert`、`lark-cli base +record-batch-create`、`lark-cli base +record-batch-update`
+> 适用命令：`weact-cli base +record-upsert`、`weact-cli base +record-batch-create`、`weact-cli base +record-batch-update`
 
 本文件定义 **shortcut 写记录** 时 `CellValue` 的推荐格式，目标是让 AI 一次写对。不同命令的外层 JSON 形状不同，但每个 cell 都以本文为 source of truth。
 
@@ -76,9 +76,9 @@
 
 用对象数组，元素至少包含 `id`。人员字段传用户 ID（如 `ou_xxx`），群字段传群 ID（如 `oc_xxx`）；单值/多值都统一使用数组。
 
-> **人员字段：不要猜 ID。** 不知道 `open_id` 时，先用 `lark-contact` 查 id：`lark-cli contact +search-user --query "<姓名/邮箱/手机号>" --as user`。
+> **人员字段：不要猜 ID。** 不知道 `open_id` 时，先用 `lark-contact` 查 id：`weact-cli contact +search-user --query "<姓名/邮箱/手机号>" --as user`。
 
-> **群组字段：不要猜 ID。** 不知道 `chat_id` 时，先用 `lark-im` 搜群：`lark-cli im +chat-search --query "<群名关键词>" --as user`；取结果里的 `oc_xxx`。
+> **群组字段：不要猜 ID。** 不知道 `chat_id` 时，先用 `lark-im` 搜群：`weact-cli im +chat-search --query "<群名关键词>" --as user`；取结果里的 `oc_xxx`。
 
 ```json
 {
@@ -121,9 +121,9 @@
 
 ### 2.9 attachment（不作为普通 CellValue 写入）
 
-- 追加附件：使用 `lark-cli base +record-upload-attachment --record-id <record_id> --field-id <field_id> --file <path>`；可重复 `--file` 一次追加多个附件，不能用普通记录操作接口写附件值。
-- 删除附件：使用 `lark-cli base +record-remove-attachment --record-id <record_id> --field-id <field_id> --file-token <file_token> --yes`；可重复 `--file-token` 一次删除同一单元格里的多个附件。
-- 下载附件：使用 `lark-cli base +record-download-attachment --record-id <record_id> --file-token <file_token> --output <dir>`；不传 `--file-token` 时下载整行所有附件，也可重复 `--file-token` 只下载指定附件。Base 附件必须用这个命令下载，用其他下载入口可能失败。
+- 追加附件：使用 `weact-cli base +record-upload-attachment --record-id <record_id> --field-id <field_id> --file <path>`；可重复 `--file` 一次追加多个附件，不能用普通记录操作接口写附件值。
+- 删除附件：使用 `weact-cli base +record-remove-attachment --record-id <record_id> --field-id <field_id> --file-token <file_token> --yes`；可重复 `--file-token` 一次删除同一单元格里的多个附件。
+- 下载附件：使用 `weact-cli base +record-download-attachment --record-id <record_id> --file-token <file_token> --output <dir>`；不传 `--file-token` 时下载整行所有附件，也可重复 `--file-token` 只下载指定附件。Base 附件必须用这个命令下载，用其他下载入口可能失败。
 
 ## 3. 只读字段（不要写）
 

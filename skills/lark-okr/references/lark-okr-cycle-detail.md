@@ -8,10 +8,10 @@
 
 ```bash
 # 列出指定周期的目标和关键结果
-lark-cli okr +cycle-detail --cycle-id 1234567890123456789
+weact-cli okr +cycle-detail --cycle-id 1234567890123456789
 
 # 预览 API 调用而不实际执行
-lark-cli okr +cycle-detail --cycle-id 1234567890123456789 --dry-run
+weact-cli okr +cycle-detail --cycle-id 1234567890123456789 --dry-run
 ```
 
 ## 参数
@@ -24,8 +24,8 @@ lark-cli okr +cycle-detail --cycle-id 1234567890123456789 --dry-run
 
 ## 工作流程
 
-1. 使用 `lark-cli okr +cycle-list` 获取 OKR 周期 ID。
-2. 执行 `lark-cli okr +cycle-detail --cycle-id "123456"`。
+1. 使用 `weact-cli okr +cycle-list` 获取 OKR 周期 ID。
+2. 执行 `weact-cli okr +cycle-detail --cycle-id "123456"`。
 3. 报告结果：找到的目标数量、每个目标的 ID、分数、权重及其关键结果。
 
 ## 输出

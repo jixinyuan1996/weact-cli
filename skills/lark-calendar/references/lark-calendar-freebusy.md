@@ -11,19 +11,19 @@
 
 ```bash
 # 查询当前用户今天的忙闲（默认）
-lark-cli calendar +freebusy
+weact-cli calendar +freebusy
 
 # 自定义时间范围（仅日期）
-lark-cli calendar +freebusy --start 2026-03-11 --end 2026-03-12
+weact-cli calendar +freebusy --start 2026-03-11 --end 2026-03-12
 
 # 自定义时间范围（完整 ISO 8601）
-lark-cli calendar +freebusy --start "2026-03-11T08:00:00+08:00" --end "2026-03-11T18:00:00+08:00"
+weact-cli calendar +freebusy --start "2026-03-11T08:00:00+08:00" --end "2026-03-11T18:00:00+08:00"
 
 # 查询指定用户的忙闲信息
-lark-cli calendar +freebusy --start 2026-03-11 --end 2026-03-12 --user-id ou_xxx
+weact-cli calendar +freebusy --start 2026-03-11 --end 2026-03-12 --user-id ou_xxx
 
 # 人类可读格式输出
-lark-cli calendar +freebusy --format pretty
+weact-cli calendar +freebusy --format pretty
 ```
 
 ## 参数
@@ -83,10 +83,10 @@ start             end               rsvp_status
 
 ```bash
 # 查询今天的忙碌时段
-lark-cli calendar +freebusy
+weact-cli calendar +freebusy
 
 # 查询工作时间段
-lark-cli calendar +freebusy \
+weact-cli calendar +freebusy \
   --start "2026-03-11T08:00:00+08:00" \
   --end "2026-03-11T18:00:00+08:00"
 ```
@@ -95,8 +95,8 @@ lark-cli calendar +freebusy \
 
 ```bash
 # 查询多个成员，对比找出共同空闲时间
-lark-cli calendar +freebusy --start 2026-03-12 --user-id ou_member_a
-lark-cli calendar +freebusy --start 2026-03-12 --user-id ou_member_b
+weact-cli calendar +freebusy --start 2026-03-12 --user-id ou_member_a
+weact-cli calendar +freebusy --start 2026-03-12 --user-id ou_member_b
 ```
 
 ## 注意事项

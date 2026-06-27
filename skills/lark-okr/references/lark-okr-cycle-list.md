@@ -8,16 +8,16 @@
 
 ```bash
 # 列出用户的所有周期
-lark-cli okr +cycle-list --user-id "ou_xxx"
+weact-cli okr +cycle-list --user-id "ou_xxx"
 
 # 使用特定的用户 ID 类型列出周期
-lark-cli okr +cycle-list --user-id "xxx" --user-id-type user_id
+weact-cli okr +cycle-list --user-id "xxx" --user-id-type user_id
 
 # 列出时间范围内的周期（例如 2025-01 到 2025-06）
-lark-cli okr +cycle-list --user-id "ou_xxx" --time-range "2025-01--2025-06"
+weact-cli okr +cycle-list --user-id "ou_xxx" --time-range "2025-01--2025-06"
 
 # 预览 API 调用而不实际执行
-lark-cli okr +cycle-list --user-id "ou_xxx" --dry-run
+weact-cli okr +cycle-list --user-id "ou_xxx" --dry-run
 ```
 
 ## 参数
@@ -32,9 +32,9 @@ lark-cli okr +cycle-list --user-id "ou_xxx" --dry-run
 
 ## 工作流程
 
-1. 获取目标用户的 `open_id`（或其他 ID 类型）。如果用户说"我的 OKR 周期"，先通过 `lark-cli contact +get-user` 获取当前用户的
+1. 获取目标用户的 `open_id`（或其他 ID 类型）。如果用户说"我的 OKR 周期"，先通过 `weact-cli contact +get-user` 获取当前用户的
    ID。
-2. 执行 `lark-cli okr +cycle-list --user-id "ou_xxx"`，可选择使用 `--time-range`。
+2. 执行 `weact-cli okr +cycle-list --user-id "ou_xxx"`，可选择使用 `--time-range`。
 3. 报告结果：找到的周期数量、每个周期的 ID、开始/结束时间和状态。
 
 ## 输出

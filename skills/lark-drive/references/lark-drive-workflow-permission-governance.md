@@ -46,16 +46,16 @@ Risk / Structure: `R2` / `S2`
 
 ## Progressive Load Map
 
-本表只规定每个 state 需要加载的额外上下文；命令可用范围以 `Command Map` 为准。需要拼装具体 `lark-cli` 命令时，再按需读取 [`lark-drive-workflow-permission-governance-commands.md`](lark-drive-workflow-permission-governance-commands.md)。
+本表只规定每个 state 需要加载的额外上下文；命令可用范围以 `Command Map` 为准。需要拼装具体 `weact-cli` 命令时，再按需读取 [`lark-drive-workflow-permission-governance-commands.md`](lark-drive-workflow-permission-governance-commands.md)。
 
 | State | Required Reference |
 |-------|--------------------|
 | `PARSE_INTENT` | 本文件、[`lark-drive-workflow.md`](lark-drive-workflow.md)、[`../../lark-shared/SKILL.md`](../../lark-shared/SKILL.md) |
 | `TARGET_INSPECT` | [`lark-drive-inspect.md`](lark-drive-inspect.md) |
 | `DISCOVER_TARGETS` | 容器范围时读取 [`../../lark-wiki/references/lark-wiki-node-list.md`](../../lark-wiki/references/lark-wiki-node-list.md) 或 [`lark-drive-files-list.md`](lark-drive-files-list.md) |
-| `FACT_READ` | `lark-cli schema drive.metas.batch_query`；涉及公开权限时再读取 `lark-cli schema drive.permission.public.get`；涉及活跃度、访问复核或生命周期判断时再读取 `lark-cli schema drive.file.statistics.get` 和 `lark-cli schema drive.file.view_records.list` |
+| `FACT_READ` | `weact-cli schema drive.metas.batch_query`；涉及公开权限时再读取 `weact-cli schema drive.permission.public.get`；涉及活跃度、访问复核或生命周期判断时再读取 `weact-cli schema drive.file.statistics.get` 和 `weact-cli schema drive.file.view_records.list` |
 | `RISK_ASSESS` | 本文件的 `Risk Classification` |
-| `EXEC_CONFIRM` | 只为用户选择的动作读取 [`lark-drive-apply-permission.md`](lark-drive-apply-permission.md)、[`lark-drive-secure-label.md`](lark-drive-secure-label.md)，或 `lark-cli schema drive.permission.public.patch` / `lark-cli schema drive.permission.members.transfer_owner`；需要确认模板时读取 [`lark-drive-workflow-permission-governance-outputs.md`](lark-drive-workflow-permission-governance-outputs.md) |
+| `EXEC_CONFIRM` | 只为用户选择的动作读取 [`lark-drive-apply-permission.md`](lark-drive-apply-permission.md)、[`lark-drive-secure-label.md`](lark-drive-secure-label.md)，或 `weact-cli schema drive.permission.public.patch` / `weact-cli schema drive.permission.members.transfer_owner`；需要确认模板时读取 [`lark-drive-workflow-permission-governance-outputs.md`](lark-drive-workflow-permission-governance-outputs.md) |
 | `EXECUTE` | 复用 `EXEC_CONFIRM` 已加载且已确认的写命令上下文 |
 | `VERIFY` | 复用 `FACT_READ` 阶段使用的 read schemas |
 
@@ -100,7 +100,7 @@ Risk / Structure: `R2` / `S2`
 | `FACT_READ` | `drive file.view_records list` | 在用户要求最近访问人、访问复核或低活跃证据时读取访问记录 |
 | `EXEC_CONFIRM` | `drive +secure-label-list` | 提议 label update 前解析可用 secure-label IDs |
 | `EXEC_CONFIRM` | `drive permission.members auth` | 文档公共访问和协作权限设置修改前检查 `action=manage_public` |
-| `EXEC_CONFIRM` | `lark-cli schema drive.permission.members.transfer_owner` | owner 转移前读取当前字段、支持类型和高风险写入门禁 |
+| `EXEC_CONFIRM` | `weact-cli schema drive.permission.members.transfer_owner` | owner 转移前读取当前字段、支持类型和高风险写入门禁 |
 | `EXECUTE` | `drive +apply-permission` | 向 owner 提交 view/edit access request；只允许单目标、小列表或已明确确认的候选列表逐个执行 |
 | `EXECUTE` | `drive permission.public patch` | 修改已确认的 public/link settings；必须传 `--yes` |
 | `EXECUTE` | `drive permission.members transfer_owner` | 转移已确认目标的 owner；必须传 `--yes` |
@@ -109,7 +109,7 @@ Risk / Structure: `R2` / `S2`
 
 ## Command Patterns
 
-本入口不内联命令样例。需要拼装具体 `lark-cli` 命令时，按当前 state 读取 [`lark-drive-workflow-permission-governance-commands.md`](lark-drive-workflow-permission-governance-commands.md)。命令是否允许执行仍以 `Command Map` 和写入规则为准。
+本入口不内联命令样例。需要拼装具体 `weact-cli` 命令时，按当前 state 读取 [`lark-drive-workflow-permission-governance-commands.md`](lark-drive-workflow-permission-governance-commands.md)。命令是否允许执行仍以 `Command Map` 和写入规则为准。
 
 ## Discovery Rules
 
@@ -170,7 +170,7 @@ Drive folder 发现：
 
 - 文档公共访问和协作权限设置修改（`drive permission.public patch`）属于高风险写入。请求确认前，必须展示 target title、token、current setting、desired setting 和准确 field changes。
 - 如果 `manage_public_auth.auth_result=false`，禁止 patch。告诉用户需要具备 manage-public 权限的用户，或由 owner 操作。
-- `drive permission.public get` 只用于 `drive +inspect` 或 `DISCOVER_TARGETS` 可解析且运行时 schema 支持的目标类型；类型集合不要硬编码，执行时以 `lark-cli schema drive.permission.public.get` 为准。
+- `drive permission.public get` 只用于 `drive +inspect` 或 `DISCOVER_TARGETS` 可解析且运行时 schema 支持的目标类型；类型集合不要硬编码，执行时以 `weact-cli schema drive.permission.public.get` 为准。
 - 不要 patch 已解析类型不支持的字段。对于 wiki 目标，必须省略 schema 明确标注为 wiki 不支持的字段。
 - 不要在同一个写入确认中合并密级标签更新和文档公共访问与协作权限设置修改；必须分别确认。
 - `drive +apply-permission` 默认不批量执行；每次调用都会向 owner 发送通知。

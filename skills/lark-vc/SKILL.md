@@ -4,8 +4,8 @@ version: 1.0.0
 description: "飞书视频会议：搜索历史会议记录、查询会议纪要（总结/待办/章节/逐字稿）、查询参会人快照。当用户查询已结束的会议、获取会议产物（纪要/妙记）、查看参会人时使用；查询未来日程走 lark-calendar。不负责：Agent 真实入会/离会、会中实时事件（走 lark-vc-agent）。"
 metadata:
   requires:
-    bins: ["lark-cli"]
-  cliHelp: "lark-cli vc --help"
+    bins: ["weact-cli"]
+  cliHelp: "weact-cli vc --help"
 ---
 
 # vc (v1)
@@ -24,10 +24,10 @@ metadata:
 
 ```bash
 # BAD — 查昨天的会议用 calendar，会漏掉即时会议
-lark-cli calendar +search-event --query "站会" --start <start_time> --end <end_time>
+weact-cli calendar +search-event --query "站会" --start <start_time> --end <end_time>
 
 # GOOD — 查已结束的会议用 vc +search
-lark-cli vc +search --query "站会" --start <start_time> --end <end_time>
+weact-cli vc +search --query "站会" --start <start_time> --end <end_time>
 ```
 
 ## Shortcuts （推荐优先使用）
@@ -93,11 +93,11 @@ lark-cli vc +search --query "站会" --start <start_time> --end <end_time>
 
 ```bash
 # 1. 读取纪要内容
-lark-cli docs +fetch --doc <note_doc_token> --doc-format markdown
+weact-cli docs +fetch --doc <note_doc_token> --doc-format markdown
 # 2. 从返回的 markdown 中提取第一个 <whiteboard token="xxx"/> 的 token
 # 3. 下载封面图到聚合目录（和逐字稿、录像同目录，保持产物归拢）
 #    并非所有纪要都有封面画板，没有 <whiteboard> 标签时跳过即可
-lark-cli docs +media-download --type whiteboard --token <whiteboard_token> --output ./minutes/<minute_token>/cover
+weact-cli docs +media-download --type whiteboard --token <whiteboard_token> --output ./minutes/<minute_token>/cover
 ```
 > **产物目录规范**：同一会议的所有下载产物（录像、逐字稿、封面图等）统一放到 `./minutes/{minute_token}/` 目录下。这与 `minutes +download` 和 `minutes +detail --minute-tokens` 的默认落点保持一致，便于 Agent 聚合。显式路径（如封面图）需手动对齐到同一目录。
 
@@ -111,18 +111,18 @@ lark-cli docs +media-download --type whiteboard --token <whiteboard_token> --out
 
 ### 3. 纪要文档与逐字稿链接
 1. 纪要文档、逐字稿文档与关联的共享文档默认使用文档 Token 返回。
-2. 仅需要获取文档名称和 URL 等基本信息时，使用 `lark-cli drive metas batch_query` 查询
+2. 仅需要获取文档名称和 URL 等基本信息时，使用 `weact-cli drive metas batch_query` 查询
 ```bash
 # 学习命令使用方式
-lark-cli schema drive.metas.batch_query
+weact-cli schema drive.metas.batch_query
 
 # 批量获取文档基本信息: 一次最多查询 10 个文档
-lark-cli drive metas batch_query --data '{"request_docs": [{"doc_type": "docx", "doc_token": "<doc_token>"}], "with_url": true}'
+weact-cli drive metas batch_query --data '{"request_docs": [{"doc_type": "docx", "doc_token": "<doc_token>"}], "with_url": true}'
 ```
-3. 需要获取文档内容时，使用 `lark-cli docs +fetch`。
+3. 需要获取文档内容时，使用 `weact-cli docs +fetch`。
 ```bash
 # 获取文档内容
-lark-cli docs +fetch --doc <doc_token> --doc-format markdown
+weact-cli docs +fetch --doc <doc_token> --doc-format markdown
 ```
 
 ### 4. 查询参会人快照（读操作）
@@ -130,7 +130,7 @@ lark-cli docs +fetch --doc <doc_token> --doc-format markdown
 用户问"谁参加过这场会议""这个会议有哪些参会人""某某参会了吗"等**参会人快照**类问题时，使用 **`vc meeting get --with-participants`**：这是参会人服务端快照 API，不依赖 bot 身份参会，**已结束会议也可查**：
 
 ```bash
-lark-cli vc meeting get --params '{"meeting_id":"<meeting_id>","with_participants":true}'
+weact-cli vc meeting get --params '{"meeting_id":"<meeting_id>","with_participants":true}'
 ```
 
 选型判断表：
@@ -174,7 +174,7 @@ Meeting (视频会议)
 ## API Resources
 
 ```bash
-lark-cli vc <resource> <method> [flags]
+weact-cli vc <resource> <method> [flags]
 ```
 
 ### meeting
@@ -183,10 +183,10 @@ lark-cli vc <resource> <method> [flags]
 
 ```bash
 # 获取会议基础信息（不含参会人）
-lark-cli vc meeting get --params '{"meeting_id": "<meeting_id>"}'
+weact-cli vc meeting get --params '{"meeting_id": "<meeting_id>"}'
 
 # 获取会议基础信息（含参会人）
-lark-cli vc meeting get --params '{"meeting_id": "<meeting_id>", "with_participants": true}'
+weact-cli vc meeting get --params '{"meeting_id": "<meeting_id>", "with_participants": true}'
 ```
 
 ### minutes（跨域，详见 [lark-minutes](../lark-minutes/SKILL.md)）

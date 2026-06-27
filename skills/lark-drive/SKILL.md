@@ -4,8 +4,8 @@ version: 1.0.0
 description: "飞书云空间（云盘/云存储）：管理 Drive 文件和文件夹，包含上传/下载、创建文件夹、复制/移动/删除、查看元数据、评论/权限/订阅、标题、版本和本地文件导入。用户需要整理云盘目录、处理云空间资源 URL/token，或导入 Word/Markdown/Excel/CSV/PPTX/.base 为 docx/sheet/bitable/slides 时使用；doubao.com 云空间 URL/token 也按资源路径和 token 路由，不回退 WebFetch。不负责：文档内容编辑（走 lark-doc）、表格/Base 表内数据操作（走 lark-sheets/lark-base）、知识空间节点/成员管理（走 lark-wiki）、原生 Markdown 文件读写/patch/diff（走 lark-markdown）。"
 metadata:
   requires:
-    bins: ["lark-cli"]
-  cliHelp: "lark-cli drive --help"
+    bins: ["weact-cli"]
+  cliHelp: "weact-cli drive --help"
 ---
 
 # drive (v1)
@@ -14,28 +14,28 @@ metadata:
 
 > **术语说明：** 飞书云空间也常被称为"云盘"、"云存储"、"网盘"或"我的空间"，这些说法通常指的是同一个产品，是飞书官方的云端文件存储与管理中心。
 
-> **导入分流规则：** 如果用户要把本地 Excel / CSV / `.base` 快照导入成 Base / 多维表格 / bitable，必须优先使用 `lark-cli drive +import --type bitable`。不要先切到 `lark-base`；`lark-base` 只负责导入完成后的表内操作。
+> **导入分流规则：** 如果用户要把本地 Excel / CSV / `.base` 快照导入成 Base / 多维表格 / bitable，必须优先使用 `weact-cli drive +import --type bitable`。不要先切到 `lark-base`；`lark-base` 只负责导入完成后的表内操作。
 
 ## 快速决策
 
 - 用户要**检查 / 治理文档权限、公开范围、链接分享、外部访问、复制下载权限、密级标签、owner 转移**，或要“权限风险报告、收紧权限、申请查看 / 编辑权限、转移 / 批量转移 owner”，必须先阅读 [`references/lark-drive-workflow.md`](references/lark-drive-workflow.md)，再按其中 `Workflow Registry` 进入 [`permission_governance`](references/lark-drive-workflow-permission-governance.md) workflow。
 - 用户要**整理云盘 / 文件夹 / 文档库 / 知识库 / 个人文档库**，或要“盘点目录结构、找出未归档/临时/重复/空目录、生成整理方案”，必须先阅读 [`references/lark-drive-workflow-knowledge-organize.md`](references/lark-drive-workflow-knowledge-organize.md)。默认只生成方案；创建目录、移动资源、申请权限都必须单独确认。
-- 用户要**搜文档 / Wiki / 电子表格 / 多维表格 / 云空间（云盘/云存储）对象**，优先使用 `lark-cli drive +search`。自然语言里"最近我编辑过的"、"我创建的"（→ `--created-by-me`，原始创建者语义）、"我负责/owner 的"（→ `--mine`，owner 语义）、"最近一周我打开过的 xxx"、"某人 owner 的 docx" 等直接映射到扁平 flag，避免手写嵌套 JSON。
+- 用户要**搜文档 / Wiki / 电子表格 / 多维表格 / 云空间（云盘/云存储）对象**，优先使用 `weact-cli drive +search`。自然语言里"最近我编辑过的"、"我创建的"（→ `--created-by-me`，原始创建者语义）、"我负责/owner 的"（→ `--mine`，owner 语义）、"最近一周我打开过的 xxx"、"某人 owner 的 docx" 等直接映射到扁平 flag，避免手写嵌套 JSON。
 - 用户要**根据文档评论定位正文位置**，例如 根据评论 review 文档、根据评论内容回看文档、区分多处相同引用文本时，对于 docx 类型（`file_type=docx`）的文档支持通过 `need_relation=true` 返回评论位置，其他类型暂不支持，具体用法需要先阅读 [`references/lark-drive-comment-location.md`](references/lark-drive-comment-location.md) 了解。
 - 用户给出 doubao.com 的云空间资源 URL/token，或明确提到豆包里的 file/folder/docx/sheet/bitable/wiki 资源时，仍按资源类型、URL 路径和 token 路由到本 skill；不要因为域名不是飞书而回退到 WebFetch。
-- 用户要把本地 `.xlsx` / `.csv` / `.base` 导入成 Base / 多维表格 / bitable，第一步必须使用 `lark-cli drive +import --type bitable`。
-- 用户要把本地 `.md` / `.docx` / `.doc` / `.txt` / `.html` 导入成在线文档，使用 `lark-cli drive +import --type docx`。
-- 用户要把本地 `.pptx` 导入成飞书幻灯片，使用 `lark-cli drive +import --type slides`；当前 PPTX 导入上限是 500MB。
+- 用户要把本地 `.xlsx` / `.csv` / `.base` 导入成 Base / 多维表格 / bitable，第一步必须使用 `weact-cli drive +import --type bitable`。
+- 用户要把本地 `.md` / `.docx` / `.doc` / `.txt` / `.html` 导入成在线文档，使用 `weact-cli drive +import --type docx`。
+- 用户要把本地 `.pptx` 导入成飞书幻灯片，使用 `weact-cli drive +import --type slides`；当前 PPTX 导入上限是 500MB。
 - 用户要在 Drive 里上传、创建、读取、局部 patch 或覆盖更新**原生 `.md` 文件**（不是导入成 docx），切到 [`lark-markdown`](../lark-markdown/SKILL.md)。
-- 用户要比较原生 `.md` 文件的**历史版本差异**，或比较远端 Markdown 与本地草稿，切到 [`lark-markdown`](../lark-markdown/SKILL.md) 的 `lark-cli markdown +diff`；需要版本号时先用 `drive +version-history`。
+- 用户要比较原生 `.md` 文件的**历史版本差异**，或比较远端 Markdown 与本地草稿，切到 [`lark-markdown`](../lark-markdown/SKILL.md) 的 `weact-cli markdown +diff`；需要版本号时先用 `drive +version-history`。
 - 用户要查看、下载、回滚或删除文件的**历史版本**，使用 `drive +version-history`、`drive +version-get`、`drive +version-revert`、`drive +version-delete`；这组命令同时支持 `--as user` 和 `--as bot`，自动化场景优先 `--as bot`。
-- 用户要把本地 `.xlsx` / `.xls` / `.csv` 导入成电子表格，使用 `lark-cli drive +import --type sheet`。
-- 用户要在云空间（云盘/云存储）里新建文件夹，优先使用 `lark-cli drive +create-folder`。
-- 用户要查看某个文件有哪些可下载预览格式，或想下载 PDF / HTML / 文本 / 图片等预览产物，使用 `lark-cli drive +preview`。
-- 用户要获取某个文件的封面图，优先使用 `lark-cli drive +cover`；先 `--list-only` 看规格，再选 `--spec` 下载。
-- 用户要把本地文件上传到知识库 / 文档库里的某个 wiki 节点下时，仍然使用 `lark-cli drive +upload --wiki-token <wiki_token>`；不要误切到 `wiki` 域命令。
+- 用户要把本地 `.xlsx` / `.xls` / `.csv` 导入成电子表格，使用 `weact-cli drive +import --type sheet`。
+- 用户要在云空间（云盘/云存储）里新建文件夹，优先使用 `weact-cli drive +create-folder`。
+- 用户要查看某个文件有哪些可下载预览格式，或想下载 PDF / HTML / 文本 / 图片等预览产物，使用 `weact-cli drive +preview`。
+- 用户要获取某个文件的封面图，优先使用 `weact-cli drive +cover`；先 `--list-only` 看规格，再选 `--spec` 下载。
+- 用户要把本地文件上传到知识库 / 文档库里的某个 wiki 节点下时，仍然使用 `weact-cli drive +upload --wiki-token <wiki_token>`；不要误切到 `wiki` 域命令。
 - `lark-base` 只负责导入完成后的 Base 内部操作（表、字段、记录、视图），不要在“本地文件 -> Base”这一步提前切到 `lark-base`。
-- 用户给的是 wiki URL / token，且后续还没明确底层资源类型时，先用 `lark-cli drive +inspect` 解包；`+inspect` 失败后不要自动切到别的写接口继续尝试，先按错误提示处理权限、scope 或链接问题。
+- 用户给的是 wiki URL / token，且后续还没明确底层资源类型时，先用 `weact-cli drive +inspect` 解包；`+inspect` 失败后不要自动切到别的写接口继续尝试，先按错误提示处理权限、scope 或链接问题。
 - `drive +inspect` / `drive +upload` 遇到 `not found`、`permission denied`、`missing scope` 时，默认停止重试；只有 `rate limit` 或临时网络错误才适合有限重试。
 
 ## 修改标题
@@ -60,7 +60,7 @@ metadata:
 ### Wiki 链接特殊处理
 
 ```bash
-lark-cli drive +inspect --url 'https://xxx.feishu.cn/wiki/wikcnXXX'
+weact-cli drive +inspect --url 'https://xxx.weact.cn/wiki/wikcnXXX'
 ```
 
 知识库链接背后可能是 docx、sheet、bitable、slides、file 等不同对象。后续要做评论、下载、导出或内容读取时，优先用 `drive +inspect` 拿到 `type`、`token`、`title`、`url`；完整手动解析和跨 skill 路由见共享文档 [`lark-wiki-token-routing.md`](../lark-shared/references/lark-wiki-token-routing.md)。不要只根据 `/wiki/<token>` 猜底层类型。
@@ -89,7 +89,7 @@ lark-cli drive +inspect --url 'https://xxx.feishu.cn/wiki/wikcnXXX'
 - Base 记录局部评论使用 `--type bitable` / `--type base` 或 `/base/`、`/bitable/`、wiki Base 链接；`bitable` 和 Base 是同一概念，`bitable` 是内部代号、Base 是产品名，裸 token 推荐传 `bitable`，`base` 仅作为兼容别名兜底。
 - Base 不支持全局评论，所有评论都挂在记录上；定位信息必须是 file token（base token）+ `--block-id <table-id>!<record-id>!<view-id>`，其中 table/record/view ID 通常分别以 `tbl`/`rec`/`vew` 开头。view_id 只决定被提及时点击通知打开哪个视图，不影响评论挂载点；只要在同一记录上都能看到评论，但必须传，否则通知无法确定跳转视图。ID 可通过 [`lark-base`](../lark-base/SKILL.md) 获取。
 - 如果 wiki 解析后不是 `doc`/`docx`/`file`/`sheet`/`slides`/`bitable`/`base`，不要用 `+add-comment`。
-- 如果需要更底层地直接调用评论 V2 协议，再走原生 API：先执行 `lark-cli schema drive.file.comments.create_v2`，再执行 `lark-cli drive file.comments create_v2 ...`。全文评论省略 `anchor`；docx/sheet/slides 局部评论传 `anchor.block_id`，Base 记录局部评论传 `anchor.block_id`（table_id）、`anchor.base_record_id`、`anchor.base_view_id`。
+- 如果需要更底层地直接调用评论 V2 协议，再走原生 API：先执行 `weact-cli schema drive.file.comments.create_v2`，再执行 `weact-cli drive file.comments create_v2 ...`。全文评论省略 `anchor`；docx/sheet/slides 局部评论传 `anchor.block_id`，Base 记录局部评论传 `anchor.block_id`（table_id）、`anchor.base_record_id`、`anchor.base_view_id`。
 - 直接调用原生 `drive.file.comments.*` / `drive.file.comment.replys.*` 评论 Base 文档时，`file_type` 填 `bitable`，不要填 `base`。
 
 ### 典型错误与解决方案
@@ -116,7 +116,7 @@ lark-cli drive +inspect --url 'https://xxx.feishu.cn/wiki/wikcnXXX'
 
 ## Shortcuts（推荐优先使用）
 
-Shortcut 是对常用操作的高级封装（`lark-cli drive +<verb> [flags]`）。有 Shortcut 的操作优先使用。
+Shortcut 是对常用操作的高级封装（`weact-cli drive +<verb> [flags]`）。有 Shortcut 的操作优先使用。
 
 | Shortcut | 说明 |
 |----------|----------|
@@ -151,8 +151,8 @@ Shortcut 是对常用操作的高级封装（`lark-cli drive +<verb> [flags]`）
 ## API Resources
 
 ```bash
-lark-cli schema drive.<resource>.<method>   # 调用 API 前必须先查看参数结构
-lark-cli drive <resource> <method> [flags] # 调用 API
+weact-cli schema drive.<resource>.<method>   # 调用 API 前必须先查看参数结构
+weact-cli drive <resource> <method> [flags] # 调用 API
 ```
 
 > **重要**：使用原生 API 时，必须先运行 `schema` 查看 `--data` / `--params` 参数结构，不要猜测字段格式。

@@ -42,7 +42,7 @@ func profileUseRun(f *cmdutil.Factory, name string) error {
 	if name == "-" {
 		if multi.PreviousApp == "" {
 			return errs.NewValidationError(errs.SubtypeFailedPrecondition, "no previous profile to switch back to").
-				WithHint("switch to a profile by name first: lark-cli profile use <name>")
+				WithHint("switch to a profile by name first: weact-cli profile use <name>")
 		}
 		name = multi.PreviousApp
 	}

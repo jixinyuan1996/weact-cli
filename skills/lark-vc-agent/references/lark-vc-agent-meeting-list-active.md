@@ -2,16 +2,16 @@
 
 列出当前进行中的会议，用来发现 `+meeting-events` 需要的长数字 `meeting_id`。
 
-本 skill 对应 shortcut：`lark-cli vc +meeting-list-active`（调用 `GET /open-apis/vc/v1/bots/user_active_meeting`）。
+本 skill 对应 shortcut：`weact-cli vc +meeting-list-active`（调用 `GET /open-apis/vc/v1/bots/user_active_meeting`）。
 
 ## 命令
 
 ```bash
 # 查询当前登录用户正在参加的会议
-lark-cli vc +meeting-list-active --as user --format json
+weact-cli vc +meeting-list-active --as user --format json
 
 # 查询指定用户当前参加、且应用机器人也在会中的会议
-lark-cli vc +meeting-list-active --as bot --user-id ou_xxx --format json
+weact-cli vc +meeting-list-active --as bot --user-id ou_xxx --format json
 ```
 
 ## 参数
@@ -37,16 +37,16 @@ lark-cli vc +meeting-list-active --as bot --user-id ou_xxx --format json
 
 ```bash
 # 方式 1：先让应用机器人入会，直接从 join 响应拿 meeting.id
-lark-cli vc +meeting-join --as bot --meeting-number 123456789 --format json
-lark-cli vc +meeting-events --as bot --meeting-id <meeting.id> --page-all --format pretty
+weact-cli vc +meeting-join --as bot --meeting-number 123456789 --format json
+weact-cli vc +meeting-events --as bot --meeting-id <meeting.id> --page-all --format pretty
 
 # 方式 2：应用机器人已经在会中时，用应用身份发现 meeting_id
-lark-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format json
-lark-cli vc +meeting-events --as bot --meeting-id <meeting_id> --page-all --format pretty
+weact-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format json
+weact-cli vc +meeting-events --as bot --meeting-id <meeting_id> --page-all --format pretty
 
 # 方式 3：只回答当前登录用户所在会议发生了什么
-lark-cli vc +meeting-list-active --as user --format json
-lark-cli vc +meeting-events --as user --meeting-id <meeting_id> --page-all --format pretty
+weact-cli vc +meeting-list-active --as user --format json
+weact-cli vc +meeting-events --as user --meeting-id <meeting_id> --page-all --format pretty
 ```
 
 ## 多会议选择
@@ -61,10 +61,10 @@ lark-cli vc +meeting-events --as user --meeting-id <meeting_id> --page-all --for
 
 ```bash
 # 用户问“我当前这个会讲了什么”
-lark-cli vc +meeting-list-active --as user --format json
+weact-cli vc +meeting-list-active --as user --format json
 
 # 用户问“让应用机器人所在/可见的这个会讲了什么”
-lark-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format json
+weact-cli vc +meeting-list-active --as bot --user-id <user_open_id> --format json
 ```
 
 匹配规则：

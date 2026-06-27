@@ -27,7 +27,7 @@
 
 **多图表需求**：当用户同时提到多种分析（如"统计占比 + 对比数量"），必须创建多个图表，每个对应一种类型，不要只做一个。
 
-**`--properties` 结构锚点（构造前必读）**：`--properties` 顶层只有 `position` / `offset` / `size` / `snapshot` 四个字段，**没有**顶层 `data`，也没有再嵌一层 `properties`。图表数据配置全部挂在 `snapshot.data` 下——下文及示例里出现的 `refs` / `headerMode` / `dim1` / `dim2` / `nameRef` 一律指 `snapshot.data.refs` / `snapshot.data.headerMode` / `snapshot.data.dim1` / `snapshot.data.dim2`（及其下的 `serie.nameRef` / `series[].nameRef`）；样式 / 堆叠 / 数据标签等在 `snapshot.plotArea` 下。完整结构以 `lark-cli sheets +chart-create --print-schema --flag-name properties` 为准。
+**`--properties` 结构锚点（构造前必读）**：`--properties` 顶层只有 `position` / `offset` / `size` / `snapshot` 四个字段，**没有**顶层 `data`，也没有再嵌一层 `properties`。图表数据配置全部挂在 `snapshot.data` 下——下文及示例里出现的 `refs` / `headerMode` / `dim1` / `dim2` / `nameRef` 一律指 `snapshot.data.refs` / `snapshot.data.headerMode` / `snapshot.data.dim1` / `snapshot.data.dim2`（及其下的 `serie.nameRef` / `series[].nameRef`）；样式 / 堆叠 / 数据标签等在 `snapshot.plotArea` 下。完整结构以 `weact-cli sheets +chart-create --print-schema --flag-name properties` 为准。
 
 **常见配置错误（必须注意）**：
 - **图表类型选择错误**：用户说"堆积柱形图/百分比堆积"时，应在 `properties.snapshot.plotArea.plot.extra.stack` 中配置堆叠；百分比堆叠需在该 stack 下设置 `percentage: true`。用户说"占比/比例"时，优先考虑饼图或百分比堆积图。注意区分 `column`（柱形图，纵向）与 `bar`（条形图，横向）是两个不同的 type 取值，"对比/各 XX" 类纵向柱默认用 `column`
@@ -172,7 +172,7 @@ _创建/更新的图表属性_
 最小可用列图（inline 模式：refs 含表头行）：
 
 ```bash
-lark-cli sheets +chart-create --url "https://example.feishu.cn/sheets/shtXXX" \
+weact-cli sheets +chart-create --url "https://example.weact.cn/sheets/shtXXX" \
   --sheet-name "Sheet1" --properties - <<'JSON'
 {
   "position":{"row":42,"col":"A"},
@@ -189,7 +189,7 @@ lark-cli sheets +chart-create --url "https://example.feishu.cn/sheets/shtXXX" \
 JSON
 
 # 或落到 cwd 下相对路径文件再用 @file
-lark-cli sheets +chart-create --url "..." --sheet-name "Sheet1" --properties @chart-config.json
+weact-cli sheets +chart-create --url "..." --sheet-name "Sheet1" --properties @chart-config.json
 ```
 
 **饼图专属示例**（`sectors` 必须嵌在 `plotArea.plot.series[i].sectors.sector[]`，且 `sector[].index` 1-based）：
@@ -197,7 +197,7 @@ lark-cli sheets +chart-create --url "..." --sheet-name "Sheet1" --properties @ch
 饼图比 column / bar 更复杂：`sectors` 是 object，里面再包一个**单数** `sector` 数组——CLI 不替你 normalize，写错路径会被 server schema 直接拒。
 
 ```bash
-lark-cli sheets +chart-create --url "..." --sheet-name "Sheet1" --properties - <<'JSON'
+weact-cli sheets +chart-create --url "..." --sheet-name "Sheet1" --properties - <<'JSON'
 {
   "position":{"row":24,"col":"F"},
   "size":{"width":600,"height":450},
@@ -225,7 +225,7 @@ JSON
 场景：周度销量明细表，真实表头在第 1 行（A1=周次、C1=订单量、D1=退款量），数据按 B 列"店铺"分段；用户只要"3 号店"那一段（第 11–17 行）。
 
 ```bash
-lark-cli sheets +chart-create --url "..." --sheet-name "Sheet2" --properties - <<'JSON'
+weact-cli sheets +chart-create --url "..." --sheet-name "Sheet2" --properties - <<'JSON'
 {
   "position":{"row":7,"col":"F"},
   "size":{"width":600,"height":360},
@@ -297,7 +297,7 @@ JSON
 3. 把**完整 snapshot** 整个回写到 `--properties.snapshot`
 
 ```bash
-lark-cli sheets +chart-update --url "..." --sheet-id "$SID" --chart-id "chrXXX" \
+weact-cli sheets +chart-update --url "..." --sheet-id "$SID" --chart-id "chrXXX" \
   --properties '{
     "position":{"row":0,"col":"A"},
     "size":{"width":480,"height":320},
@@ -313,11 +313,11 @@ lark-cli sheets +chart-update --url "..." --sheet-id "$SID" --chart-id "chrXXX" 
 
 ```bash
 # dry-run 先看会删什么（sheet 定位必填）
-lark-cli sheets +chart-delete --url "https://example.feishu.cn/sheets/shtXXX" --sheet-id "$SID" \
+weact-cli sheets +chart-delete --url "https://example.weact.cn/sheets/shtXXX" --sheet-id "$SID" \
   --chart-id "chrXXX" --dry-run
 
 # 真正执行
-lark-cli sheets +chart-delete --url "https://example.feishu.cn/sheets/shtXXX" --sheet-id "$SID" \
+weact-cli sheets +chart-delete --url "https://example.weact.cn/sheets/shtXXX" --sheet-id "$SID" \
   --chart-id "chrXXX" --yes
 ```
 

@@ -8,8 +8,8 @@ const os = require("os");
 const crypto = require("crypto");
 
 const VERSION = require("../package.json").version.replace(/-.*$/, "");
-const REPO = "larksuite/cli";
-const NAME = "lark-cli";
+const REPO = "jixinyuan1996/weact-cli";
+const NAME = "weact-cli";
 const DEFAULT_MIRROR_HOST = "https://registry.npmmirror.com";
 // Allowlist gates the *initial* request URL only. curl --location follows
 // redirects (capped by --max-redirs 3) without re-checking the target host.
@@ -61,7 +61,7 @@ const dest = path.join(binDir, NAME + (isWindows ? ".exe" : ""));
 // Non-https / malformed npm_config_registry is silently ignored so npm users
 // with http-only internal registries don't have their installs broken.
 function resolveMirrorUrls(env, archive, version) {
-  const binaryPath = `/-/binary/lark-cli/v${version}/${archive}`;
+  const binaryPath = `/-/binary/weact-cli/v${version}/${archive}`;
   const defaultUrl = joinUrl(DEFAULT_MIRROR_HOST, binaryPath);
 
   const urls = [];
@@ -336,9 +336,9 @@ if (require.main === module) {
       `\nIf you are behind a firewall or in a restricted network, try one of:\n` +
       `  # 1. Use a proxy:\n` +
       `  export https_proxy=http://your-proxy:port\n` +
-      `  npm install -g @larksuite/cli\n\n` +
-      `  # 2. Point to a corporate npm mirror that proxies /-/binary/lark-cli/...:\n` +
-      `  npm install -g @larksuite/cli --registry=https://your-corp-mirror/`
+      `  npm install -g @weact/cli\n\n` +
+      `  # 2. Point to a corporate npm mirror that proxies /-/binary/weact-cli/...:\n` +
+      `  npm install -g @weact/cli --registry=https://your-corp-mirror/`
     );
     process.exit(1);
   }

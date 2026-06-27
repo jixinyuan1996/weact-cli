@@ -9,38 +9,38 @@
 
 ```bash
 # 默认：收件箱邮件（默认 20 条，默认table 格式）
-lark-cli mail +triage
+weact-cli mail +triage
 
 # 查看收件箱未读
-lark-cli mail +triage --filter '{"folder":"inbox","is_unread":true}'
+weact-cli mail +triage --filter '{"folder":"inbox","is_unread":true}'
 
 # 全文搜索
-lark-cli mail +triage --query "合同审批"
+weact-cli mail +triage --query "合同审批"
 
 # 按发件人 / 主题搜索
-lark-cli mail +triage --filter '{"from":["boss@example.com"],"subject":"季度报告"}'
+weact-cli mail +triage --filter '{"from":["boss@example.com"],"subject":"季度报告"}'
 
 # 按时间范围搜索（如"上周的邮件"）
-lark-cli mail +triage --query "项目评审" --filter '{"time_range":{"start_time":"2026-03-16T00:00:00+08:00","end_time":"2026-03-22T23:59:59+08:00"}}'
+weact-cli mail +triage --query "项目评审" --filter '{"time_range":{"start_time":"2026-03-16T00:00:00+08:00","end_time":"2026-03-22T23:59:59+08:00"}}'
 
 # 指定文件夹
-lark-cli mail +triage --filter '{"folder":"sent"}'
+weact-cli mail +triage --filter '{"folder":"sent"}'
 
 # 系统标签（可通过 folder 或 label 传入，搜索时自动转为 folder）
-lark-cli mail +triage --filter '{"folder":"flagged"}'
-lark-cli mail +triage --filter '{"label":"important"}'
-lark-cli mail +triage --filter '{"label":"重要邮件"}'
+weact-cli mail +triage --filter '{"folder":"flagged"}'
+weact-cli mail +triage --filter '{"label":"important"}'
+weact-cli mail +triage --filter '{"label":"重要邮件"}'
 
 # json/data 格式可配合 jq 处理
-lark-cli mail +triage --format json | jq '.messages[].subject'
+weact-cli mail +triage --format json | jq '.messages[].subject'
 
 # 分页：先取 10 条，再用 page_token 翻页
-lark-cli mail +triage --max 10 --format json
+weact-cli mail +triage --max 10 --format json
 # 输出中包含 page_token，传入下一次请求
-lark-cli mail +triage --page-token 'list:FfccvoqPd...' --max 10 --format json
+weact-cli mail +triage --page-token 'list:FfccvoqPd...' --max 10 --format json
 
 # --page-size 是 --max 的别名
-lark-cli mail +triage --page-size 10
+weact-cli mail +triage --page-size 10
 ```
 
 ## 参数

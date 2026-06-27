@@ -23,7 +23,7 @@ func methodLong(description, affordance, schemaPath, paramsOnly string) string {
 		b.WriteString("\n\n")
 		b.WriteString(affordance)
 	}
-	fmt.Fprintf(&b, "\n\nView parameter definitions before calling:\n  lark-cli schema %s", schemaPath)
+	fmt.Fprintf(&b, "\n\nView parameter definitions before calling:\n  weact-cli schema %s", schemaPath)
 	b.WriteString(paramsOnly)
 	return b.String()
 }

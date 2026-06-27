@@ -8,14 +8,14 @@
 
 ```bash
 # 更新一个问题的标题
-lark-cli base +form-questions-update \
+weact-cli base +form-questions-update \
   --base-token <base_token> \
   --table-id <table_id> \
   --form-id <form_id> \
   --questions '[{"id":"q_001","title":"您的真实姓名是？"}]'
 
 # 同时更新多个问题
-lark-cli base +form-questions-update \
+weact-cli base +form-questions-update \
   --base-token <base_token> \
   --table-id <table_id> \
   --form-id <form_id> \
@@ -25,13 +25,13 @@ lark-cli base +form-questions-update \
   ]'
   
 # 更新问题描述（纯文本）
-lark-cli base +form-questions-update \
+weact-cli base +form-questions-update \
   --base-token <base_token> \
   --table-id <table_id> \
   --form-id <form_id> \
   --questions '[{"id":"q_001","description":"请填写您的真实姓名"}]'
 # 更新问题描述（含链接）
-lark-cli base +form-questions-update \
+weact-cli base +form-questions-update \
   --base-token <base_token> \
   --table-id <table_id> \
   --form-id <form_id> \

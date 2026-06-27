@@ -5,12 +5,12 @@
 ## 推荐命令
 
 ```bash
-lark-cli base +record-history-list \
+weact-cli base +record-history-list \
   --base-token <base_token> \
   --table-id <table_id> \
   --record-id <record_id>
 
-lark-cli base +record-history-list \
+weact-cli base +record-history-list \
   --base-token <base_token> \
   --table-id <table_id> \
   --record-id <record_id> \

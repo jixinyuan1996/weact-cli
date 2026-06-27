@@ -9,7 +9,7 @@
 ## 命令
 
 ```bash
-lark-cli slides +screenshot --as user \
+weact-cli slides +screenshot --as user \
   --presentation '<xml_presentation_id 或 slides/wiki URL>' \
   --slide-number 1
 ```
@@ -17,7 +17,7 @@ lark-cli slides +screenshot --as user \
 渲染本地 XML 内容：
 
 ```bash
-lark-cli slides +screenshot --as user \
+weact-cli slides +screenshot --as user \
   --content @slide.xml
 ```
 
@@ -37,7 +37,7 @@ lark-cli slides +screenshot --as user \
 ### 单页截图
 
 ```bash
-lark-cli slides +screenshot --as user \
+weact-cli slides +screenshot --as user \
   --presentation slides_example_presentation_id \
   --slide-number 1
 ```
@@ -45,7 +45,7 @@ lark-cli slides +screenshot --as user \
 ### 多页截图
 
 ```bash
-lark-cli slides +screenshot --as user \
+weact-cli slides +screenshot --as user \
   --presentation slides_example_presentation_id \
   --slide-number 1 \
   --slide-number 2 \
@@ -55,7 +55,7 @@ lark-cli slides +screenshot --as user \
 ### 渲染 XML 预览
 
 ```bash
-lark-cli slides +screenshot --as user \
+weact-cli slides +screenshot --as user \
   --content @.lark-slides/out/demo/slide.xml \
   --output-name preview
 ```

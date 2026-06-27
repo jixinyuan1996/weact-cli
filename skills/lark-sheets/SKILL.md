@@ -4,9 +4,9 @@ version: 3.0.0
 description: "飞书电子表格：创建和操作电子表格。支持创建表格、管理工作表与行列结构（增删/合并/调整尺寸/隐藏/冻结）、读写单元格（值/公式/样式/批注/单元格图片）、查找替换、多操作原子批量更新，以及图表、透视表、条件格式、筛选器、迷你图、浮动图片等对象的创建与维护。当用户需要创建电子表格、管理工作表、批量读写或编辑数据、统计汇总与可视化、表格美化、公式计算（含 Excel 公式迁移）、金融/财务建模（DCF、三张表、预算、Sensitivity 等）等任务时使用。若用户是想按名称或关键词搜索云空间（云盘/云存储）里的表格文件，请改用 lark-drive 的 drive +search 先定位资源。当用户给出 doubao.com 的 /sheets/ URL/token 时，也应直接使用本 skill，不要因为域名不是飞书而回退到 WebFetch；路由依据是 URL 路径模式和 token，而不是域名。"
 metadata:
   requires:
-    bins: ["lark-cli"]
+    bins: ["weact-cli"]
     siblings: ["lark-shared"]
-  cliHelp: "lark-cli sheets --help"
+  cliHelp: "weact-cli sheets --help"
 ---
 
 # sheets
@@ -126,10 +126,10 @@ metadata:
 **统一调用范式**（公共四件套 shortcut 的所有示例都遵循此形状，两组定位缺一不可）：
 
 ```bash
-lark-cli sheets <shortcut> <workbook 定位> <sheet 定位> <其它 flag>
+weact-cli sheets <shortcut> <workbook 定位> <sheet 定位> <其它 flag>
 #   workbook 定位：--url "..."        或 --spreadsheet-token "..."           （二选一，必给）
 #   sheet 定位：    --sheet-id "$SID"  或 --sheet-name "<真实表名>"            （二选一，必给；占位符不要原样填）
-# 例：lark-cli sheets +csv-get --url "https://.../sheets/shtXXX" --sheet-name "<真实表名>" --range "A1:F30"
+# 例：weact-cli sheets +csv-get --url "https://.../sheets/shtXXX" --sheet-name "<真实表名>" --range "A1:F30"
 # 注意：真实表名不要直接填 "Sheet1"——大多数表的子表不叫这个；先 +workbook-info 拿 sheets[].title 再代入。
 ```
 
@@ -142,7 +142,7 @@ lark-cli sheets <shortcut> <workbook 定位> <sheet 定位> <其它 flag>
 | `--print-schema` | bool | 否 | 本地打印复合 JSON flag 的 JSON Schema 并退出，不发起任何调用、不需要其它 required flag。与 `--flag-name <name>` 搭配指定要查哪个 flag；省略 `--flag-name` 时列出该 shortcut 所有可查询的 flag。**仅在 shortcut 含复合 JSON flag 时有效**——判断方法：该 shortcut 的 Flags 表里出现类型标注为「复合 JSON」的 flag（如 `--cells` / `--properties` / `--operations` / `--border-styles` / `--sort-keys` / `--options`）即支持；纯标量 flag 的 shortcut 不支持。 |
 | `--flag-name` | string | 否 | 配合 `--print-schema` 使用，指定要打印 JSON Schema 的 flag 名（不带 `--` 前缀，如 `cells` / `properties` / `operations`）。 |
 
-**Agent 使用提示**：写复合 JSON flag（`--cells` / `--properties` / `--operations` / `--border-styles` / `--sort-keys` / `--options` 等）时，如果对结构不确定，先跑 `lark-cli sheets <shortcut> --print-schema --flag-name <name>` 把完整 JSON Schema 读出来再构造 payload，比靠 reference 的速查表更精确，也避免因为字段拼写或缺失被服务端拒绝。reference 的 `## Schemas` 段只给一层结构，深层只能靠 `--print-schema` 或 `## Examples` 的真实示例。
+**Agent 使用提示**：写复合 JSON flag（`--cells` / `--properties` / `--operations` / `--border-styles` / `--sort-keys` / `--options` 等）时，如果对结构不确定，先跑 `weact-cli sheets <shortcut> --print-schema --flag-name <name>` 把完整 JSON Schema 读出来再构造 payload，比靠 reference 的速查表更精确，也避免因为字段拼写或缺失被服务端拒绝。reference 的 `## Schemas` 段只给一层结构，深层只能靠 `--print-schema` 或 `## Examples` 的真实示例。
 
 ### flag 内容类型与输出约定（术语速记）
 
@@ -157,7 +157,7 @@ flag 帮助里标注支持 **Stdin** 的入参，当 payload 较大、含换行 
 
 ```bash
 # TMPFILE 指向系统临时目录下的 payload 文件（脚本里用 tempfile.gettempdir() / os.tmpdir() 等取临时目录）
-lark-cli sheets +cells-set --url "..." --sheet-name "Sheet1" --range "A1:B2" --cells - < "$TMPFILE"
+weact-cli sheets +cells-set --url "..." --sheet-name "Sheet1" --range "A1:B2" --cells - < "$TMPFILE"
 ```
 
 **参数含特殊字符（`!` / 引号 / 空格 / 非 ASCII）时，用单引号包裹该参数即可，不要起手 `set +H` 之类的 shell 开关来防转义。** `set +H`（关 bash history expansion）在 `sh` / `dash` 下是非法选项（`set: Illegal option -H`）、会让整条命令直接失败；而单引号挡得住 `!` 的 history expansion（否则报 `event not found`），对 bash 与 `sh` / `dash` 一致安全。参数本身含单引号、或 payload 较大时，按上文走 stdin。

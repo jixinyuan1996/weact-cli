@@ -63,20 +63,20 @@
 
 ```bash
 # 简单文本替换
-lark-cli docs +update --doc "<doc_id>" --command str_replace \
+weact-cli docs +update --doc "<doc_id>" --command str_replace \
   --pattern "张三" --content "李四"
 
 # 替换为富文本（加粗 + 链接）
-lark-cli docs +update --doc "<doc_id>" --command str_replace \
+weact-cli docs +update --doc "<doc_id>" --command str_replace \
   --pattern "旧链接" --content '<b>新链接</b> <a href="https://example.com">点击查看</a>'
 
 # 仅当用户明确要求时才使用 Markdown
-lark-cli docs +update --doc "<doc_id>" --command str_replace \
+weact-cli docs +update --doc "<doc_id>" --command str_replace \
   --doc-format markdown --pattern "旧内容" --content "新内容"
 
 # Markdown 模式下支持跨行匹配（--pattern 与 --content 都需要真实换行；"..."/'...' 里的 \n 是字面量）
 # 多行内容推荐 heredoc 或 --content @file.md，避免 shell 转义踩坑
-lark-cli docs +update --doc "<doc_id>" --command str_replace \
+weact-cli docs +update --doc "<doc_id>" --command str_replace \
   --doc-format markdown \
   --pattern "$(printf '## 旧标题\n\n第一段原文\n\n第二段原文')" \
   --content - <<'EOF'
@@ -89,7 +89,7 @@ EOF
 
 # Markdown 模式下使用 `前缀...后缀` 省略号匹配首尾特征明显的大段内容
 # 下例会把「## 旧标题」到「结束语。」之间的所有内容整体替换
-lark-cli docs +update --doc "<doc_id>" --command str_replace \
+weact-cli docs +update --doc "<doc_id>" --command str_replace \
   --doc-format markdown \
   --pattern "## 旧标题...结束语。" \
   --content - <<'EOF'
@@ -101,14 +101,14 @@ lark-cli docs +update --doc "<doc_id>" --command str_replace \
 EOF
 
 # 删除文本：--content 传空字符串即可
-lark-cli docs +update --doc "<doc_id>" --command str_replace \
+weact-cli docs +update --doc "<doc_id>" --command str_replace \
   --pattern "废弃的内容" --content ""
 ```
 
 ### block_insert_after — 在指定 block 之后插入
 
 ```bash
-lark-cli docs +update --doc "<doc_id>" --command block_insert_after \
+weact-cli docs +update --doc "<doc_id>" --command block_insert_after \
   --block-id "目标 block_id" \
   --content '<h2>新章节</h2><ul><li>要点 1</li><li>要点 2</li></ul>'
 ```
@@ -116,7 +116,7 @@ lark-cli docs +update --doc "<doc_id>" --command block_insert_after \
 ### block_replace — 替换指定 block
 
 ```bash
-lark-cli docs +update --doc "<doc_id>" --command block_replace \
+weact-cli docs +update --doc "<doc_id>" --command block_replace \
   --block-id "目标 block_id" \
   --content '<p>替换后的段落内容</p>'
 ```
@@ -125,14 +125,14 @@ lark-cli docs +update --doc "<doc_id>" --command block_replace \
 
 ```bash
 # 删除多个块时用逗号 "," 分隔
-lark-cli docs +update --doc "<doc_id>" --command block_delete \
+weact-cli docs +update --doc "<doc_id>" --command block_delete \
   --block-id "block_id_1,block_id_2,block_id_3"
 ```
 
 ### overwrite — 全文覆盖
 
 ```bash
-lark-cli docs +update --doc "<doc_id>" --command overwrite \
+weact-cli docs +update --doc "<doc_id>" --command overwrite \
   --content '<title>全新文档</title><h1>概述</h1><p>新的内容</p>'
 ```
 
@@ -141,7 +141,7 @@ lark-cli docs +update --doc "<doc_id>" --command overwrite \
 ### append — 在文档末尾追加
 
 ```bash
-lark-cli docs +update --doc "<doc_id>" --command append \
+weact-cli docs +update --doc "<doc_id>" --command append \
   --content '<h2>新增章节</h2><p>追加的内容</p>'
 ```
 
@@ -153,7 +153,7 @@ lark-cli docs +update --doc "<doc_id>" --command append \
 
 ```bash
 # 复制多个块（按顺序插入：anchor → a → b → c）
-lark-cli docs +update --doc "<doc_id>" --command block_copy_insert_after \
+weact-cli docs +update --doc "<doc_id>" --command block_copy_insert_after \
   --block-id "锚点 block_id" \
   --src-block-ids "block_a,block_b,block_c"
 ```
@@ -164,7 +164,7 @@ lark-cli docs +update --doc "<doc_id>" --command block_copy_insert_after \
 
 ```bash
 # 移动到页面末尾
-lark-cli docs +update --doc "<doc_id>" --command block_move_after \
+weact-cli docs +update --doc "<doc_id>" --command block_move_after \
   --block-id "-1表示末尾，page_id表示开头，blk" \
   --src-block-ids "block_a,block_b"
 ```
@@ -202,7 +202,7 @@ lark-cli docs +update --doc "<doc_id>" --command block_move_after \
 
 1. **获取文档内容和 block ID**：
    ```bash
-   lark-cli docs +fetch --doc "<doc_id>" --detail with-ids
+   weact-cli docs +fetch --doc "<doc_id>" --detail with-ids
    ```
 
 2. **定位目标 block**：从返回的 XML 中找到要修改的 block 及其 `id` 属性
@@ -210,11 +210,11 @@ lark-cli docs +update --doc "<doc_id>" --command block_move_after \
 3. **执行更新**：
    ```bash
    # 替换特定 block
-   lark-cli docs +update --doc "<doc_id>" --command block_replace \
+   weact-cli docs +update --doc "<doc_id>" --command block_replace \
      --block-id "blkcnXXXX" --content "<p>新内容</p>"
 
    # 在某 block 后插入
-   lark-cli docs +update --doc "<doc_id>" --command block_insert_after \
+   weact-cli docs +update --doc "<doc_id>" --command block_insert_after \
      --block-id "blkcnXXXX" --content "<h2>追加的章节</h2>"
    ```
 
@@ -223,7 +223,7 @@ lark-cli docs +update --doc "<doc_id>" --command block_move_after \
 不需要 block ID，直接匹配替换：
 
 ```bash
-lark-cli docs +update --doc "<doc_id>" --command str_replace \
+weact-cli docs +update --doc "<doc_id>" --command str_replace \
   --pattern "v1.0" --content "v2.0"
 ```
 

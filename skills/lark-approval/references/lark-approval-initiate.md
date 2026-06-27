@@ -5,7 +5,7 @@
 - **原生审批提单必须固定走 `approvals.search` -> `approvals.get` -> `instances.create`。** 不要跳过 `get` 直接拼请求。
 - **`is_external=true` 的定义是三方定义。** 这类定义不要调用 `instances.create`，应优先使用 `create_link`。
 - **所有人员类参数默认使用 `open_id`。** 若用户给的是姓名、邮箱或其他身份，先用 [`../../lark-contact/SKILL.md`](../../lark-contact/SKILL.md) 解析。
-- **先读控件参数 reference 和值来源 reference，再看 `schema`。** 提单前必须先阅读 [`lark-approval-instance-form-control-parameters.md`](./lark-approval-instance-form-control-parameters.md) 和 [`lark-approval-instance-value-sourcing.md`](./lark-approval-instance-value-sourcing.md)，并运行 `lark-cli schema approval.instances.create`。
+- **先读控件参数 reference 和值来源 reference，再看 `schema`。** 提单前必须先阅读 [`lark-approval-instance-form-control-parameters.md`](./lark-approval-instance-form-control-parameters.md) 和 [`lark-approval-instance-value-sourcing.md`](./lark-approval-instance-value-sourcing.md)，并运行 `weact-cli schema approval.instances.create`。
 - **`approvals.get.form` 不是创建 payload 的原样模板。** 它主要用于识别控件 `id`、`type`、选项值范围和明细子控件结构；真正的 `instances.create.data.form` 中，请求字段与节点字段以 `schema` / `meta` 为准，控件 `value` 结构以 [`lark-approval-instance-form-control-parameters.md`](./lark-approval-instance-form-control-parameters.md) 为准。
 - **节点参数只从 `node_list` 和 `schema` / `meta` 里取。** 节点 key 必须来自定义详情返回的节点标识；审批人/抄送人列表传用户 ID 时，要先与当前 `schema` 字段名和 ID 口径对齐，不要混用姓名或其他身份标识。
 - **看到 `need_approver=true` 就说明该节点需要发起人补充审批人。** 如果 `approver_chosen_multi=false`，该节点只允许一个 `open_id`。
@@ -36,8 +36,8 @@
 先用 `schema` 看参数，再搜索定义：
 
 ```bash
-lark-cli schema approval.approvals.search
-lark-cli approval approvals search --data '{"keyword":"请假"}'
+weact-cli schema approval.approvals.search
+weact-cli approval approvals search --data '{"keyword":"请假"}'
 ```
 
 处理规则：
@@ -52,8 +52,8 @@ lark-cli approval approvals search --data '{"keyword":"请假"}'
 拿到 `approval_code` 后，读取定义详情：
 
 ```bash
-lark-cli schema approval.approvals.get
-lark-cli approval approvals get \
+weact-cli schema approval.approvals.get
+weact-cli approval approvals get \
   --params '{"approval_code":"7C468A54-8745-2245-9675-08B7C63E7A85"}'
 ```
 
@@ -144,9 +144,9 @@ lark-cli approval approvals get \
 先看 `schema`，确认最终结构后再执行：
 
 ```bash
-lark-cli schema approval.instances.create
+weact-cli schema approval.instances.create
 
-lark-cli approval instances create \
+weact-cli approval instances create \
   --data '{
     "approval_code":"7C468A54-8745-2245-9675-08B7C63E7A85",
     "form":"[{\"id\":\"widget1\",\"type\":\"input\",\"value\":\"请假半天\"}]",
@@ -170,7 +170,7 @@ lark-cli approval instances create \
 
 优先级固定如下：
 
-1. `lark-cli schema approval.instances.create` 与对应 `meta`：决定创建请求体有哪些字段、节点参数怎么传。
+1. `weact-cli schema approval.instances.create` 与对应 `meta`：决定创建请求体有哪些字段、节点参数怎么传。
 2. [`lark-approval-instance-form-control-parameters.md`](./lark-approval-instance-form-control-parameters.md)：决定每种控件的 `value` 结构与支持范围。
 3. [`lark-approval-instance-value-sourcing.md`](./lark-approval-instance-value-sourcing.md)：决定每类值应该从哪里拿，以及当前哪些值必须由用户直接提供。
 4. `approvals.get.form`：提供当前审批定义里实际有哪些控件、控件 `id`、控件 `type`、选项值范围、明细子控件结构。

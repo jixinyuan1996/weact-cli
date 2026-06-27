@@ -2,7 +2,7 @@
 
 > **Prerequisite:** Read [`../lark-shared/SKILL.md`](../../lark-shared/SKILL.md) for authentication, global parameters, and security rules.
 
-This skill maps to shortcut: `lark-cli im +flag-list`. Underlying API: `GET /open-apis/im/v1/flags`.
+This skill maps to shortcut: `weact-cli im +flag-list`. Underlying API: `GET /open-apis/im/v1/flags`.
 
 ## Sorting Rules (Important)
 
@@ -14,25 +14,25 @@ Recommended: use `--page-all` for auto-pagination to get the complete list, then
 
 ```bash
 # Fetch first page (default page-size=50)
-lark-cli im +flag-list --as user
+weact-cli im +flag-list --as user
 
 # Manual pagination with custom page size
-lark-cli im +flag-list --as user --page-size 30 --page-token <page_token>
+weact-cli im +flag-list --as user --page-size 30 --page-token <page_token>
 
 # Auto-paginate to get all flags (recommended)
-lark-cli im +flag-list --as user --page-all
+weact-cli im +flag-list --as user --page-all
 
 # Auto-paginate + get the latest flag
-lark-cli im +flag-list --as user --page-all -q '.data.flag_items[-1]'
+weact-cli im +flag-list --as user --page-all -q '.data.flag_items[-1]'
 
 # Auto-paginate + get only item_id list
-lark-cli im +flag-list --as user --page-all -q '.data.flag_items[].item_id'
+weact-cli im +flag-list --as user --page-all -q '.data.flag_items[].item_id'
 
 # Disable auto-enrichment of message content (enabled by default)
-lark-cli im +flag-list --as user --page-all --enrich-feed-thread=false
+weact-cli im +flag-list --as user --page-all --enrich-feed-thread=false
 
 # Limit max pages (default 20, max 1000)
-lark-cli im +flag-list --as user --page-all --page-limit 10
+weact-cli im +flag-list --as user --page-all --page-limit 10
 ```
 
 ## Parameters

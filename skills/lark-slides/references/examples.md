@@ -18,7 +18,7 @@
 ## 示例 1: 使用 Shortcut 创建空白演示文稿
 
 ```bash
-lark-cli slides +create --title "项目汇报"
+weact-cli slides +create --title "项目汇报"
 ```
 
 预期返回结构：
@@ -36,9 +36,9 @@ lark-cli slides +create --title "项目汇报"
 ## 示例 2: 创建后添加第一页
 
 ```bash
-PRESENTATION_ID=$(lark-cli slides +create --title "季度复盘" | jq -r '.data.xml_presentation_id')
+PRESENTATION_ID=$(weact-cli slides +create --title "季度复盘" | jq -r '.data.xml_presentation_id')
 
-lark-cli slides xml_presentation.slide create --as user --params "{\"xml_presentation_id\":\"$PRESENTATION_ID\"}" --data '{
+weact-cli slides xml_presentation.slide create --as user --params "{\"xml_presentation_id\":\"$PRESENTATION_ID\"}" --data '{
   "slide": {
     "content": "<slide xmlns=\"http://www.larkoffice.com/sml/2.0\"><style><fill><fillColor color=\"rgb(245, 245, 245)\"/></fill></style><data><shape type=\"text\" topLeftX=\"80\" topLeftY=\"72\" width=\"760\" height=\"90\"><content textType=\"title\"><p>2024 Q3 季度复盘</p></content></shape><shape type=\"text\" topLeftX=\"80\" topLeftY=\"190\" width=\"520\" height=\"220\"><content textType=\"body\"><p>关键结论</p><ul><li><p>收入增长 30%</p></li><li><p>重点项目全部上线</p></li><li><p>用户满意度持续提升</p></li></ul></content></shape><shape type=\"rect\" topLeftX=\"660\" topLeftY=\"180\" width=\"180\" height=\"140\"><fill><fillColor color=\"rgba(100, 149, 237, 0.25)\"/></fill><border color=\"rgb(100, 149, 237)\" width=\"2\"/></shape></data><note><content textType=\"body\"><p>讲述时先给结论，再补充数据。</p></content></note></slide>"
   }
@@ -48,7 +48,7 @@ lark-cli slides xml_presentation.slide create --as user --params "{\"xml_present
 ## 示例 3: 读取 XML 内容
 
 ```bash
-lark-cli slides xml_presentations get --as user --params '{
+weact-cli slides xml_presentations get --as user --params '{
   "xml_presentation_id": "slides_example_presentation_id"
 }'
 ```
@@ -56,7 +56,7 @@ lark-cli slides xml_presentations get --as user --params '{
 提取 XML 内容：
 
 ```bash
-lark-cli slides xml_presentations get --as user --params '{
+weact-cli slides xml_presentations get --as user --params '{
   "xml_presentation_id": "slides_example_presentation_id"
 }' | jq -r '.data.xml_presentation.content'
 ```
@@ -80,7 +80,7 @@ lark-cli slides xml_presentations get --as user --params '{
 ## 示例 4: 在指定页面前插入新幻灯片
 
 ```bash
-lark-cli slides xml_presentation.slide create --as user --params '{
+weact-cli slides xml_presentation.slide create --as user --params '{
   "xml_presentation_id": "slides_example_presentation_id"
 }' --data '{
   "slide": {
@@ -106,7 +106,7 @@ lark-cli slides xml_presentation.slide create --as user --params '{
 ## 示例 5: 删除幻灯片
 
 ```bash
-lark-cli slides xml_presentation.slide delete --as user --params '{
+weact-cli slides xml_presentation.slide delete --as user --params '{
   "xml_presentation_id": "slides_example_presentation_id",
   "slide_id": "slide_example_id"
 }'
@@ -143,13 +143,13 @@ lark-cli slides xml_presentation.slide delete --as user --params '{
 先创建演示文稿：
 
 ```bash
-PRESENTATION_ID=$(lark-cli slides +create --title "从文件添加页面" | jq -r '.data.xml_presentation_id')
+PRESENTATION_ID=$(weact-cli slides +create --title "从文件添加页面" | jq -r '.data.xml_presentation_id')
 ```
 
 再用 `jq` 组装请求体，从文件添加页面：
 
 ```bash
-lark-cli slides xml_presentation.slide create --as user \
+weact-cli slides xml_presentation.slide create --as user \
   --params "{\"xml_presentation_id\":\"$PRESENTATION_ID\"}" \
   --data "$(jq -n --arg content "$(cat slide.xml)" '{slide:{content:$content}}')"
 ```
@@ -163,12 +163,12 @@ PID="slides_example_presentation_id"
 SID="slide_example_id"
 
 # 1. 上传图片拿 file_token
-TOKEN=$(lark-cli slides +media-upload --file ./pic.png --presentation "$PID" --as user \
+TOKEN=$(weact-cli slides +media-upload --file ./pic.png --presentation "$PID" --as user \
   | jq -r '.data.file_token')
 
 # 2. block_insert 到页面末尾（省略 insert_before_block_id）
 # 注：<img .../> 是自闭合标签，CLI 不会展开（只有 <shape/> 会被补 <content/>）
-lark-cli slides +replace-slide --as user \
+weact-cli slides +replace-slide --as user \
   --presentation "$PID" --slide-id "$SID" \
   --parts "$(jq -n --arg token "$TOKEN" \
     '[{action:"block_insert",insertion:("<img src=\""+$token+"\" topLeftX=\"500\" topLeftY=\"100\" width=\"200\" height=\"150\"/>")}]')"
@@ -193,7 +193,7 @@ lark-cli slides +replace-slide --as user \
 已知某块的 3 位 short element ID（从 `slide.get` 返回 XML 里读），整块换掉。`replacement` 根元素的 `id` 会由 CLI 自动注入为 `block_id`，无需手写；若写了 `<shape/>` 自闭合形式，CLI 也会自动补 `<content/>`。
 
 ```bash
-lark-cli slides +replace-slide --as user \
+weact-cli slides +replace-slide --as user \
   --presentation slides_example_presentation_id \
   --slide-id slide_example_id \
   --parts '[
@@ -227,7 +227,7 @@ lark-cli slides +replace-slide --as user \
 ### 获取最新 revision_id
 
 ```bash
-lark-cli slides xml_presentations get --as user --params '{
+weact-cli slides xml_presentations get --as user --params '{
   "xml_presentation_id": "slides_example_presentation_id"
 }' | jq '.data.xml_presentation.revision_id'
 ```
@@ -246,7 +246,7 @@ slides=(
 
 for slide_xml in "${slides[@]}"; do
   payload=$(jq -n --arg content "$slide_xml" '{slide:{content:$content}}')
-  lark-cli slides xml_presentation.slide create --as user --params "{\"xml_presentation_id\":\"$PRESENTATION_ID\"}" --data "$payload"
+  weact-cli slides xml_presentation.slide create --as user --params "{\"xml_presentation_id\":\"$PRESENTATION_ID\"}" --data "$payload"
 done
 ```
 

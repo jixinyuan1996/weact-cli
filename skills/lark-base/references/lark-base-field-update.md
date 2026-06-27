@@ -7,14 +7,14 @@
 ## 推荐命令
 
 ```bash
-lark-cli base +field-update \
+weact-cli base +field-update \
   --base-token <base_token> \
   --table-id <table_id> \
   --field-id <field_id> \
   --json '{"name":"状态","type":"select","multiple":false,"options":[{"name":"Todo","hue":"Blue","lightness":"Lighter"},{"name":"Doing","hue":"Orange","lightness":"Light"},{"name":"Done","hue":"Green","lightness":"Light"}]}' \
   --yes
 
-lark-cli base +field-update \
+weact-cli base +field-update \
   --base-token <base_token> \
   --table-id <table_id> \
   --field-id <field_id> \

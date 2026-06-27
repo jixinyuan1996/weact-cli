@@ -11,6 +11,9 @@ var Version = "DEV"
 // Date is the build date in YYYY-MM-DD format, set by -ldflags.
 var Date = ""
 
+// AppName is the CLI binary name, set by -ldflags at build time.
+var AppName = "weact-cli"
+
 func init() {
 	if Version == "DEV" {
 		if info, ok := debug.ReadBuildInfo(); ok && info.Main.Version != "(devel)" {

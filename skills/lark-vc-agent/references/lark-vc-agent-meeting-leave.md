@@ -3,19 +3,19 @@
 
 通过 `meeting_id` 离开当前身份所在的视频会议（bot leave）。这是一次**写操作**，会实际把当前身份从会议中移出。
 
-本 skill 对应 shortcut：`lark-cli vc +meeting-leave`（调用 `POST /open-apis/vc/v1/bots/leave`）。
+本 skill 对应 shortcut：`weact-cli vc +meeting-leave`（调用 `POST /open-apis/vc/v1/bots/leave`）。
 
 ## 命令
 
 ```bash
 # 通过 meeting_id 离会
-lark-cli vc +meeting-leave --as bot --meeting-id 69xxxxxxxxxxxxx28
+weact-cli vc +meeting-leave --as bot --meeting-id 69xxxxxxxxxxxxx28
 
 # 输出格式
-lark-cli vc +meeting-leave --as bot --meeting-id 69xxxxxxxxxxxxx28 --format json
+weact-cli vc +meeting-leave --as bot --meeting-id 69xxxxxxxxxxxxx28 --format json
 
 # 预览 API 调用（不实际离会）
-lark-cli vc +meeting-leave --as bot --meeting-id 69xxxxxxxxxxxxx28 --dry-run
+weact-cli vc +meeting-leave --as bot --meeting-id 69xxxxxxxxxxxxx28 --dry-run
 ```
 
 ## 参数
@@ -60,13 +60,13 @@ lark-cli vc +meeting-leave --as bot --meeting-id 69xxxxxxxxxxxxx28 --dry-run
 
 ```bash
 # 第 1 步：加入会议，记录 meeting.id
-lark-cli vc +meeting-join --as bot --meeting-number 123456789
+weact-cli vc +meeting-join --as bot --meeting-number 123456789
 
 # 第 2 步：在会中处理用户请求（如监听发言、记录信息等）
 # ...
 
 # 第 3 步：仅在用户明确要求退出 / 离开 / 结束参会时，使用上一步记录的 meeting.id 离会
-lark-cli vc +meeting-leave --as bot --meeting-id <meeting.id>
+weact-cli vc +meeting-leave --as bot --meeting-id <meeting.id>
 ```
 
 ### 场景 2：会后补拉产物（不需要离会）
@@ -75,7 +75,7 @@ lark-cli vc +meeting-leave --as bot --meeting-id <meeting.id>
 
 ```bash
 # 第 1 步：会议结束后进入 lark-vc 获取会议产物信息
-lark-cli vc +detail --meeting-ids <meeting.id>
+weact-cli vc +detail --meeting-ids <meeting.id>
 ```
 
 ## 常见错误与排查

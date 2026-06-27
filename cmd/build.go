@@ -159,8 +159,8 @@ func buildInternal(ctx context.Context, inv cmdutil.InvocationContext, opts ...B
 	}
 	f.SkillContent = embeddedSkillContent
 	rootCmd := &cobra.Command{
-		Use:     "lark-cli",
-		Short:   "Lark/Feishu CLI — OAuth authorization, UAT management, API calls",
+		Use:     build.AppName,
+		Short:   "WeAct CLI — OAuth authorization, UAT management, API calls",
 		Long:    rootLong,
 		Version: build.Version,
 	}

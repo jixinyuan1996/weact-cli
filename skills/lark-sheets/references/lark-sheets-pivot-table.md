@@ -117,7 +117,7 @@ _创建/更新的透视表属性_
 ### `+pivot-list`
 
 ```bash
-lark-cli sheets +pivot-list --url "..." --sheet-id "$SID"
+weact-cli sheets +pivot-list --url "..." --sheet-id "$SID"
 ```
 
 ### `+pivot-create`
@@ -139,11 +139,11 @@ lark-cli sheets +pivot-list --url "..." --sheet-id "$SID"
 
 ```bash
 # 策略 1（强烈推荐）：不传任何落点 flag → 后端自动新建子表，零覆盖风险
-lark-cli sheets +pivot-create --url "..." \
+weact-cli sheets +pivot-create --url "..." \
   --source "'Sheet1'!A1:D100" --properties @pivot.json
 
 # 策略 2：落进指定的已有目标子表（注意目标 sheet ≠ 源 sheet，否则要配 --target-position 避开源数据）
-lark-cli sheets +pivot-create --url "..." \
+weact-cli sheets +pivot-create --url "..." \
   --source "'Sheet1'!A1:D100" --target-sheet-id "$DEST_SID" --target-position "A1" --properties @pivot.json
 ```
 
@@ -154,7 +154,7 @@ lark-cli sheets +pivot-create --url "..." \
 ### `+pivot-delete`
 
 ```bash
-lark-cli sheets +pivot-delete --url "..." --sheet-id "$SID" --pivot-table-id "$PID" --yes
+weact-cli sheets +pivot-delete --url "..." --sheet-id "$SID" --pivot-table-id "$PID" --yes
 ```
 
 ### Validate / DryRun / Execute 约束

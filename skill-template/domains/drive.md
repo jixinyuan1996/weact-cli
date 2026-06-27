@@ -1,12 +1,12 @@
 
-> **导入分流规则：** 如果用户要把本地 Excel / CSV / `.base` 快照导入成 Base / 多维表格 / bitable，必须优先使用 `lark-cli drive +import --type bitable`。不要先切到 `lark-base`；`lark-base` 只负责导入完成后的表内操作。
+> **导入分流规则：** 如果用户要把本地 Excel / CSV / `.base` 快照导入成 Base / 多维表格 / bitable，必须优先使用 `weact-cli drive +import --type bitable`。不要先切到 `lark-base`；`lark-base` 只负责导入完成后的表内操作。
 
 ## 快速决策
 
-- 用户要把本地 `.xlsx` / `.csv` / `.base` 导入成 Base / 多维表格 / bitable，第一步必须使用 `lark-cli drive +import --type bitable`。
-- 用户要把本地 `.md` / `.docx` / `.doc` / `.txt` / `.html` 导入成在线文档，使用 `lark-cli drive +import --type docx`。
-- 用户要把本地 `.xlsx` / `.xls` / `.csv` 导入成电子表格，使用 `lark-cli drive +import --type sheet`。
-- 用户要在云空间里新建文件夹，优先使用 `lark-cli drive +create-folder`。
+- 用户要把本地 `.xlsx` / `.csv` / `.base` 导入成 Base / 多维表格 / bitable，第一步必须使用 `weact-cli drive +import --type bitable`。
+- 用户要把本地 `.md` / `.docx` / `.doc` / `.txt` / `.html` 导入成在线文档，使用 `weact-cli drive +import --type docx`。
+- 用户要把本地 `.xlsx` / `.xls` / `.csv` 导入成电子表格，使用 `weact-cli drive +import --type sheet`。
+- 用户要在云空间里新建文件夹，优先使用 `weact-cli drive +create-folder`。
 - `lark-base` 只负责导入完成后的 Base 内部操作（表、字段、记录、视图），不要在“本地文件 -> Base”这一步提前切到 `lark-base`。
 
 ## 修改标题
@@ -37,7 +37,7 @@
 **推荐方式：使用 `drive +inspect` 自动解包**
 
 ```bash
-lark-cli drive +inspect --url 'https://xxx.feishu.cn/wiki/wikcnXXX'
+weact-cli drive +inspect --url 'https://xxx.weact.cn/wiki/wikcnXXX'
 ```
 
 返回结果包含 `type`（底层文档类型）、`token`（真实 file_token）、`title`、`url` 等字段，直接用于后续操作。
@@ -46,7 +46,7 @@ lark-cli drive +inspect --url 'https://xxx.feishu.cn/wiki/wikcnXXX'
 
 1. **使用 `wiki.spaces.get_node` 查询节点信息**
    ```bash
-   lark-cli wiki spaces get_node --params '{"token":"wiki_token"}'
+   weact-cli wiki spaces get_node --params '{"token":"wiki_token"}'
    ```
 
 2. **从返回结果中提取关键信息**
@@ -70,7 +70,7 @@ lark-cli drive +inspect --url 'https://xxx.feishu.cn/wiki/wikcnXXX'
 
 ```bash
 # 查询 wiki 节点
-lark-cli wiki spaces get_node --params '{"token":"wiki_token"}'
+weact-cli wiki spaces get_node --params '{"token":"wiki_token"}'
 ```
 
 返回结果示例：
@@ -129,7 +129,7 @@ Drive Folder (云空间文件夹)
 - `slides` 评论要求显式传 `--block-id <slide-block-type>!<xml-id>`；CLI 会将其拆分后写入 `anchor.block_id` 和 `anchor.slide_block_type`。其中 `<xml-id>` 是 PPT XML 协议中的元素 `id`；不支持 `--selection-with-ellipsis` 和 `--full-comment`。
 - Base 记录局部评论使用 `--type bitable` / `--type base` 或 `/base/`、`/bitable/`、wiki Base 链接；`bitable` 和 Base 是同一概念，`bitable` 是内部代号、Base 是产品名，裸 token 推荐传 `bitable`，`base` 仅作为兼容别名兜底。Base 不支持全局评论，所有评论都挂在记录上；定位信息必须是 file token（base token）+ `--block-id <table-id>!<record-id>!<view-id>`，其中 table/record/view ID 通常分别以 `tbl`/`rec`/`vew` 开头。view_id 只决定被提及时点击通知打开哪个视图，不影响评论挂载点，但必须传；ID 可通过 [`lark-base`](../../skills/lark-base/SKILL.md) 获取。
 - 如果 wiki 解析后不是 `doc`/`docx`/`file`/`sheet`/`slides`/`bitable`/`base`，不要用 `+add-comment`。
-- 如果需要更底层地直接调用评论 V2 协议，再走原生 API：先执行 `lark-cli schema drive.file.comments.create_v2`，再执行 `lark-cli drive file.comments create_v2 ...`。全文评论省略 `anchor`；docx/sheet/slides 局部评论传 `anchor.block_id`，Base 记录局部评论传 `anchor.block_id`（table_id）、`anchor.base_record_id`、`anchor.base_view_id`。
+- 如果需要更底层地直接调用评论 V2 协议，再走原生 API：先执行 `weact-cli schema drive.file.comments.create_v2`，再执行 `weact-cli drive file.comments create_v2 ...`。全文评论省略 `anchor`；docx/sheet/slides 局部评论传 `anchor.block_id`，Base 记录局部评论传 `anchor.block_id`（table_id）、`anchor.base_record_id`、`anchor.base_view_id`。
 
 ### 评论查询与统计口径（关键！）
 
@@ -140,20 +140,20 @@ Drive Folder (云空间文件夹)
 
 ```bash
 # 默认查询：仅未解决评论（推荐）
-lark-cli drive file.comments list --params '{"file_token": "xxx", "file_type": "docx", "is_solved": false}'
+weact-cli drive file.comments list --params '{"file_token": "xxx", "file_type": "docx", "is_solved": false}'
 
 # 查询所有评论（用户未明确要求包含已解决评论）
-lark-cli drive file.comments list --params '{"file_token": "xxx", "file_type": "docx", "is_solved": false}'
+weact-cli drive file.comments list --params '{"file_token": "xxx", "file_type": "docx", "is_solved": false}'
 
 # 包含已解决评论（需用户明确要求）
-lark-cli drive file.comments list --params '{"file_token": "xxx", "file_type": "docx"}'
+weact-cli drive file.comments list --params '{"file_token": "xxx", "file_type": "docx"}'
 ```
 
 **错误示例：**
 
 ```bash
 # 不推荐：用户未明确要求但查询所有评论
-lark-cli drive file.comments list --params '{"file_token": "xxx", "file_type": "docx"}'
+weact-cli drive file.comments list --params '{"file_token": "xxx", "file_type": "docx"}'
 ```
 
 - 查询文档评论时，使用 `drive file.comments list`。
@@ -201,11 +201,11 @@ lark-cli drive file.comments list --params '{"file_token": "xxx", "file_type": "
 
 ```bash
 # 1. 获取当前应用的 open_id
-lark-cli api GET /open-apis/bot/v3/info --as bot
+weact-cli api GET /open-apis/bot/v3/info --as bot
 # 从返回值中取 bot.open_id
 
 # 2. 授权当前应用访问文档
-lark-cli drive permission.members create \
+weact-cli drive permission.members create \
   --params '{"token":"<doc_token>","type":"<resource_type>"}' \
   --data '{"member_type":"openid","member_id":"<bot_open_id>","perm":"view","type":"user"}'
 ```

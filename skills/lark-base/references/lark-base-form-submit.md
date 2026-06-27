@@ -17,12 +17,12 @@
 
 ```bash
 # 1️⃣ 先获取表单详情，了解所有题目
-lark-cli base +form-detail --share-token <share_token>
+weact-cli base +form-detail --share-token <share_token>
 
 # 2️⃣ 根据返回的 questions 列表，按 type 格式化值、检查 required、判断 filter 条件
 
 # 3️⃣ 再提交
-lark-cli base +form-submit \
+weact-cli base +form-submit \
   --share-token <share_token> \
   --json '{"fields":{...}}'
 ```
@@ -33,12 +33,12 @@ lark-cli base +form-submit \
 
 ```bash
 # 基本提交（填写普通字段）
-lark-cli base +form-submit \
+weact-cli base +form-submit \
   --share-token <share_token> \
   --json '{"fields":{"服务评分":5,"评价内容":"服务态度好"}}'
 
 # 带附件提交（需要额外提供 --base-token）
-lark-cli base +form-submit \
+weact-cli base +form-submit \
   --share-token <share_token> \
   --base-token <base_token> \
   --json '{
@@ -50,13 +50,13 @@ lark-cli base +form-submit \
   }'
 
 # 使用应用身份（bot）
-lark-cli base +form-submit \
+weact-cli base +form-submit \
   --share-token <share_token> \
   --json '{"fields":{...}}' \
   --as bot
 
 # 预览 API 调用（不实际执行）
-lark-cli base +form-submit \
+weact-cli base +form-submit \
   --share-token <share_token> \
   --json '{"fields":{...}}' \
   --dry-run
@@ -136,7 +136,7 @@ https://www.example.com/share/base/form/shrbcvST8eZy0vk8zjVZ1CAXNye
 - `share-token` = `shrbcvST8eZy0vk8zjVZ1CAXNye`
 
 ```bash
-lark-cli base +form-submit \
+weact-cli base +form-submit \
   --share-token shrbcvST8eZy0vk8zjVZ1CAXNye \
   --json '{"fields":{...}}'
 ```

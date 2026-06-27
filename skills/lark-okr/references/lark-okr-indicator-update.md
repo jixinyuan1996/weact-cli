@@ -5,21 +5,21 @@
 直接更新目标（Objective）或关键结果（Key Result）的指标当前值，无需手动查询指标 ID。
 
 > **查询指标：** 如需查看指标详情，请使用原生 API：
-> - 目标指标：`lark-cli okr objective.indicators list --objective-id <id>`
-> - KR 指标：`lark-cli okr key_result.indicators list --key-result-id <id>`
+> - 目标指标：`weact-cli okr objective.indicators list --objective-id <id>`
+> - KR 指标：`weact-cli okr key_result.indicators list --key-result-id <id>`
 
 ## 推荐命令
 
 ```bash
 # 更新 Objective 的指标值
-lark-cli okr +indicator-update \
+weact-cli okr +indicator-update \
   --level objective \
   --id 7000000000000000001 \
   --value 75.5 \
   --as user
 
 # 更新 Key Result 的指标值
-lark-cli okr +indicator-update \
+weact-cli okr +indicator-update \
   --level key-result \
   --id 7000000000000000002 \
   --value 100 \
@@ -75,6 +75,6 @@ lark-cli okr +indicator-update \
 
 ## 参考
 
-- [OKR 指标更新 API](https://open.feishu.cn/api-explorer?from=op_doc_tab&apiName=patch&project=okr&resource=okr.indicator&version=v2)
+- [OKR 指标更新 API](https://open.weact.cn/api-explorer?from=op_doc_tab&apiName=patch&project=okr&resource=okr.indicator&version=v2)
 - [`lark-okr-progress-create.md`](./lark-okr-progress-create.md) — 创建进度记录
 - [`lark-okr-cycle-detail.md`](./lark-okr-cycle-detail.md) — 查询周期详情获取 ID

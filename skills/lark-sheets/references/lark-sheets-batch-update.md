@@ -132,7 +132,7 @@ _列表选项_
 示例：
 
 ```bash
-lark-cli sheets +batch-update --url "https://example.feishu.cn/sheets/shtXXX" --yes \
+weact-cli sheets +batch-update --url "https://example.weact.cn/sheets/shtXXX" --yes \
   --operations @ops.json
 
 # ops.json （array<{shortcut, input}>，shortcut 用 CLI 名）:
@@ -166,7 +166,7 @@ lark-cli sheets +batch-update --url "https://example.feishu.cn/sheets/shtXXX" --
 
 ```bash
 # 表头行 + 汇总行同时刷成蓝底白字
-lark-cli sheets +cells-batch-set-style --url "..." \
+weact-cli sheets +cells-batch-set-style --url "..." \
   --ranges '["sheet1!A1:F1","sheet1!A30:F30"]' \
   --background-color "#1E5BC6" --font-color "#FFFFFF" --font-weight bold
 ```
@@ -177,10 +177,10 @@ lark-cli sheets +cells-batch-set-style --url "..." \
 
 ```bash
 # dry-run 先看清除范围
-lark-cli sheets +cells-batch-clear --url "..." \
+weact-cli sheets +cells-batch-clear --url "..." \
   --ranges '["sheet1!A2:Z1000","sheet2!A2:Z1000"]' --scope all --dry-run
 # 执行
-lark-cli sheets +cells-batch-clear --url "..." \
+weact-cli sheets +cells-batch-clear --url "..." \
   --ranges '["sheet1!A2:Z1000","sheet2!A2:Z1000"]' --scope all --yes
 ```
 

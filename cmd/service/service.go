@@ -451,7 +451,7 @@ func checkServiceScopes(ctx context.Context, cred *credential.CredentialProvider
 // ConsoleURL is deliberately omitted: the dispatcher only sets it for
 // SubtypeAppScopeNotApplied (bot-perspective dev-action recovery), and this
 // pre-flight path is user-perspective SubtypeMissingScope whose recovery is
-// `lark-cli auth login --scope ...`, not a console deep-link.
+// `weact-cli auth login --scope ...`, not a console deep-link.
 func newPreflightMissingScopeError(brand, appID, identity string, missing []string) *errs.PermissionError {
 	consoleURL := errclass.ConsoleURL(brand, appID, missing)
 	return errs.NewPermissionError(errs.SubtypeMissingScope,
@@ -488,9 +488,9 @@ func unusableParamValue(v interface{}) bool {
 func missingParamHint(opts *ServiceMethodOptions, f meta.Field) string {
 	paramsForm := fmt.Sprintf("--params '{%q: \"<value>\"}'", f.Name)
 	if opts.binder.hasTypedFlag(f.Name) {
-		return fmt.Sprintf("set --%s <value> (or %s); see: lark-cli schema %s", f.FlagName(), paramsForm, opts.SchemaPath)
+		return fmt.Sprintf("set --%s <value> (or %s); see: weact-cli schema %s", f.FlagName(), paramsForm, opts.SchemaPath)
 	}
-	return fmt.Sprintf("set %s; see: lark-cli schema %s", paramsForm, opts.SchemaPath)
+	return fmt.Sprintf("set %s; see: weact-cli schema %s", paramsForm, opts.SchemaPath)
 }
 
 // buildServiceRequest parses flags, builds the URL with path/query params, and returns a RawApiRequest.

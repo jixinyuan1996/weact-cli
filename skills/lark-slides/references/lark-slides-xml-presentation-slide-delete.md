@@ -7,7 +7,7 @@
 ## 命令
 
 ```bash
-lark-cli slides xml_presentation.slide delete --as user --params '<json_params>'
+weact-cli slides xml_presentation.slide delete --as user --params '<json_params>'
 ```
 
 ## 参数说明
@@ -39,7 +39,7 @@ lark-cli slides xml_presentation.slide delete --as user --params '<json_params>'
 ### 删除指定幻灯片
 
 ```bash
-lark-cli slides xml_presentation.slide delete --as user --params '{
+weact-cli slides xml_presentation.slide delete --as user --params '{
   "xml_presentation_id": "slides_example_presentation_id",
   "slide_id": "slide_example_id"
 }'
@@ -49,10 +49,10 @@ lark-cli slides xml_presentation.slide delete --as user --params '{
 
 ```bash
 # 先读取 XML 内容，确认待删除页面
-lark-cli slides xml_presentations get --as user --params '{"xml_presentation_id":"slides_example_presentation_id"}' | jq -r '.data.xml_presentation.content'
+weact-cli slides xml_presentations get --as user --params '{"xml_presentation_id":"slides_example_presentation_id"}' | jq -r '.data.xml_presentation.content'
 
 # 然后按已知 slide_id 删除
-lark-cli slides xml_presentation.slide delete --as user --params '{"xml_presentation_id":"slides_example_presentation_id","slide_id":"slide_example_id"}'
+weact-cli slides xml_presentation.slide delete --as user --params '{"xml_presentation_id":"slides_example_presentation_id","slide_id":"slide_example_id"}'
 ```
 
 ## 返回值
@@ -86,7 +86,7 @@ lark-cli slides xml_presentation.slide delete --as user --params '{"xml_presenta
 
 ## 注意事项
 
-1. **执行前必做**: 使用 `lark-cli schema slides.xml_presentation.slide.delete` 查看最新的参数结构
+1. **执行前必做**: 使用 `weact-cli schema slides.xml_presentation.slide.delete` 查看最新的参数结构
 2. **删除不可逆**: 删除操作无法撤销，请确保已备份重要内容
 3. **至少保留一页**: 演示文稿必须至少保留一页幻灯片，删除最后一页会报错
 4. **版本控制**: 如果依赖版本号并发控制，删除前先确认 `revision_id`
@@ -97,7 +97,7 @@ lark-cli slides xml_presentation.slide delete --as user --params '{"xml_presenta
 ### 方法 1: 创建时保存
 
 ```bash
-lark-cli slides xml_presentation.slide create --as user --params '{"xml_presentation_id":"slides_example_presentation_id"}' --data '{
+weact-cli slides xml_presentation.slide create --as user --params '{"xml_presentation_id":"slides_example_presentation_id"}' --data '{
   "slide": {
     "content": "<slide xmlns=\"http://www.larkoffice.com/sml/2.0\"><data><shape type=\"text\" topLeftX=\"80\" topLeftY=\"80\" width=\"800\" height=\"120\"><content textType=\"title\"><p>新页面</p></content></shape></data></slide>"
   }
@@ -112,7 +112,7 @@ lark-cli slides xml_presentation.slide create --as user --params '{"xml_presenta
 
 ```bash
 for slide_id in sld_a sld_b sld_c; do
-  lark-cli slides xml_presentation.slide delete --as user --params "{\"xml_presentation_id\":\"slides_example_presentation_id\",\"slide_id\":\"$slide_id\"}"
+  weact-cli slides xml_presentation.slide delete --as user --params "{\"xml_presentation_id\":\"slides_example_presentation_id\",\"slide_id\":\"$slide_id\"}"
 done
 ```
 

@@ -8,13 +8,13 @@
 
 ```bash
 # 获取指定 ID 的进展记录
-lark-cli okr +progress-get --progress-id 1234567890123456789
+weact-cli okr +progress-get --progress-id 1234567890123456789
 
 # 使用特定的用户 ID 类型
-lark-cli okr +progress-get --progress-id 1234567890123456789 --user-id-type open_id
+weact-cli okr +progress-get --progress-id 1234567890123456789 --user-id-type open_id
 
 # 预览 API 调用而不实际执行
-lark-cli okr +progress-get --progress-id 1234567890123456789 --dry-run
+weact-cli okr +progress-get --progress-id 1234567890123456789 --dry-run
 ```
 
 ## 参数
@@ -29,7 +29,7 @@ lark-cli okr +progress-get --progress-id 1234567890123456789 --dry-run
 ## 工作流程
 
 1. 获取目标进展记录的 ID。可通过 `+cycle-detail` 获取目标和关键结果后，从中获取进展记录 ID。
-2. 执行 `lark-cli okr +progress-get --progress-id "1234567890123456789"`。
+2. 执行 `weact-cli okr +progress-get --progress-id "1234567890123456789"`。
 3. 报告结果：进展记录的 ID、修改时间、进度百分比和内容。
 
 ## 输出

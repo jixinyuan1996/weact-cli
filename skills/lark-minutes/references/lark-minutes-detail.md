@@ -9,16 +9,16 @@
 
 ```bash
 # 仅基础信息
-lark-cli minutes +detail --minute-tokens obcxxxxxxxxxx
+weact-cli minutes +detail --minute-tokens obcxxxxxxxxxx
 
 # 批量（逗号分隔，最多 50 个）
-lark-cli minutes +detail --minute-tokens obcxxx,obcyyy --summary --todo
+weact-cli minutes +detail --minute-tokens obcxxx,obcyyy --summary --todo
 
 # 全产物
-lark-cli minutes +detail --minute-tokens obcxxx --summary --todo --chapter --keyword --transcript
+weact-cli minutes +detail --minute-tokens obcxxx --summary --todo --chapter --keyword --transcript
 
 # 仅逐字稿，覆盖已有文件，指定输出目录
-lark-cli minutes +detail --minute-tokens obcxxx --transcript --overwrite --output-dir ./out
+weact-cli minutes +detail --minute-tokens obcxxx --transcript --overwrite --output-dir ./out
 ```
 
 ## 输出
@@ -39,7 +39,7 @@ lark-cli minutes +detail --minute-tokens obcxxx --transcript --overwrite --outpu
 
 | 来源 | 取值字段 |
 |------|---------|
-| 妙记 URL `https://*.feishu.cn/minutes/obcxxx` | 截路径最后一段 `obcxxx` |
+| 妙记 URL `https://*.weact.cn/minutes/obcxxx` | 截路径最后一段 `obcxxx` |
 | `vc +detail --meeting-ids` | `minute_token` |
 | `vc +recording --meeting-ids` | `minute_token` |
 | `minutes +search` | `minute_token` |
@@ -50,13 +50,13 @@ lark-cli minutes +detail --minute-tokens obcxxx --transcript --overwrite --outpu
 
 ```bash
 # 1. 取妙记关联的 note_id，没有关联会议纪要则为空
-lark-cli minutes +detail --minute-tokens <minute_token>
+weact-cli minutes +detail --minute-tokens <minute_token>
 
 # 2. 用 note_id 拿 note_doc_token / verbatim_doc_token / shared_doc_tokens
-lark-cli note +detail --note-id <note_id>
+weact-cli note +detail --note-id <note_id>
 
 # 3. 读纪要 / 逐字稿正文
-lark-cli docs +fetch --api-version v2 --doc <note_doc_token> --doc-format markdown
+weact-cli docs +fetch --api-version v2 --doc <note_doc_token> --doc-format markdown
 ```
 
 > `minute_token` 不要直接传给 `note +detail`：必须先用本命令拿到 `note_id` 再调用 `note +detail`。
