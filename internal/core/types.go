@@ -57,10 +57,10 @@ func ResolveEndpoints(brand LarkBrand) Endpoints {
 		}
 	case BrandWeAct:
 		return Endpoints{
-			Open:     GetenvOrDefault("WEACT_OPEN_ENDPOINT", "https://open.weact.example.com"),
-			Accounts: GetenvOrDefault("WEACT_ACCOUNTS_ENDPOINT", "https://accounts.weact.example.com"),
-			MCP:      GetenvOrDefault("WEACT_MCP_ENDPOINT", "https://mcp.weact.example.com"),
-			AppLink:  GetenvOrDefault("WEACT_APPLINK_ENDPOINT", "https://applink.weact.example.com"),
+			Open:     GetenvOrDefault("WEACT_OPEN_ENDPOINT", "https://open.weact.pipechina.com.cn"),
+			Accounts: GetenvOrDefault("WEACT_ACCOUNTS_ENDPOINT", "https://accounts.weact.pipechina.com.cn"),
+			MCP:      GetenvOrDefault("WEACT_MCP_ENDPOINT", "https://mcp.weact.pipechina.com.cn"),
+			AppLink:  GetenvOrDefault("WEACT_APPLINK_ENDPOINT", "https://applink.weact.pipechina.com.cn"),
 		}
 	default:
 		return Endpoints{

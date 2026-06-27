@@ -14,7 +14,7 @@
 
 ## 改动原则
 
-- **环境变量驱动**：所有 WeAct 端点均通过环境变量配置，带 `example.com` 占位默认值
+- **环境变量驱动**：所有 WeAct 端点均通过环境变量配置，使用真实生产域名 pipechina.com.cn
 - **兼容上游**：`feishu` / `lark` 两种 brand 行为不变，不影响原有功能
 - **最小侵入**：改动集中在端点解析中枢，上层调用代码自动跟随，无需逐文件修改
 
@@ -26,16 +26,16 @@
 export LARKSUITE_CLI_BRAND=weact
 
 # 替换为 WeAct 真实域名
-export WEACT_OPEN_ENDPOINT=https://open.weact.example.com
-export WEACT_ACCOUNTS_ENDPOINT=https://accounts.weact.example.com
-export WEACT_MCP_ENDPOINT=https://mcp.weact.example.com
-export WEACT_APPLINK_ENDPOINT=https://applink.weact.example.com
+export WEACT_OPEN_ENDPOINT=https://open.weact.pipechina.com.cn
+export WEACT_ACCOUNTS_ENDPOINT=https://accounts.weact.pipechina.com.cn
+export WEACT_MCP_ENDPOINT=https://mcp.weact.pipechina.com.cn
+export WEACT_APPLINK_ENDPOINT=https://applink.weact.pipechina.com.cn
 
 # 可选：自定义其他端点
-export WEACT_API_DEFINITION_URL=https://open.weact.example.com/api/tools/open/api_definition
-export WEACT_CONSOLE_HOST=open.weact.example.com
-export WEACT_SKILLS_INDEX_URL=https://open.weact.example.com/.well-known/skills/index.json
-export WEACT_SKILLS_SOURCE=https://open.weact.example.com
+export WEACT_API_DEFINITION_URL=https://open.weact.pipechina.com.cn/api/tools/open/api_definition
+export WEACT_CONSOLE_HOST=open.weact.pipechina.com.cn
+export WEACT_SKILLS_INDEX_URL=https://open.weact.pipechina.com.cn/.well-known/skills/index.json
+export WEACT_SKILLS_SOURCE=https://open.weact.pipechina.com.cn
 export WEACT_CLI_CONFIG_DIR=/path/to/config   # 自定义配置目录
 ```
 
@@ -58,12 +58,12 @@ weact-cli im +send-message --to ou_xxx --text "Hello"
 | 环境变量 | 用途 | 默认值 |
 |----------|------|--------|
 | `LARKSUITE_CLI_BRAND` | 品牌切换（设为 `weact`） | `feishu` |
-| `WEACT_OPEN_ENDPOINT` | Open API 地址 | `https://open.weact.example.com` |
-| `WEACT_ACCOUNTS_ENDPOINT` | 账号认证服务地址 | `https://accounts.weact.example.com` |
-| `WEACT_MCP_ENDPOINT` | MCP 服务地址 | `https://mcp.weact.example.com` |
-| `WEACT_APPLINK_ENDPOINT` | AppLink 服务地址 | `https://applink.weact.example.com` |
-| `WEACT_API_DEFINITION_URL` | API 元数据接口 | `https://open.weact.example.com/api/tools/open/api_definition` |
-| `WEACT_CONSOLE_HOST` | 开发者后台域名 | `open.weact.example.com` |
+| `WEACT_OPEN_ENDPOINT` | Open API 地址 | `https://open.weact.pipechina.com.cn` |
+| `WEACT_ACCOUNTS_ENDPOINT` | 账号认证服务地址 | `https://accounts.weact.pipechina.com.cn` |
+| `WEACT_MCP_ENDPOINT` | MCP 服务地址 | `https://mcp.weact.pipechina.com.cn` |
+| `WEACT_APPLINK_ENDPOINT` | AppLink 服务地址 | `https://applink.weact.pipechina.com.cn` |
+| `WEACT_API_DEFINITION_URL` | API 元数据接口 | `https://open.weact.pipechina.com.cn/api/tools/open/api_definition` |
+| `WEACT_CONSOLE_HOST` | 开发者后台域名 | `open.weact.pipechina.com.cn` |
 | `WEACT_SKILLS_INDEX_URL` | Skills 索引地址 | 沿用飞书官方地址 |
 | `WEACT_SKILLS_SOURCE` | Skills 安装来源 | `https://open.feishu.cn` |
 | `WEACT_CLI_CONFIG_DIR` | 配置目录（优先级最高） | `~/.weact-cli` |
