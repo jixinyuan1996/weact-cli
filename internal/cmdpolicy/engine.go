@@ -406,7 +406,7 @@ func hasRunnableDescendant(cmd *cobra.Command) bool {
 //
 // **YAML file path is deliberately omitted** -- the envelope is observable
 // by agents, CI logs, and other downstream systems, and the path leaks
-// the user's home directory (e.g. /Users/alice/.lark-cli/policy.yml).
+// the user's home directory (e.g. /Users/alice/.weact-cli/policy.yml).
 // The Denial.RuleName field already carries the human-identifier the user
 // chose for their rule (yaml's "name:" field), which suffices for
 // disambiguation. Use `config policy show` if the absolute path matters

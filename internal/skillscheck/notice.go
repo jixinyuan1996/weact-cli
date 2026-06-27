@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Lark Technologies Pte. Ltd.
 // SPDX-License-Identifier: MIT
 
-// Package skillscheck verifies that the locally installed lark-cli
+// Package skillscheck verifies that the locally installed weact-cli
 // skills are in sync with the running binary version, by comparing
 // the current binary version against skills-state.json. On mismatch it
 // stores a notice for injection into JSON envelopes via output.PendingNotice.
@@ -24,11 +24,11 @@ type StaleNotice struct {
 
 // Message returns a single-line, AI-agent-parseable description of the
 // drift plus the canonical fix command. Mirrors internal/update.UpdateInfo.Message
-// in style ("..., run: lark-cli update" suffix). Current is guaranteed
+// in style ("..., run: weact-cli update" suffix). Current is guaranteed
 // non-empty because Init only emits a StaleNotice for the drift case.
 func (s *StaleNotice) Message() string {
 	return fmt.Sprintf(
-		"lark-cli skills %s out of sync with binary %s, run: lark-cli update",
+		"weact-cli skills %s out of sync with binary %s, run: weact-cli update",
 		s.Current, s.Target,
 	)
 }

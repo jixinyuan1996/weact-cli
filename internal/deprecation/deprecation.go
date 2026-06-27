@@ -26,7 +26,7 @@ type Notice struct {
 
 // Message returns a single-line, AI-agent-parseable description of the alias
 // plus the canonical fix (update the skill). Mirrors the style of
-// internal/skillscheck.StaleNotice.Message ("..., run: lark-cli update").
+// internal/skillscheck.StaleNotice.Message ("..., run: weact-cli update").
 func (n *Notice) Message() string {
 	var b strings.Builder
 	b.WriteString(n.Command)
@@ -39,9 +39,9 @@ func (n *Notice) Message() string {
 	if n.Skill != "" {
 		b.WriteString("; update your ")
 		b.WriteString(n.Skill)
-		b.WriteString(" skill, run: lark-cli update")
+		b.WriteString(" skill, run: weact-cli update")
 	} else {
-		b.WriteString("; update your skill, run: lark-cli update")
+		b.WriteString("; update your skill, run: weact-cli update")
 	}
 	return b.String()
 }

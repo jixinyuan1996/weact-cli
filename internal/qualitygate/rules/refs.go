@@ -107,8 +107,8 @@ func parseAgainstManifest(m manifest.Manifest, raw string) (ParsedExample, error
 	if err != nil {
 		return ParsedExample{}, err
 	}
-	if len(argv) == 0 || argv[0] != "lark-cli" {
-		return ParsedExample{}, fmt.Errorf("not a lark-cli command")
+	if len(argv) == 0 || argv[0] != "weact-cli" {
+		return ParsedExample{}, fmt.Errorf("not a weact-cli command")
 	}
 	idx := indexManifest(m)
 	for end := len(argv); end > 1; end-- {
@@ -323,7 +323,7 @@ func parseWarning(ex skillscan.Example, err error) report.Diagnostic {
 		Action:  report.ActionWarning,
 		File:    ex.SourceFile,
 		Line:    ex.Line,
-		Message: fmt.Sprintf("cannot parse lark-cli example: %v", err),
+		Message: fmt.Sprintf("cannot parse weact-cli example: %v", err),
 	}
 }
 

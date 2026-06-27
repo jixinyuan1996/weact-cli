@@ -48,7 +48,7 @@ func Run(ctx context.Context, tr transport.IPC, appID, profileName, domain strin
 	if !ok {
 		return errs.NewValidationError(errs.SubtypeInvalidArgument,
 			"unknown EventKey: %s", opts.EventKey).
-			WithHint("run `lark-cli event list` to see available keys")
+			WithHint("run `weact-cli event list` to see available keys")
 	}
 
 	if err := validateParams(keyDef, opts.Params); err != nil {
@@ -183,7 +183,7 @@ func rejectionError(ack *protocol.HelloAck, eventKey string) error {
 	}
 	return errs.NewValidationError(errs.SubtypeFailedPrecondition,
 		"cannot start consumer: %s", ack.RejectReason).
-		WithHint("EventKey %s allows only one consumer; run `lark-cli event status` to find the running one, then stop it before retrying", eventKey)
+		WithHint("EventKey %s allows only one consumer; run `weact-cli event status` to find the running one, then stop it before retrying", eventKey)
 }
 
 func truncateDuration(d time.Duration) time.Duration {
@@ -202,7 +202,7 @@ func validateParams(def *event.KeyDefinition, params map[string]string) error {
 				return errs.NewValidationError(errs.SubtypeInvalidArgument,
 					"required param %q missing for EventKey %s", p.Name, def.Key).
 					WithParam("--param").
-					WithHint("pass it as --param %s=<value>; run `lark-cli event schema %s` for details", p.Name, def.Key)
+					WithHint("pass it as --param %s=<value>; run `weact-cli event schema %s` for details", p.Name, def.Key)
 			}
 		}
 	}
@@ -221,12 +221,12 @@ func validateParams(def *event.KeyDefinition, params map[string]string) error {
 			return errs.NewValidationError(errs.SubtypeInvalidArgument,
 				"unknown param %q: EventKey %s accepts no params", k, def.Key).
 				WithParam("--param").
-				WithHint("run `lark-cli event schema %s` for details", def.Key)
+				WithHint("run `weact-cli event schema %s` for details", def.Key)
 		}
 		return errs.NewValidationError(errs.SubtypeInvalidArgument,
 			"unknown param %q for EventKey %s. valid params: %s", k, def.Key, strings.Join(validNames, ", ")).
 			WithParam("--param").
-			WithHint("run `lark-cli event schema %s` for details", def.Key)
+			WithHint("run `weact-cli event schema %s` for details", def.Key)
 	}
 	return nil
 }

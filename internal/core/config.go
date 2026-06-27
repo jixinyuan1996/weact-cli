@@ -176,7 +176,7 @@ func (c *CliConfig) CanBot() bool {
 
 // GetConfigDir returns the config directory path for the current workspace.
 // When workspace is local (default), this returns the same path as before
-// (LARKSUITE_CLI_CONFIG_DIR or ~/.lark-cli) — fully backward-compatible.
+// (LARKSUITE_CLI_CONFIG_DIR or ~/.weact-cli) — fully backward-compatible.
 // When workspace is openclaw/hermes, returns base/openclaw or base/hermes.
 func GetConfigDir() string {
 	return GetRuntimeDir()
@@ -292,7 +292,7 @@ func RequireAuthForProfile(kc keychain.KeychainAccess, profileOverride string) (
 	}
 	if cfg.UserOpenId == "" {
 		return nil, errs.NewAuthenticationError(errs.SubtypeTokenMissing, "not logged in").
-			WithHint("run `lark-cli auth login` in the background. It blocks and outputs a verification URL — retrieve the URL and open it in a browser to complete login.")
+			WithHint("run `weact-cli auth login` in the background. It blocks and outputs a verification URL — retrieve the URL and open it in a browser to complete login.")
 	}
 	return cfg, nil
 }

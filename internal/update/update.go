@@ -39,10 +39,10 @@ type UpdateInfo struct {
 
 // Message returns a concise update notification including the canonical
 // fix command. Aligned with skillscheck.StaleNotice.Message style so
-// AI agents can parse a unified "run: lark-cli update" hint across
+// AI agents can parse a unified "run: weact-cli update" hint across
 // both notice types.
 func (u *UpdateInfo) Message() string {
-	return fmt.Sprintf("lark-cli %s available, current %s, run: lark-cli update", u.Latest, u.Current)
+	return fmt.Sprintf("weact-cli %s available, current %s, run: weact-cli update", u.Latest, u.Current)
 }
 
 // pending stores the latest update info for the current process.

@@ -89,7 +89,7 @@ func harvestFile(path string) ([]Example, error) {
 			inFence = !inFence
 			continue
 		}
-		if !inFence || line == "" || strings.HasPrefix(line, "#") || !strings.HasPrefix(line, "lark-cli ") {
+		if !inFence || line == "" || strings.HasPrefix(line, "#") || !strings.HasPrefix(line, "weact-cli ") {
 			continue
 		}
 

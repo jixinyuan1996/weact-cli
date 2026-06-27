@@ -44,7 +44,7 @@ func NewNeedUserAuthorizationError(userOpenID string) *errs.AuthenticationError 
 	return errs.NewAuthenticationError(errs.SubtypeTokenMissing,
 		"%s (user: %s)", needUserAuthorizationMarker, userOpenID).
 		WithUserOpenID(userOpenID).
-		WithHint("run: lark-cli auth login to re-authorize").
+		WithHint("run: weact-cli auth login to re-authorize").
 		WithCause(&NeedAuthorizationError{UserOpenId: userOpenID})
 }
 

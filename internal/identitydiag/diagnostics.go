@@ -72,7 +72,7 @@ func diagnoseBot(ctx context.Context, f *cmdutil.Factory, cfg *core.CliConfig, v
 		return Identity{
 			Status:  StatusNotConfigured,
 			Message: "Bot identity: not configured (missing app config)",
-			Hint:    "run: lark-cli config --help",
+			Hint:    "run: weact-cli config --help",
 		}
 	}
 	if !cfg.CanBot() {
@@ -86,7 +86,7 @@ func diagnoseBot(ctx context.Context, f *cmdutil.Factory, cfg *core.CliConfig, v
 		return Identity{
 			Status:  StatusNotConfigured,
 			Message: "Bot identity: not configured (missing app secret or bot token)",
-			Hint:    "run: lark-cli config --help",
+			Hint:    "run: weact-cli config --help",
 		}
 	}
 
@@ -135,14 +135,14 @@ func diagnoseUser(ctx context.Context, f *cmdutil.Factory, cfg *core.CliConfig, 
 		return Identity{
 			Status:  StatusNotConfigured,
 			Message: "User identity: not configured (missing app config)",
-			Hint:    "run: lark-cli config --help",
+			Hint:    "run: weact-cli config --help",
 		}
 	}
 	if cfg.UserOpenId == "" {
 		return Identity{
 			Status:  StatusMissing,
 			Message: "User identity: missing (no user logged in)",
-			Hint:    "run: lark-cli auth login --help",
+			Hint:    "run: weact-cli auth login --help",
 		}
 	}
 
@@ -154,7 +154,7 @@ func diagnoseUser(ctx context.Context, f *cmdutil.Factory, cfg *core.CliConfig, 
 	if stored == nil {
 		id.Status = StatusMissing
 		id.Message = "User identity: missing (no token in keychain for " + cfg.UserOpenId + ")"
-		id.Hint = "run: lark-cli auth login --help"
+		id.Hint = "run: weact-cli auth login --help"
 		return id
 	}
 
@@ -171,7 +171,7 @@ func diagnoseUser(ctx context.Context, f *cmdutil.Factory, cfg *core.CliConfig, 
 	default:
 		id.Status = StatusMissing
 		id.Message = "User identity: missing (refresh token expired)"
-		id.Hint = "run: lark-cli auth login --help"
+		id.Hint = "run: weact-cli auth login --help"
 		return id
 	}
 
@@ -196,7 +196,7 @@ func diagnoseUser(ctx context.Context, f *cmdutil.Factory, cfg *core.CliConfig, 
 	}
 	token, err := larkauth.GetValidAccessToken(httpClient, larkauth.NewUATCallOptions(cfg, f.IOStreams.ErrOut))
 	if err != nil {
-		return markVerifyFailed("token unusable: "+err.Error(), "run: lark-cli auth login --help")
+		return markVerifyFailed("token unusable: "+err.Error(), "run: weact-cli auth login --help")
 	}
 	sdk, err := f.LarkClient()
 	if err != nil {
@@ -205,7 +205,7 @@ func diagnoseUser(ctx context.Context, f *cmdutil.Factory, cfg *core.CliConfig, 
 	verifyCtx, cancel := context.WithTimeout(ctx, verifyTimeout)
 	defer cancel()
 	if err := larkauth.VerifyUserToken(verifyCtx, sdk, token); err != nil {
-		return markVerifyFailed("server rejected token: "+err.Error(), "run: lark-cli auth login --help")
+		return markVerifyFailed("server rejected token: "+err.Error(), "run: weact-cli auth login --help")
 	}
 
 	id.Verified = boolPtr(true)

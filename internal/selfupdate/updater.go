@@ -307,18 +307,18 @@ func (u *Updater) runSkillsCommand(args ...string) *NpmResult {
 }
 
 // VerifyBinary checks that the installed binary reports the expected version
-// by running "lark-cli --version" and comparing the version token exactly.
-// Output format is "lark-cli version X.Y.Z"; the last field is extracted and
+// by running "weact-cli --version" and comparing the version token exactly.
+// Output format is "weact-cli version X.Y.Z"; the last field is extracted and
 // compared against expectedVersion (both stripped of any "v" prefix).
 func (u *Updater) VerifyBinary(expectedVersion string) error {
 	if u.VerifyOverride != nil {
 		return u.VerifyOverride(expectedVersion)
 	}
 	// Prefer PATH resolution so npm global bin symlinks pick up the newly
-	// installed binary (#836). If `lark-cli` is not on PATH (e.g. the user
+	// installed binary (#836). If `weact-cli` is not on PATH (e.g. the user
 	// invoked this process by absolute path), fall back to the running
 	// executable — same as the pre-#836 secondary resolution path.
-	exe, err := execLookPath("lark-cli")
+	exe, err := execLookPath("weact-cli")
 	if err != nil {
 		exe, err = vfs.Executable()
 		if err != nil {

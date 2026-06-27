@@ -243,11 +243,11 @@ func buildConfigError(p errs.Problem) *errs.ConfigError {
 func ConfigHint(subtype errs.Subtype) string {
 	switch subtype {
 	case errs.SubtypeInvalidClient:
-		return "run `lark-cli config init` to set valid app_id and app_secret"
+		return "run `weact-cli config init` to set valid app_id and app_secret"
 	case errs.SubtypeNotConfigured:
-		return "run `lark-cli config init` to set up app_id and app_secret"
+		return "run `weact-cli config init` to set up app_id and app_secret"
 	case errs.SubtypeInvalidConfig:
-		return "check the config file for syntax errors; rerun `lark-cli config init` to reset"
+		return "check the config file for syntax errors; rerun `weact-cli config init` to reset"
 	}
 	return ""
 }
@@ -292,7 +292,7 @@ func buildPermissionError(p errs.Problem, resp map[string]any, cc ClassifyContex
 	// apply for a missing scope. That action only resolves SubtypeAppScopeNotApplied,
 	// which is bot-perspective. The other authorization subtypes route to a
 	// different actor: SubtypeMissingScope / SubtypeTokenScopeInsufficient /
-	// SubtypeUserUnauthorized recover via `lark-cli auth login`; SubtypeAppUnavailable
+	// SubtypeUserUnauthorized recover via `weact-cli auth login`; SubtypeAppUnavailable
 	// / SubtypeAppDisabled require tenant admin. Carrying ConsoleURL on those
 	// envelopes is dead weight and risks pointing an end user at a console they
 	// cannot modify; the URL is still computed so the hint composer can use it
@@ -369,13 +369,13 @@ func PermissionHint(missing []string, identity string, subtype errs.Subtype, con
 		return "the app developer must apply for the required scope(s) at the developer console"
 	case errs.SubtypeMissingScope:
 		if len(missing) > 0 {
-			return fmt.Sprintf("run `lark-cli auth login --scope \"%s\"` to re-authorize the user with the updated scope set", strings.Join(missing, " "))
+			return fmt.Sprintf("run `weact-cli auth login --scope \"%s\"` to re-authorize the user with the updated scope set", strings.Join(missing, " "))
 		}
-		return "run `lark-cli auth login` to re-authorize the user with the updated scope set"
+		return "run `weact-cli auth login` to re-authorize the user with the updated scope set"
 	case errs.SubtypeTokenScopeInsufficient:
-		return "check the token's granted scopes; run `lark-cli auth login` to refresh if the scope was added after the token was issued"
+		return "check the token's granted scopes; run `weact-cli auth login` to refresh if the scope was added after the token was issued"
 	case errs.SubtypeUserUnauthorized:
-		return "run `lark-cli auth login` to re-authorize this user; if re-auth does not help, the operation may be blocked by external-chat or admin policy"
+		return "run `weact-cli auth login` to re-authorize this user; if re-auth does not help, the operation may be blocked by external-chat or admin policy"
 	case errs.SubtypeAppUnavailable:
 		return "ask the tenant admin to check the app's install status in the Lark admin console"
 	case errs.SubtypeAppDisabled:

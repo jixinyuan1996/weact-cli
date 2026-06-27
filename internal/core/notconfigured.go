@@ -57,13 +57,13 @@ const (
 	// localInitHint is the canonical "you're in a regular terminal, run
 	// init" guidance — shared by NotConfiguredError and NoActiveProfileError
 	// so the same session can't show two different recommended commands.
-	localInitHint = "run `lark-cli config init --new` in the background. It blocks and outputs a verification URL — retrieve the URL and open it in a browser to complete setup."
+	localInitHint = "run `weact-cli config init --new` in the background. It blocks and outputs a verification URL — retrieve the URL and open it in a browser to complete setup."
 
 	// agentBindHint is the canonical "you're in an Agent workspace, see
 	// the binding workflow" guidance. Always points at --help (never a
 	// ready-to-run bind command) so the AI reads the confirmation
 	// discipline (identity preset, user opt-in) before acting.
-	agentBindHint = "read `lark-cli config bind --help`, then ask the user to confirm intent and identity preset (bot-only or user-default); only after both are confirmed, run `lark-cli config bind`"
+	agentBindHint = "read `weact-cli config bind --help`, then ask the user to confirm intent and identity preset (bot-only or user-default); only after both are confirmed, run `weact-cli config bind`"
 )
 
 // NotConfiguredError returns the canonical "not configured" error, with a
@@ -87,7 +87,7 @@ func NotConfiguredError() error {
 	// Agent workspace: the workspace name appears only in the message, never
 	// in the wire subtype, which stays not_configured.
 	return errs.NewConfigError(errs.SubtypeNotConfigured,
-		"%s context detected but lark-cli is not bound to it", ws.Display()).
+		"%s context detected but weact-cli is not bound to it", ws.Display()).
 		WithHint("%s", agentBindHint)
 }
 
@@ -98,7 +98,7 @@ func NotConfiguredError() error {
 // confirms identity preset with the user before running the actual command.
 func reconfigureHint() string {
 	if CurrentWorkspace().IsLocal() {
-		return "please run `lark-cli config init` to reconfigure"
+		return "please run `weact-cli config init` to reconfigure"
 	}
 	return agentBindHint
 }

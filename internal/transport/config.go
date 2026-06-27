@@ -3,7 +3,7 @@
 
 // Package transport owns how the CLI assembles its outbound HTTP transport: the
 // shared base RoundTripper (Shared/Fallback/NewHTTPClient), the LARK_CLI_NO_PROXY
-// direct-egress clone, and the ~/.lark-cli/proxy_config.json proxy-plugin mode.
+// direct-egress clone, and the ~/.weact-cli/proxy_config.json proxy-plugin mode.
 //
 // Proxy-plugin mode forces all outbound HTTP(S) requests through a fixed loopback
 // proxy, optionally trusting an extra root CA PEM bundle for TLS-inspection
@@ -60,7 +60,7 @@ var loadCfg *Config
 // loadErr stores the cached Load error observed during the first load attempt.
 var loadErr error
 
-// Load reads ~/.lark-cli/proxy_config.json once and caches the parsed result.
+// Load reads ~/.weact-cli/proxy_config.json once and caches the parsed result.
 // Environment variables (CliProxyEnable/CliProxyAddress/CliCAPath) take precedence over config file values.
 //
 // Returns (nil, nil) only when:

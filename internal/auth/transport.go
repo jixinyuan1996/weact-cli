@@ -89,8 +89,8 @@ func (t *SecurityPolicyTransport) RoundTrip(req *http.Request) (*http.Response, 
 
 // tryHandleMCPResponse attempts to parse a JSON-RPC (MCP) formatted error
 // response coming back from a remote server (this transport is installed on
-// lark-cli's outbound HTTP client; the bodies it inspects are produced by the
-// remote, not by lark-cli itself).
+// weact-cli's outbound HTTP client; the bodies it inspects are produced by the
+// remote, not by weact-cli itself).
 //
 // Observed production shape from the MCP gateway — Lark code in the outer
 // `error.code` slot, hint under `data.cli_hint`:

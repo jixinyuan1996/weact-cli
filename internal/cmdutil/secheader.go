@@ -29,7 +29,7 @@ const (
 	HeaderExecutionId = "X-Cli-Execution-Id"
 	HeaderAgentTrace  = "X-Agent-Trace"
 
-	SourceValue = "lark-cli"
+	SourceValue = "weact-cli"
 
 	HeaderUserAgent = "User-Agent"
 
@@ -44,7 +44,7 @@ const (
 	agentTraceMaxLen = 1024
 )
 
-// UserAgentValue returns the User-Agent value: "lark-cli/{version}".
+// UserAgentValue returns the User-Agent value: "weact-cli/{version}".
 func UserAgentValue() string {
 	return SourceValue + "/" + build.Version
 }

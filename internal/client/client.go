@@ -73,7 +73,7 @@ func (c *APIClient) resolveAccessToken(ctx context.Context, as core.Identity) (s
 func newTokenMissingError(as core.Identity, cause error) error {
 	return errs.NewAuthenticationError(errs.SubtypeTokenMissing,
 		"no access token available for %s", as).
-		WithHint("run: lark-cli auth login to re-authorize").
+		WithHint("run: weact-cli auth login to re-authorize").
 		WithCause(cause)
 }
 

@@ -722,8 +722,8 @@ func appendDryRunArg(raw string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	if len(argv) == 0 || argv[0] != "lark-cli" {
-		return nil, fmt.Errorf("not a lark-cli command")
+	if len(argv) == 0 || argv[0] != "weact-cli" {
+		return nil, fmt.Errorf("not a weact-cli command")
 	}
 	argv = truncateShellTail(argv)
 	argv = forceDryRunJSONFormat(argv)
@@ -798,7 +798,7 @@ type commandResult struct {
 }
 
 func runCommand(ctx context.Context, cliBin string, argv []string) commandResult {
-	tempDir, err := vfs.MkdirTemp("", "lark-cli-quality-gate-")
+	tempDir, err := vfs.MkdirTemp("", "weact-cli-quality-gate-")
 	if err != nil {
 		return commandResult{Err: err, ExitCode: 1}
 	}

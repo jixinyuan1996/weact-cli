@@ -172,7 +172,7 @@ func (f *Factory) CheckStrictMode(ctx context.Context, as core.Identity) error {
 	if mode.IsActive() && !mode.AllowsIdentity(as) {
 		return errs.NewValidationError(errs.SubtypeInvalidArgument,
 			"strict mode is %q, only %s-identity commands are available", mode, mode.ForcedIdentity()).
-			WithHint("if the user explicitly wants to switch policy, see `lark-cli config strict-mode --help` (confirm with the user before switching; switching does NOT require re-bind)")
+			WithHint("if the user explicitly wants to switch policy, see `weact-cli config strict-mode --help` (confirm with the user before switching; switching does NOT require re-bind)")
 	}
 	return nil
 }

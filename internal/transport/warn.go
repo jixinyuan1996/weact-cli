@@ -78,7 +78,7 @@ func WarnIfProxied(w io.Writer) {
 		// Emitting the env-proxy warning here would be misleading: it tells the
 		// user to set LARK_CLI_NO_PROXY=1, which does NOT disable the plugin proxy.
 		if _, _, enabled := proxyPluginStatus(); enabled {
-			fmt.Fprintln(w, "[lark-cli] [WARN] proxy plugin enabled: all requests are forced through proxy.")
+			fmt.Fprintln(w, "[weact-cli] [WARN] proxy plugin enabled: all requests are forced through proxy.")
 			return
 		}
 		if os.Getenv(EnvNoProxy) != "" {
@@ -88,7 +88,7 @@ func WarnIfProxied(w io.Writer) {
 		if key == "" {
 			return
 		}
-		fmt.Fprintf(w, "[lark-cli] [WARN] proxy detected: %s=%s — requests (including credentials) will transit through this proxy. Set %s=1 to disable proxy.\n",
+		fmt.Fprintf(w, "[weact-cli] [WARN] proxy detected: %s=%s — requests (including credentials) will transit through this proxy. Set %s=1 to disable proxy.\n",
 			key, redactProxyURL(val), EnvNoProxy)
 	})
 }

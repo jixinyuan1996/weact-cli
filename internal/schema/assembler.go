@@ -117,7 +117,7 @@ func buildInputSchema(m meta.Method) *InputSchema {
 		is.Properties.Set("yes", Property{
 			Type:        "boolean",
 			Default:     falseVal,
-			Description: "CLI confirmation gate. Must be true to execute; lark-cli rejects with confirmation_required if absent or false. Not sent to the backend.",
+			Description: "CLI confirmation gate. Must be true to execute; weact-cli rejects with confirmation_required if absent or false. Not sent to the backend.",
 		})
 	}
 

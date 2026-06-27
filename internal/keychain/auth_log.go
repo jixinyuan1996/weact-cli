@@ -17,7 +17,7 @@ import (
 )
 
 // RuntimeDirFunc returns the workspace-aware config directory.
-// Default: falls back to LARKSUITE_CLI_CONFIG_DIR or ~/.lark-cli (pre-workspace behavior).
+// Default: falls back to LARKSUITE_CLI_CONFIG_DIR or ~/.weact-cli (pre-workspace behavior).
 // Injected by cmdutil.NewDefault → core.GetRuntimeDir after workspace detection.
 // This avoids an import cycle (core → keychain → core).
 var RuntimeDirFunc = defaultRuntimeDir
@@ -28,7 +28,7 @@ func defaultRuntimeDir() string {
 	}
 	home, err := vfs.UserHomeDir()
 	if err != nil || home == "" {
-		// Silent fallback to a relative ".lark-cli": this package has no
+		// Silent fallback to a relative ".weact-cli": this package has no
 		// IOStreams in scope, so we cannot surface a warning here without
 		// violating the IOStreams injection boundary (enforced by lint).
 		// Users who hit this path should set LARKSUITE_CLI_CONFIG_DIR
@@ -36,7 +36,7 @@ func defaultRuntimeDir() string {
 		// explicit I/O error at first use.
 		home = ""
 	}
-	return filepath.Join(home, ".lark-cli")
+	return filepath.Join(home, ".weact-cli")
 }
 
 var (
@@ -103,7 +103,7 @@ func LogAuthResponse(path string, status int, logID string) {
 	}
 
 	authResponseLogger.Printf(
-		"[lark-cli] auth-response: time=%s path=%s status=%d x-tt-logid=%s cmdline=%s",
+		"[weact-cli] auth-response: time=%s path=%s status=%d x-tt-logid=%s cmdline=%s",
 		authResponseLogNow().Format(time.RFC3339Nano),
 		path,
 		status,
@@ -123,7 +123,7 @@ func LogAuthError(component, op string, err error) {
 	}
 
 	authResponseLogger.Printf(
-		"[lark-cli] auth-error: time=%s component=%s op=%s error=%q cmdline=%s",
+		"[weact-cli] auth-error: time=%s component=%s op=%s error=%q cmdline=%s",
 		authResponseLogNow().Format(time.RFC3339Nano),
 		component,
 		op,
@@ -159,7 +159,7 @@ func SetAuthLogHooksForTest(logger *log.Logger, now func() time.Time, args func(
 func cleanupOldLogs(dir string, now time.Time) {
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Fprintf(os.Stderr, "[lark-cli] [WARN] background log cleanup panicked: %v\n", r)
+			fmt.Fprintf(os.Stderr, "[weact-cli] [WARN] background log cleanup panicked: %v\n", r)
 		}
 	}()
 
