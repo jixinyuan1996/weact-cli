@@ -4,12 +4,16 @@
 package config
 
 import (
+	"bufio"
 	"context"
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/charmbracelet/huh"
 	"github.com/larksuite/cli/internal/build"
 	qrcode "github.com/skip2/go-qrcode"
+	"golang.org/x/term"
 
 	"github.com/larksuite/cli/errs"
 	larkauth "github.com/larksuite/cli/internal/auth"
@@ -254,22 +258,53 @@ func runCreateAppFlow(ctx context.Context, f *cmdutil.Factory, brandOverride cor
 }
 
 // runWeActManualFlow guides WeAct users to create an app in the developer
-// console first, then collects App ID / App Secret interactively.
-// WeAct private deployments do not expose /page/cli, so the standard
-// device-code registration flow is unavailable.
-func runWeActManualFlow(f *cmdutil.Factory, msg *initMsg) (*configInitResult, error) {
+// console first, then collects App ID / App Secret via plain readline prompts.
+// WeAct private deployments do not expose /page/cli, so the device-code
+// registration flow is unavailable. huh TUI is intentionally avoided here
+// because its ANSI rendering can obscure the guidance message on some terminals.
+func runWeActManualFlow(f *cmdutil.Factory, _ *initMsg) (*configInitResult, error) {
 	consoleURL := core.GetenvOrDefault("WEACT_OPEN_ENDPOINT", "https://open.weact.pipechina.com.cn")
 	fmt.Fprintf(f.IOStreams.ErrOut,
 		"\nWeAct 私有部署不支持自动注册流程。\n请先在 WeAct 开发者后台创建自建应用：\n  %s\n创建完成后，将 App ID 和 App Secret 填入下方。\n\n",
 		consoleURL)
 
-	result, err := runExistingAppForm(f, msg)
+	reader := bufio.NewReader(f.IOStreams.In)
+
+	fmt.Fprint(f.IOStreams.ErrOut, "App ID: ")
+	appID, err := reader.ReadString('\n')
 	if err != nil {
-		return nil, err
+		return nil, errs.NewValidationError(errs.SubtypeInvalidArgument, "failed to read App ID: %v", err).WithCause(err)
 	}
-	if result != nil {
-		result.Brand = core.BrandWeAct
-		result.Mode = "create"
+	appID = strings.TrimSpace(appID)
+	if appID == "" {
+		return nil, errs.NewValidationError(errs.SubtypeInvalidArgument, "App ID cannot be empty").WithParam("--app-id")
 	}
-	return result, nil
+
+	// Use term.ReadPassword when stdin is a real TTY so the secret is not echoed.
+	var appSecret string
+	fmt.Fprint(f.IOStreams.ErrOut, "App Secret: ")
+	if fd := int(os.Stdin.Fd()); term.IsTerminal(fd) {
+		raw, readErr := term.ReadPassword(fd)
+		fmt.Fprintln(f.IOStreams.ErrOut) // newline after hidden input
+		if readErr != nil {
+			return nil, errs.NewValidationError(errs.SubtypeInvalidArgument, "failed to read App Secret: %v", readErr).WithCause(readErr)
+		}
+		appSecret = strings.TrimSpace(string(raw))
+	} else {
+		line, readErr := reader.ReadString('\n')
+		if readErr != nil {
+			return nil, errs.NewValidationError(errs.SubtypeInvalidArgument, "failed to read App Secret: %v", readErr).WithCause(readErr)
+		}
+		appSecret = strings.TrimSpace(line)
+	}
+	if appSecret == "" {
+		return nil, errs.NewValidationError(errs.SubtypeInvalidArgument, "App Secret cannot be empty").WithParam("--app-secret")
+	}
+
+	return &configInitResult{
+		Mode:      "create",
+		Brand:     core.BrandWeAct,
+		AppID:     appID,
+		AppSecret: appSecret,
+	}, nil
 }
