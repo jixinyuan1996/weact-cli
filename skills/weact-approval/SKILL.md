@@ -1,7 +1,7 @@
 ---
 name: weact-approval
 version: 1.2.0
-description: "WeAct审批：查询和处理审批待办/已办/实例，搜索可发起审批定义、查看定义详情并发起原生审批实例。当用户要处理审批任务、查看审批实例、搜索或发起审批时使用。审批待办不是WeAct任务；非审批类待办走 lark-task。不负责创建审批定义；三方审批定义不走原生提单。"
+description: "WeAct审批：查询和处理审批待办/已办/实例，搜索可发起审批定义、查看定义详情并发起原生审批实例。当用户要处理审批任务、查看审批实例、搜索或发起审批时使用。审批待办不是WeAct任务；非审批类待办走 weact-task。不负责创建审批定义；三方审批定义不走原生提单。"
 metadata:
   requires:
     bins: ["weact-cli"]
@@ -53,4 +53,4 @@ weact-cli approval tasks approve --data '{"instance_code":"<ic>","task_id":"<tid
 
 ## 不在本 skill 范围
 
-创建审批定义（走WeAct客户端或审批管理后台）；三方定义发起（返回 `create_link`，引导用户通过链接发起）；非审批类待办 → [`lark-task`](../weact-task/SKILL.md)
+创建审批定义（走WeAct客户端或审批管理后台）；三方定义发起（返回 `create_link`，引导用户通过链接发起）；非审批类待办 → [`weact-task`](../weact-task/SKILL.md)

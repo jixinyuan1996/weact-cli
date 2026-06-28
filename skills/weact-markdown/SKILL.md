@@ -22,9 +22,9 @@ metadata:
 - 用户要**读取 Drive 里某个 `.md` 文件内容**，使用 `weact-cli markdown +fetch`
 - 用户要对 Markdown 文件做**局部文本替换 / 正则替换**，优先使用 `weact-cli markdown +patch`
 - 用户要**覆盖更新 Drive 里某个 `.md` 文件内容**，使用 `weact-cli markdown +overwrite`
-- 用户要先拿 Markdown 文件的历史版本号，再做比较/下载/回滚，先用 [`lark-drive`](../weact-drive/SKILL.md) 的 `weact-cli drive +version-history`
-- 用户要把本地 Markdown **导入成在线新版文档（docx）**，不要用本 skill，改用 [`lark-drive`](../weact-drive/SKILL.md) 的 `weact-cli drive +import --type docx`
-- 用户要对 Markdown 文件做**rename / move / delete / 搜索 / 权限 / 评论**等云空间（云盘/云存储）操作，不要留在本 skill，切到 [`lark-drive`](../weact-drive/SKILL.md)
+- 用户要先拿 Markdown 文件的历史版本号，再做比较/下载/回滚，先用 [`weact-drive`](../weact-drive/SKILL.md) 的 `weact-cli drive +version-history`
+- 用户要把本地 Markdown **导入成在线新版文档（docx）**，不要用本 skill，改用 [`weact-drive`](../weact-drive/SKILL.md) 的 `weact-cli drive +import --type docx`
+- 用户要对 Markdown 文件做**rename / move / delete / 搜索 / 权限 / 评论**等云空间（云盘/云存储）操作，不要留在本 skill，切到 [`weact-drive`](../weact-drive/SKILL.md)
 - `markdown +create` / `+overwrite` 命中 `missing scope`、`permission denied`、`not found`、`version limit` 时，默认停止重试并按报错 hint 处理；只有 `rate limit` 或临时网络错误才做有限重试。
 
 ## 核心边界
@@ -65,5 +65,5 @@ Shortcut 是对常用操作的高级封装（`weact-cli markdown +<verb> [flags]
 
 ## 参考
 
-- [lark-shared](../weact-shared/SKILL.md) — 认证和全局参数
-- [lark-drive](../weact-drive/SKILL.md) — Drive 文件管理、导入 docx、move/delete/search 等
+- [weact-shared](../weact-shared/SKILL.md) — 认证和全局参数
+- [weact-drive](../weact-drive/SKILL.md) — Drive 文件管理、导入 docx、move/delete/search 等

@@ -168,7 +168,7 @@ Text:
 
 Purpose: explain components, dependencies, or system flow.
 
-Implementation: prefer `<whiteboard>` (see `lark-slides-whiteboard.md`); use `<shape>` + `<line>` only as fallback.
+Implementation: prefer `<whiteboard>` (see `weact-slides-whiteboard.md`); use `<shape>` + `<line>` only as fallback.
 
 Geometry:
 - Main visual area should be a diagram, not prose.
@@ -184,7 +184,7 @@ Text:
 
 Purpose: show operational steps, workflow, or cause-effect path.
 
-Implementation: prefer `<whiteboard>` (see `lark-slides-whiteboard.md`); use `<shape>` + `<line>` only as fallback.
+Implementation: prefer `<whiteboard>` (see `weact-slides-whiteboard.md`); use `<shape>` + `<line>` only as fallback.
 
 Geometry:
 - Use numbered steps connected by arrows or lines.

@@ -1,7 +1,7 @@
 ---
 name: weact-calendar
 version: 1.0.0
-description: "WeAct日历：管理日历日程和会议室。查看/搜索日程、创建/更新日程、管理参会人、查询忙闲和推荐时段、预定会议室。当用户需要查看日程安排、创建/修改会议、查询/预定会议室时使用。不负责：查询过去的视频会议记录（走 lark-vc）、待办任务（走 lark-task）。"
+description: "WeAct日历：管理日历日程和会议室。查看/搜索日程、创建/更新日程、管理参会人、查询忙闲和推荐时段、预定会议室。当用户需要查看日程安排、创建/修改会议、查询/预定会议室时使用。不负责：查询过去的视频会议记录（走 weact-vc）、待办任务（走 weact-task）。"
 metadata:
   requires:
     bins: ["weact-cli"]
@@ -44,7 +44,7 @@ weact-cli calendar +agenda --as user
 
 | 场景 | 前置要求 |
 |------|----------|
-| 预约日程/会议、查会议室 | 先读 [lark-calendar-schedule-meeting.md](referenc../weact-calendar-schedule-meeting.md) |
+| 预约日程/会议、查会议室 | 先读 [weact-calendar-schedule-meeting.md](referenc../weact-calendar-schedule-meeting.md) |
 | 编辑已有日程 | 先定位目标日程 `event_id`；若是重复性日程，必须定位到具体实例的 `event_id`（禁止使用原重复日程 ID） |
 | 删除/修改后验证 | 等待 2 秒再查询（API 最终一致性），不要告知用户你等待了 |
 | 调用任何 Shortcut | 先读其对应 reference 文档 |
@@ -129,8 +129,8 @@ weact-cli calendar <resource> <method> [flags]
 
 ## 不在本 skill 范围
 
-- 查询过去的视频会议记录 → [lark-vc](../weact-vc/SKILL.md)
-- 待办任务管理 → [lark-task](../weact-task/SKILL.md)
+- 查询过去的视频会议记录 → [weact-vc](../weact-vc/SKILL.md)
+- 待办任务管理 → [weact-task](../weact-task/SKILL.md)
 - 会议室物理设施管理 → 管理员后台
 
 **注意（强制性）：**

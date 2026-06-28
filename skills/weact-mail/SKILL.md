@@ -114,15 +114,15 @@ metadata:
 
 ## 常用操作速查
 
-- 收件人地址搜索：搜索用户邮箱地址、群邮箱地址、邮件组地址，提供给用户确认。ref: [lark-mail-recipient-search](referenc../weact-mail-recipient-search.md)
-- 使用公共邮箱发信、使用邮箱别名发信：通过 `--mailbox` 指定邮箱归属，通过 `--from` 指定发件人地址。ref: [lark-mail-send-as](referenc../weact-mail-send-as.md)
-- 查看发送邮件后的投递状态：发送成功后查看邮件投递状态；也覆盖发送拦截。ref: [lark-mail-send-status](referenc../weact-mail-send-status.md)
-- 使用邮件模板：区分个人模板和静态 HTML 模板，发信类 shortcut 用 `--template-id` 套用模板。ref: [lark-mail-template](referenc../weact-mail-template.md)
-- 撤回已发送邮件：撤回邮件并查询异步撤回状态。ref: [lark-mail-recall](referenc../weact-mail-recall.md)
-- 收信规则：创建、验证、删除自动处理收到邮件的规则。ref: [lark-mail-rules](referenc../weact-mail-rules.md)
-- 分享邮件到 IM：分享邮件或会话到群聊、个人会话。ref: [lark-mail-share-to-chat](referenc../weact-mail-share-to-chat.md)
-- 发送日程邀请邮件：在邮件中嵌入 `text/calendar` 日程邀请。ref: [lark-mail-calendar-invite](referenc../weact-mail-calendar-invite.md)
-- 编写复杂 HTML 正文：复杂 HTML、本地图片、安全不确定时读取规范或运行 `+lint-html`；普通正文无需预读。ref: [lark-mail-html](referenc../weact-mail-html.md)
+- 收件人地址搜索：搜索用户邮箱地址、群邮箱地址、邮件组地址，提供给用户确认。ref: [weact-mail-recipient-search](referenc../weact-mail-recipient-search.md)
+- 使用公共邮箱发信、使用邮箱别名发信：通过 `--mailbox` 指定邮箱归属，通过 `--from` 指定发件人地址。ref: [weact-mail-send-as](referenc../weact-mail-send-as.md)
+- 查看发送邮件后的投递状态：发送成功后查看邮件投递状态；也覆盖发送拦截。ref: [weact-mail-send-status](referenc../weact-mail-send-status.md)
+- 使用邮件模板：区分个人模板和静态 HTML 模板，发信类 shortcut 用 `--template-id` 套用模板。ref: [weact-mail-template](referenc../weact-mail-template.md)
+- 撤回已发送邮件：撤回邮件并查询异步撤回状态。ref: [weact-mail-recall](referenc../weact-mail-recall.md)
+- 收信规则：创建、验证、删除自动处理收到邮件的规则。ref: [weact-mail-rules](referenc../weact-mail-rules.md)
+- 分享邮件到 IM：分享邮件或会话到群聊、个人会话。ref: [weact-mail-share-to-chat](referenc../weact-mail-share-to-chat.md)
+- 发送日程邀请邮件：在邮件中嵌入 `text/calendar` 日程邀请。ref: [weact-mail-calendar-invite](referenc../weact-mail-calendar-invite.md)
+- 编写复杂 HTML 正文：复杂 HTML、本地图片、安全不确定时读取规范或运行 `+lint-html`；普通正文无需预读。ref: [weact-mail-html](referenc../weact-mail-html.md)
 - 读取邮件：按场景选择 triage、单封、批量或会话读取。ref: [`+triage`](referenc../weact-mail-triage.md)、[`+message`](referenc../weact-mail-message.md)、[`+messages`](referenc../weact-mail-messages.md)、[`+thread`](referenc../weact-mail-thread.md)
 - 写信、草稿、回复、转发：先判断新邮件、回复或转发，再决定创建草稿、直接发送或定时发送。命令选择见下方；公共邮箱/别名、发送状态等见相关 ref。
 
@@ -150,11 +150,11 @@ weact-cli mail user_mailbox.messages -h
 | **转发** | `+forward` | `+forward --confirm-send` | `+forward --confirm-send --send-time <unix_timestamp>` |
 
 - 有原邮件上下文 → 用 `+reply` / `+reply-all` / `+forward`（默认即草稿），**不要用 `+draft-create`**
-- 当需要查找收件人邮箱地址时，使用联系人搜索接口。ref: [lark-mail-recipient-search](referenc../weact-mail-recipient-search.md)
+- 当需要查找收件人邮箱地址时，使用联系人搜索接口。ref: [weact-mail-recipient-search](referenc../weact-mail-recipient-search.md)
 - **发送前必须向用户确认收件人和内容；如有必要，可引导用户去WeAct邮件里打开草稿查看详情；用户明确同意后才可执行发送或使用 `--confirm-send`**
-- **发送后必须调用 `send_status` 确认投递状态**；定时发送（`--send-time`）在预定发送时间后再查询。ref: [lark-mail-send-status](referenc../weact-mail-send-status.md)
-- 公共邮箱/别名发信见 [lark-mail-send-as](referenc../weact-mail-send-as.md)
-- 发送拦截见 [lark-mail-send-status](referenc../weact-mail-send-status.md)
+- **发送后必须调用 `send_status` 确认投递状态**；定时发送（`--send-time`）在预定发送时间后再查询。ref: [weact-mail-send-status](referenc../weact-mail-send-status.md)
+- 公共邮箱/别名发信见 [weact-mail-send-as](referenc../weact-mail-send-as.md)
+- 发送拦截见 [weact-mail-send-status](referenc../weact-mail-send-status.md)
 
 ### 正文格式与书写规范
 

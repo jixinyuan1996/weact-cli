@@ -5,9 +5,9 @@ IconPark 图标通过 `<icon>` 写入 slides XML，`iconType` 必须来自本 sk
 ## 机器优先流程
 
 ```bash
-python3 skills/lark-slides/scripts/iconpark_tool.py search --query "增长趋势" --limit 8
-python3 skills/lark-slides/scripts/iconpark_tool.py resolve --name chart-line
-python3 skills/lark-slides/scripts/iconpark_tool.py list-categories
+python3 skills/weact-slides/scripts/iconpark_tool.py search --query "增长趋势" --limit 8
+python3 skills/weact-slides/scripts/iconpark_tool.py resolve --name chart-line
+python3 skills/weact-slides/scripts/iconpark_tool.py list-categories
 ```
 
 `search` 返回 JSON 数组，每项包含 `iconType`、`category`、`name`、`tags`、`score`。直接把选中的 `iconType` 写入 XML，并为图标指定可见颜色：

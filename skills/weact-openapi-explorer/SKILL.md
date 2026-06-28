@@ -1,7 +1,7 @@
 ---
 name: weact-openapi-explorer
 version: 1.0.0
-description: "WeAct/WeAct 原生 OpenAPI 探索：从官方文档库中挖掘未经 CLI 封装的原生 OpenAPI 接口。当用户的需求无法被现有 lark-* skill 或 weact-cli 已注册命令满足，需要查找并调用原生WeAct OpenAPI 时使用。"
+description: "WeAct/WeAct 原生 OpenAPI 探索：从官方文档库中挖掘未经 CLI 封装的原生 OpenAPI 接口。当用户的需求无法被现有 weact-* skill 或 weact-cli 已注册命令满足，需要查找并调用原生WeAct OpenAPI 时使用。"
 metadata:
   requires:
     bins: ["weact-cli"]
@@ -149,5 +149,5 @@ weact-cli api PATCH /open-apis/im/v1/chats/oc_xxx/announcement \
 
 ## 参考
 
-- [lark-shared](../weact-shared/SKILL.md) — 认证和全局参数
-- [lark-skill-maker](../weact-skill-maker/SKILL.md) — 如需将挖掘到的 API 固化为新 Skill
+- [weact-shared](../weact-shared/SKILL.md) — 认证和全局参数
+- [weact-skill-maker](../weact-skill-maker/SKILL.md) — 如需将挖掘到的 API 固化为新 Skill

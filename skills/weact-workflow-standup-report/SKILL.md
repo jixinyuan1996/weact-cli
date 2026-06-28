@@ -117,6 +117,6 @@ weact-cli task +get-my-tasks --complete=false --page-all
 
 ## 参考
 
-- [lark-shared](../weact-shared/SKILL.md) — 认证、权限（必读）
-- [lark-calendar](../weact-calendar/SKILL.md) — `+agenda` 详细用法
-- [lark-task](../weact-task/SKILL.md) — `+get-my-tasks` 详细用法
+- [weact-shared](../weact-shared/SKILL.md) — 认证、权限（必读）
+- [weact-calendar](../weact-calendar/SKILL.md) — `+agenda` 详细用法
+- [weact-task](../weact-task/SKILL.md) — `+get-my-tasks` 详细用法

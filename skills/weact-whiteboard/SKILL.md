@@ -3,7 +3,7 @@ name: weact-whiteboard
 version: 1.0.0
 description: >
   WeAct画板：查询和编辑WeAct云文档中的画板。支持导出画板为预览图片、导出原始节点结构、使用多种格式更新画板内容。
-  当用户需要查看画板内容、导出画板图片、编辑画板时使用此 skill。不负责：WeAct云文档内容编辑（lark-doc）、文档内嵌电子表格/Base（lark-sheets / lark-base）。
+  当用户需要查看画板内容、导出画板图片、编辑画板时使用此 skill。不负责：WeAct云文档内容编辑（weact-doc）、文档内嵌电子表格/Base（weact-sheets / weact-base）。
 metadata:
   requires:
     bins: ["weact-cli"]
@@ -42,6 +42,6 @@ metadata:
 ---
 
 ## 不在本 skill 范围
-- 文档内容编辑 → lark-doc [lark-doc](../weact-doc/SKILL.md)
-- 在文档中创建画板 → [lark-doc-whiteboard.md](../weact-doc/referenc../weact-doc-whiteboard.md)
-- 表格 / Base 操作 → [lark-sheets](../weact-sheets/SKILL.md) / [lark-base](../weact-base/SKILL.md)
+- 文档内容编辑 → weact-doc [weact-doc](../weact-doc/SKILL.md)
+- 在文档中创建画板 → [weact-doc-whiteboard.md](../weact-doc/referenc../weact-doc-whiteboard.md)
+- 表格 / Base 操作 → [weact-sheets](../weact-sheets/SKILL.md) / [weact-base](../weact-base/SKILL.md)

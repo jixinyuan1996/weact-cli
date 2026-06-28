@@ -1,11 +1,11 @@
 ---
 name: weact-sheets
 version: 3.0.0
-description: "WeAct电子表格：创建和操作电子表格。支持创建表格、管理工作表与行列结构（增删/合并/调整尺寸/隐藏/冻结）、读写单元格（值/公式/样式/批注/单元格图片）、查找替换、多操作原子批量更新，以及图表、透视表、条件格式、筛选器、迷你图、浮动图片等对象的创建与维护。当用户需要创建电子表格、管理工作表、批量读写或编辑数据、统计汇总与可视化、表格美化、公式计算（含 Excel 公式迁移）、金融/财务建模（DCF、三张表、预算、Sensitivity 等）等任务时使用。若用户是想按名称或关键词搜索云空间（云盘/云存储）里的表格文件，请改用 lark-drive 的 drive +search 先定位资源。当用户给出 doubao.com 的 /sheets/ URL/token 时，也应直接使用本 skill，不要因为域名不是WeAct而回退到 WebFetch；路由依据是 URL 路径模式和 token，而不是域名。"
+description: "WeAct电子表格：创建和操作电子表格。支持创建表格、管理工作表与行列结构（增删/合并/调整尺寸/隐藏/冻结）、读写单元格（值/公式/样式/批注/单元格图片）、查找替换、多操作原子批量更新，以及图表、透视表、条件格式、筛选器、迷你图、浮动图片等对象的创建与维护。当用户需要创建电子表格、管理工作表、批量读写或编辑数据、统计汇总与可视化、表格美化、公式计算（含 Excel 公式迁移）、金融/财务建模（DCF、三张表、预算、Sensitivity 等）等任务时使用。若用户是想按名称或关键词搜索云空间（云盘/云存储）里的表格文件，请改用 weact-drive 的 drive +search 先定位资源。当用户给出 doubao.com 的 /sheets/ URL/token 时，也应直接使用本 skill，不要因为域名不是WeAct而回退到 WebFetch；路由依据是 URL 路径模式和 token，而不是域名。"
 metadata:
   requires:
     bins: ["weact-cli"]
-    siblings: ["lark-shared"]
+    siblings: ["weact-shared"]
   cliHelp: "weact-cli sheets --help"
 ---
 
@@ -21,7 +21,7 @@ metadata:
 | --- | --- | --- |
 | 工作表（sheet） | 子表、tab、标签页 | spreadsheet 内的单张表；`sheet_id` 是其稳定标识 |
 | 电子表格（spreadsheet） | 工作簿、表格 | 顶层容器；由 `--url` 或 `--spreadsheet-token` 定位 |
-| reference_id | id | **表内对象**的稳定标识，即各对象主键 flag 接受的值（见下表）。⚠️ 与 `lark-sheets-float-image` 的 `--image-uri`（图片上传句柄）不是一回事，后者不属于 reference_id |
+| reference_id | id | **表内对象**的稳定标识，即各对象主键 flag 接受的值（见下表）。⚠️ 与 `weact-sheets-float-image` 的 `--image-uri`（图片上传句柄）不是一回事，后者不属于 reference_id |
 
 每类对象用各自的主键 flag 定位（命名不统一，按此表对照，不要凭直觉拼）：
 
@@ -71,7 +71,7 @@ metadata:
 | Reference | 描述 |
 | --- | --- |
 | [WeAct表格核心操作：分析、编辑与可视化](referenc../weact-sheets-core-operations.md) | WeAct表格核心操作工作流。当用户需要对已有的WeAct表格进行查看、分析、编辑或可视化时使用。适用场景：数据查询与统计、公式计算、表格美化、创建图表/透视表、筛选排序、批量修改数据、调整表格结构等。即使用户没有明确说"WeAct表格"，只要操作对象是已有的在线表格，都应触发此工作流。 |
-| [WeAct表格样式与配色规范](referenc../weact-sheets-visual-standards.md) | WeAct表格样式与配色规范：表头/数据区/汇总行的颜色、字号、对齐、边框等取值标准，以及新增汇总行、追加行列继承原表风格、已有区域美化等典型场景的决策流程与样式要点。工具调用参数细节请参考对应的 lark-sheets-write-cells / lark-sheets-range-operations / lark-sheets-batch-update。条件格式（高亮、标红、数据条、色阶）请使用 lark-sheets-conditional-format。 |
+| [WeAct表格样式与配色规范](referenc../weact-sheets-visual-standards.md) | WeAct表格样式与配色规范：表头/数据区/汇总行的颜色、字号、对齐、边框等取值标准，以及新增汇总行、追加行列继承原表风格、已有区域美化等典型场景的决策流程与样式要点。工具调用参数细节请参考对应的 weact-sheets-write-cells / weact-sheets-range-operations / weact-sheets-batch-update。条件格式（高亮、标红、数据条、色阶）请使用 weact-sheets-conditional-format。 |
 | [WeAct表格公式生成规则](referenc../weact-sheets-formula-translation.md) | Excel 公式到WeAct表格公式的迁移与生成规则。核心目标不是保留 Excel 原语法，而是按WeAct表格可执行规则重写公式，并在结果上尽量对齐 Excel。当用户要求把 Excel 公式改写成WeAct表格公式，或需要生成WeAct公式（尤其涉及 ARRAYFORMULA、原生数组函数、INDEX/OFFSET、MAP/LAMBDA、日期差、多层范围结果与二次展开）时使用。 |
 
 ### 按对象的工具参考（含 shortcut）
@@ -79,11 +79,11 @@ metadata:
 | Reference | 描述 |
 | --- | --- |
 | [WeAct Sheet Workbook](referenc../weact-sheets-workbook.md) | 管理WeAct表格的工作簿结构（子表列表及元数据）。当用户提到"看看这个表格有什么"、"表格结构"、"有哪些 sheet"、"新建一个 sheet"、"删除这个工作表"、"重命名"、"复制一份"、"移动到前面"时使用。 |
-| [WeAct Sheet Sheet Structure](referenc../weact-sheets-sheet-structure.md) | 管理WeAct表格的子表结构与布局。适用场景：查看行高、列宽、隐藏行列、合并单元格等布局信息，以及"插入一行"、"删除这列"、"隐藏行"、"冻结表头"、行列分组（大纲折叠/展开）等操作。行列大纲仅在用户明确提到"行分组"、"列分组"、"大纲"、"outline"时才触发，"按XXX分组"等数据分组场景请使用 lark-sheets-pivot-table。如需在表尾追加数据，应先通过此 skill 插入行，再通过 lark-sheets-write-cells 写入。 |
+| [WeAct Sheet Sheet Structure](referenc../weact-sheets-sheet-structure.md) | 管理WeAct表格的子表结构与布局。适用场景：查看行高、列宽、隐藏行列、合并单元格等布局信息，以及"插入一行"、"删除这列"、"隐藏行"、"冻结表头"、行列分组（大纲折叠/展开）等操作。行列大纲仅在用户明确提到"行分组"、"列分组"、"大纲"、"outline"时才触发，"按XXX分组"等数据分组场景请使用 weact-sheets-pivot-table。如需在表尾追加数据，应先通过此 skill 插入行，再通过 weact-sheets-write-cells 写入。 |
 | [WeAct Sheet Read Data](referenc../weact-sheets-read-data.md) | 读取WeAct表格中的单元格数据。当用户需要"看看数据"、"分析数据"、"统计/汇总"时使用；也适用于需要查看公式、样式、批注等详细信息的场景。 |
 | [WeAct Sheet Search & Replace](referenc../weact-sheets-search-replace.md) | 在WeAct表格中搜索和替换文本，支持限定范围、大小写匹配、精确匹配、正则表达式。当用户需要"查找"、"搜索"、"定位"某个值，或"替换"、"批量修改文本"、"把 A 改成 B"时使用。不要用于理解表格结构（应读取数据）、不要用于数据分析（应读取数据后计算）、不要把用户操作动作中的关键词（如"汇总金额""统计数量"）当作搜索词。 |
-| [WeAct Sheet Write Cells](referenc../weact-sheets-write-cells.md) | 向WeAct表格的指定区域批量写入值、公式、样式、批注或单元格图片。适用场景：填写数据、设置公式、修改格式、添加批注、嵌入单元格图片（如需操作浮动图片，请使用 lark-sheets-float-image）；若只需把一块 CSV 批量铺到表格上（值或公式，不带样式/批注），直接使用 `+csv-put` 更短更快。追加数据需先通过 lark-sheets-sheet-structure 插入行列。 |
-| [WeAct Sheet Range Operations](referenc../weact-sheets-range-operations.md) | 对WeAct表格中指定区域执行结构性操作（不涉及写入单元格数据值）。适用场景：清除内容或格式（"清空"、"删除内容"、"去掉格式"）、合并/取消合并单元格、调整行高列宽（"加宽列"、"自适应列宽"）、移动/复制/填充/排序数据（"移动数据"、"复制到"、"自动填充"、"按某列排序"）。写入单元格数据请使用 lark-sheets-write-cells。 |
+| [WeAct Sheet Write Cells](referenc../weact-sheets-write-cells.md) | 向WeAct表格的指定区域批量写入值、公式、样式、批注或单元格图片。适用场景：填写数据、设置公式、修改格式、添加批注、嵌入单元格图片（如需操作浮动图片，请使用 weact-sheets-float-image）；若只需把一块 CSV 批量铺到表格上（值或公式，不带样式/批注），直接使用 `+csv-put` 更短更快。追加数据需先通过 weact-sheets-sheet-structure 插入行列。 |
+| [WeAct Sheet Range Operations](referenc../weact-sheets-range-operations.md) | 对WeAct表格中指定区域执行结构性操作（不涉及写入单元格数据值）。适用场景：清除内容或格式（"清空"、"删除内容"、"去掉格式"）、合并/取消合并单元格、调整行高列宽（"加宽列"、"自适应列宽"）、移动/复制/填充/排序数据（"移动数据"、"复制到"、"自动填充"、"按某列排序"）。写入单元格数据请使用 weact-sheets-write-cells。 |
 | [WeAct Sheet Batch Update](referenc../weact-sheets-batch-update.md) | 将多个WeAct表格写入操作合并为一次批量执行，按顺序依次完成。适合需要连续执行多个写入操作的场景（如先修改结构再写入数据）。 |
 | [WeAct Sheet Chart](referenc../weact-sheets-chart.md) | 管理WeAct表格中的图表（柱形图、折线图、饼图、条形图、面积图、散点图、组合图、雷达图等）。当用户需要创建图表、修改图表样式或数据源、查看已有图表配置、删除图表时使用。也适用于用户提到"数据可视化"、"画个图"、"趋势分析"、"对比图"、"占比分析"、"做个图表"等数据可视化相关场景。 |
 | [WeAct Sheet Pivot Table](referenc../weact-sheets-pivot-table.md) | 管理WeAct表格中的数据透视表。当用户需要创建透视表、修改透视表的行列字段/聚合方式/筛选条件、查看已有透视表配置、删除透视表时使用。也适用于用户提到"分组汇总"、"交叉分析"、"按XXX统计"、"按字段分组"、"再分下组"、"多维分析"、"数据透视"等场景。 |
@@ -91,7 +91,7 @@ metadata:
 | [WeAct Sheet Filter](referenc../weact-sheets-filter.md) | 管理WeAct表格中的筛选器（filter）。当用户需要筛选数据（按文本/数值/颜色/日期条件过滤行）、查看已有筛选配置、修改或删除筛选器时使用。也适用于"只看"、"筛选出"、"仅保留符合条件的"等场景。 |
 | [WeAct Sheet Filter View](referenc../weact-sheets-filter-view.md) | 管理WeAct表格中的筛选视图（filter view）。当用户需要"建一个 XX 视图"、"保存这个筛选状态"、"切换不同筛选"、维护一个 sheet 上多份独立筛选配置时使用。视图与筛选器（filter）相互独立，可在同一 sheet 共存；视图的隐藏行仅在用户进入该视图时本地生效，不影响其他协作者。 |
 | [WeAct Sheet Sparkline](referenc../weact-sheets-sparkline.md) | 管理WeAct表格中的迷你图（折线迷你图、柱形迷你图、胜负迷你图）。当用户需要在单元格内嵌入小型图表来展示数据趋势时使用。也适用于"趋势线"、"单元格内图表"、"迷你图"等场景。注意：不等同于被禁用的 SPARKLINE() 公式函数。 |
-| [WeAct Sheet Float Image](referenc../weact-sheets-float-image.md) | 管理WeAct表格中的浮动图片。当用户需要在表格中插入浮动图片、调整图片位置和大小、查看已有浮动图片、删除图片时使用。也适用于"插入图片"、"添加 logo"、"放一张图"等场景。注意：如果用户需要将图片嵌入到某个单元格内部（单元格图片），请阅读 lark-sheets-write-cells。 |
+| [WeAct Sheet Float Image](referenc../weact-sheets-float-image.md) | 管理WeAct表格中的浮动图片。当用户需要在表格中插入浮动图片、调整图片位置和大小、查看已有浮动图片、删除图片时使用。也适用于"插入图片"、"添加 logo"、"放一张图"等场景。注意：如果用户需要将图片嵌入到某个单元格内部（单元格图片），请阅读 weact-sheets-write-cells。 |
 
 ## 公共 flag 速查
 
@@ -114,7 +114,7 @@ metadata:
    - ⚠️ **不确定 sheet 名时禁止直接猜 `Sheet1`**：除非用户对话明确说出 sheet 名 / id，或上下文（之前的工具调用 / URL 锚点 `?sheet=xxx`）已经出现过具体值，否则**第一步先调 `+workbook-info --url "..."`**（或 `--spreadsheet-token`）拿 `sheets[].sheet_id` / `sheets[].title` 列表再选。中文环境下子表常叫"数据" / "Sheet"（无数字）/ "工作表 1" / 业务名，猜 `Sheet1` 大概率撞 `sheet not found`，比先查多耗一次失败调用 + 重试。
    - ⚠️ **`--range` 里的 `Sheet1!` 前缀不能替代 sheet 定位**：即使写了 `--range 'Sheet1!A1:B2'`，仍**必须**额外传 `--sheet-id` 或 `--sheet-name`，否则照样报上面的错。
    - ⚠️ **A1 reference 含 `!`**（`--source` / `--range` / `--ranges`）**：整段用单引号包裹**，如 `--range 'Sheet1!A1:B2'`——单引号能挡住 bash 的 history expansion（`!` 被拦成 `event not found`；双引号挡不住；别改用 `set +H`，原因见下方「复合 JSON / 大入参」）。sheet 名含特殊字符（`-` / 空格 / 非 ASCII）需在内部按 A1 标准再包一层单引号时，用 `'\''` 转义保持外层单引号，如 `--source ''\''Sales-2025'\''!A1:D100'`。
-   - **例外**：徽章标为 `_公共：URL/token（无 sheet 定位）…_` 的 shortcut（如 `+workbook-info` / `+workbook-export` / `+batch-update` / `+dropdown-update|delete` / `+cells-batch-set-style` / `+cells-batch-clear` / `+sheet-create`）**不接受也不需要** sheet 定位，只给一组 spreadsheet 定位即可。`+pivot-create` 用 `--target-sheet-id` / `--target-sheet-name`（XOR，可都不传，落点细节见 `lark-sheets-pivot-table`）。
+   - **例外**：徽章标为 `_公共：URL/token（无 sheet 定位）…_` 的 shortcut（如 `+workbook-info` / `+workbook-export` / `+batch-update` / `+dropdown-update|delete` / `+cells-batch-set-style` / `+cells-batch-clear` / `+sheet-create`）**不接受也不需要** sheet 定位，只给一组 spreadsheet 定位即可。`+pivot-create` 用 `--target-sheet-id` / `--target-sheet-name`（XOR，可都不传，落点细节见 `weact-sheets-pivot-table`）。
 
 | Flag | Type | 必填 | 说明 |
 | --- | --- | --- | --- |

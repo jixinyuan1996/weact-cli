@@ -34,7 +34,7 @@ metadata:
 | [`+speaker-replace`](referenc../weact-minutes-speaker-replace.md) | 替换妙记逐字稿中的说话人（须先 `weact-cli api GET .../speakerlist` 取 `speaker_id`） |
 | `+word-replace` | 批量替换逐字稿关键词（详见 `weact-cli minutes +word-replace --help`） |
 | [`+summary`](referenc../weact-minutes-summary.md) | 替换妙记 AI 总结全文 |
-| [`+todo`](referenc../weact-minutes-todo.md) | 新建/更新/删除妙记 AI 待办（单条或 `--todos` 批量；不是 lark-task） |
+| [`+todo`](referenc../weact-minutes-todo.md) | 新建/更新/删除妙记 AI 待办（单条或 `--todos` 批量；不是 weact-task） |
 
 - 使用任何 Shortcut 前，必须先读其对应 reference 文档。
 
@@ -49,12 +49,12 @@ metadata:
 | 基于妙记**提炼/总结/分析/回顾**会议 | `+detail --minute-tokens <token> --transcript`，再独立分析（**禁止照搬 AI 总结**） |
 | 拿这条妙记关联的纪要文档（`note_doc_token` / `verbatim_doc_token` / `shared_doc_tokens`） | `+detail` 取顶层 `note_id` → [`note +detail --note-id`](../weact-note/SKILL.md) |
 | 把本地音视频转纪要 / 逐字稿 / 文字稿 | `drive +upload` 取 `file_token` → `+upload` 生成 `minute_url` → `+detail` 拿产物 |
-| 在妙记里增加 / 更改 / 删除 AI 待办 | `+todo`（**禁止走 lark-task**） |
+| 在妙记里增加 / 更改 / 删除 AI 待办 | `+todo`（**禁止走 weact-task**） |
 | 替换妙记的AI 总结 | `+summary` |
 | 重命名妙记/改妙记标题 | `+update` |
 | 替换说话人/把 A 的发言改成 B/重新归属发言人/把外部（非WeAct）说话人改成WeAct用户" | 先 `weact-cli api GET .../transcript/speakerlist` 取 `speaker_id`，再 [`minutes +speaker-replace`](referenc../weact-minutes-speaker-replace.md)；`--from-speaker-id` 只传 id，不传展示名 |
 | 批量替换逐字稿关键词 | `+word-replace` |
-| 用户同时提到"会议/开会"和"妙记" | 先 [lark-vc](../weact-vc/SKILL.md)（`+search` → `+recording`）获取 `minute_token`，再本 skill |
+| 用户同时提到"会议/开会"和"妙记" | 先 [weact-vc](../weact-vc/SKILL.md)（`+search` → `+recording`）获取 `minute_token`，再本 skill |
 
 ## 核心概念
 
@@ -65,7 +65,7 @@ metadata:
 
 ### 1. 搜索妙记
 
-1. 如果是会议的妙记，应优先通过 [lark-vc](../weact-vc/SKILL.md) 定位会议并获取 `minute_token`。
+1. 如果是会议的妙记，应优先通过 [weact-vc](../weact-vc/SKILL.md) 定位会议并获取 `minute_token`。
 2. 会议场景的妙记路由，以及"参与的妙记"如何解释，统一以 [minutes +search](referenc../weact-minutes-search.md) 为准。
 
 
@@ -92,7 +92,7 @@ metadata:
 
 当用户要在**某条妙记内**操作 AI 待办或 AI 总结时使用本节。**不是**WeAct任务（Task）清单里的待办。
 
-**触发信号（任一命中即走本 skill，禁止走 lark-task）**：
+**触发信号（任一命中即走本 skill，禁止走 weact-task）**：
 
 - "在（某条）妙记里新建 / 添加 / 修改 / 删除待办"
 - "把妙记 A 的待办改成已完成 / 未完成"
@@ -106,7 +106,7 @@ metadata:
 | 妙记里加待办 | `minutes +todo --operation add` 或 `--todos '[...]'` | `task +create` / `task tasklists list` |
 | 妙记里改待办 | `minutes +todo --operation update --todo-id ...` | `task +update` |
 | 妙记里删待办 | `minutes +todo --operation delete --todo-id ...` | `task tasks delete` |
-| 我的任务清单 | — | 走 [lark-task](../weact-task/SKILL.md) |
+| 我的任务清单 | — | 走 [weact-task](../weact-task/SKILL.md) |
 
 **新建多条待办**：优先用 `--todos` 一次提交；单条则用多次 `--operation add`：
 
@@ -139,7 +139,7 @@ weact-cli minutes +todo --minute-token <token> --as user --todos '[
 1. 确认 `minute_token`。
 2. **先**用 `weact-cli api GET "/open-apis/minutes/v1/minutes/<token>/transcript/speakerlist"` 查说话人列表（内部 HTTP，无 shortcut、无公开 OpenAPI 文档页）。
 3. 根据用户描述的原说话人展示名，在返回的 `data.speakers[]` 中匹配 `name` → 得到 `speaker_id`；同名多人时结合 `vc +notes` 逐字稿请用户确认，**不要擅自挑选**。
-4. 新说话人姓名用 [lark-contact](../weact-contact/SKILL.md) 解析为 `ou_` open_id。
+4. 新说话人姓名用 [weact-contact](../weact-contact/SKILL.md) 解析为 `ou_` open_id。
 5. 调用 `minutes +speaker-replace`，**`--from-speaker-id` 只传步骤 3 的 `speaker_id`，禁止传展示名**。
 
 ## 行为规则
@@ -157,9 +157,9 @@ weact-cli minutes +detail --minute-tokens <token> --summary --todo --chapter --k
 
 AI 总结是模型对会议的二次压缩，可能遗漏争论过程和隐含决策。用户要求"提炼"或"重新总结"时，期望基于原始发言独立分析，而非搬运 AI 产物。**优先 `--transcript`，再独立写结论**。
 
-### 3. 从妙记反查纪要：不绕 lark-vc
+### 3. 从妙记反查纪要：不绕 weact-vc
 
-`minutes +detail` 顶层直接返回 `note_id`（仅在该妙记关联纪要时存在）。不需要绕回 [lark-vc](../weact-vc/SKILL.md)，直接：
+`minutes +detail` 顶层直接返回 `note_id`（仅在该妙记关联纪要时存在）。不需要绕回 [weact-vc](../weact-vc/SKILL.md)，直接：
 
 ```bash
 # 1) 取 note_id（顶层 .minutes[0].note_id）
@@ -185,8 +185,8 @@ weact-cli minutes <resource> <method> [flags]
 
 ## 不在本 skill 范围
 
-- 搜索历史会议记录、查参会人快照 → [lark-vc](../weact-vc/SKILL.md)
-- 未来日程 / 日历查询 → [lark-calendar](../weact-calendar/SKILL.md)
-- 已知 `note_id` 直接读纪要详情 → [lark-note](../weact-note/SKILL.md)
-- WeAct任务清单（个人 Todo / 共享清单） → [lark-task](../weact-task/SKILL.md)
-- 只有自然语言纪要标题、没有 `minute_token` / 妙记 URL / 本地音视频时定位逐字稿 → 文档搜索（[lark-drive](../weact-drive/SKILL.md) / [lark-doc](../weact-doc/SKILL.md)）
+- 搜索历史会议记录、查参会人快照 → [weact-vc](../weact-vc/SKILL.md)
+- 未来日程 / 日历查询 → [weact-calendar](../weact-calendar/SKILL.md)
+- 已知 `note_id` 直接读纪要详情 → [weact-note](../weact-note/SKILL.md)
+- WeAct任务清单（个人 Todo / 共享清单） → [weact-task](../weact-task/SKILL.md)
+- 只有自然语言纪要标题、没有 `minute_token` / 妙记 URL / 本地音视频时定位逐字稿 → 文档搜索（[weact-drive](../weact-drive/SKILL.md) / [weact-doc](../weact-doc/SKILL.md)）

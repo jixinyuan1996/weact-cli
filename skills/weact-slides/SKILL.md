@@ -1,7 +1,7 @@
 ---
 name: weact-slides
 version: 1.0.0
-description: "WeAct幻灯片：创建和编辑幻灯片。创建演示文稿、读取幻灯片内容、管理幻灯片页面（创建、删除、读取、局部替换）。当用户需要创建或编辑幻灯片、读取或修改单个页面时使用。当用户给出 doubao.com 的 /slides/ URL/token 时，也应直接使用本 skill，不要因为域名不是WeAct而回退到 WebFetch；路由依据是 URL 路径模式和 token，而不是域名。不负责：云文档内容编辑（走 lark-doc）、云文档里的独立画板对象（走 lark-whiteboard，注意 slide 内嵌的流程图/架构图仍属本 skill）、上传或下载普通文件（走 lark-drive）。"
+description: "WeAct幻灯片：创建和编辑幻灯片。创建演示文稿、读取幻灯片内容、管理幻灯片页面（创建、删除、读取、局部替换）。当用户需要创建或编辑幻灯片、读取或修改单个页面时使用。当用户给出 doubao.com 的 /slides/ URL/token 时，也应直接使用本 skill，不要因为域名不是WeAct而回退到 WebFetch；路由依据是 URL 路径模式和 token，而不是域名。不负责：云文档内容编辑（走 weact-doc）、云文档里的独立画板对象（走 weact-whiteboard，注意 slide 内嵌的流程图/架构图仍属本 skill）、上传或下载普通文件（走 weact-drive）。"
 metadata:
   requires:
     bins: ["weact-cli"]
@@ -15,22 +15,22 @@ metadata:
 | 用户需求 | 优先动作 | 关键文档 / 命令 |
 |----------|----------|-----------------|
 | 新建 PPT | 先规划 `slide_plan.json`，再按复杂度选择一步或两步创建 | `planning-layer.md`、`visual-planning.md`、`asset-planning.md`、`slides +create` |
-| 已有 PPT 大幅改写 | 多页整页重建用 `+replace-pages`，单页局部编辑用 `+replace-slide` | `xml_presentations.get`、`lark-slides-replace-pages.md`、`lark-slides-edit-workflows.md` |
-| 编辑单个标题、文本块、图片或局部元素 | 优先块级替换/插入，不改页序 | `slides +replace-slide`、`lark-slides-replace-slide.md` |
+| 已有 PPT 大幅改写 | 多页整页重建用 `+replace-pages`，单页局部编辑用 `+replace-slide` | `xml_presentations.get`、`weact-slides-replace-pages.md`、`weact-slides-edit-workflows.md` |
+| 编辑单个标题、文本块、图片或局部元素 | 优先块级替换/插入，不改页序 | `slides +replace-slide`、`weact-slides-replace-slide.md` |
 | 读取或分析已有 PPT | 解析 slides/wiki token，回读全文或单页 XML，保存 `xml_presentation_id`、`slide_id`、`revision_id` | `xml_presentations.get`、`xml_presentation.slide.get` |
-| 获取幻灯片页面截图 | 用 `slide_id` 或页号指定页面 | `slides +screenshot`、`lark-slides-screenshot.md` |
+| 获取幻灯片页面截图 | 用 `slide_id` 或页号指定页面 | `slides +screenshot`、`weact-slides-screenshot.md` |
 | 上传或使用图片 | 先上传为 `file_token`，禁止直接写 http(s) 外链 | `slides +media-upload`，或 `+create --slides` 的 `@./path` 占位符 |
 | 在 slide 中绘制柱/条/折线/面积/雷达/饼等有数据序列的图表 | 使用原生 `<chart>` 元素 | `xml-schema-quick-ref.md` |
-| 在 slide 中绘制流程图、时序图、架构图、散点图、漏斗图或装饰图案 | 必须先用 Read 工具读取参考文档，再生成 `<whiteboard>` 元素 | [`lark-slides-whiteboard.md`](referenc../weact-slides-whiteboard.md) |
+| 在 slide 中绘制流程图、时序图、架构图、散点图、漏斗图或装饰图案 | 必须先用 Read 工具读取参考文档，再生成 `<whiteboard>` 元素 | [`weact-slides-whiteboard.md`](referenc../weact-slides-whiteboard.md) |
 | 使用语义图标 | 先检索 IconPark，再写 `<icon iconType="...">` | `iconpark_tool.py search → resolve`、`iconpark.md` |
 | 用户提到模板、主题、版式 | 先检索模板，再摘要，必要时裁切骨架 | `template_tool.py search → summarize → extract` |
 | 创建失败、空白页、3350001、布局异常 | 先回读状态，再按排障清单修复，不假设原操作原子成功 | `troubleshooting.md`、`validation-checklist.md` |
 
-**CRITICAL — 开始前 MUST 先用 Read 工具读取 [`../weact-shared/SKILL.md`](../weact-shared/SKILL.md)，认证、权限和全局参数均以 lark-shared 为准。**
+**CRITICAL — 开始前 MUST 先用 Read 工具读取 [`../weact-shared/SKILL.md`](../weact-shared/SKILL.md)，认证、权限和全局参数均以 weact-shared 为准。**
 
 **CRITICAL — 生成任何 XML 之前，MUST 先用 Read 工具读取 [xml-schema-quick-ref.md](references/xml-schema-quick-ref.md)，禁止凭记忆猜测 XML 结构。**
 
-**CRITICAL — 新建演示文稿或大幅改写页面时，MUST 先生成 `.lark-slides/plan/<deck-or-task-id>/slide_plan.json`，再生成 XML。先创建对应目录，规划层规则和中间产物生命周期见 [planning-layer.md](references/planning-layer.md)。仅替换一个标题、插入一个块等小型已有页编辑可豁免。**
+**CRITICAL — 新建演示文稿或大幅改写页面时，MUST 先生成 `.weact-slides/plan/<deck-or-task-id>/slide_plan.json`，再生成 XML。先创建对应目录，规划层规则和中间产物生命周期见 [planning-layer.md](references/planning-layer.md)。仅替换一个标题、插入一个块等小型已有页编辑可豁免。**
 
 **CRITICAL — 新建演示文稿或大幅改写页面时，生成 XML 前 MUST 读取 [visual-planning.md](references/visual-planning.md)，确保 `layout_type`、`visual_focus`、`text_density` 实际改变页面几何、主视觉和文本量。**
 
@@ -47,7 +47,7 @@ metadata:
 
 **CRITICAL — 使用模板生成或改写页面时，MUST 先 `summarize` 目标页型；只有需要具体布局骨架时才 `extract`。**
 
-**编辑已有幻灯片页面**：单个标题、文本块、图片或局部元素优先用 [`+replace-slide`](referenc../weact-slides-replace-slide.md)（块级替换/插入，不动页序）；已有 Slides 的多页大改优先用 [`+replace-pages`](referenc../weact-slides-replace-pages.md) 在原 presentation 内批量重建页面，避免 `slides +create` 生成新链接。选择 action 和完整读-改-写流程见 [`lark-slides-edit-workflows.md`](referenc../weact-slides-edit-workflows.md)。
+**编辑已有幻灯片页面**：单个标题、文本块、图片或局部元素优先用 [`+replace-slide`](referenc../weact-slides-replace-slide.md)（块级替换/插入，不动页序）；已有 Slides 的多页大改优先用 [`+replace-pages`](referenc../weact-slides-replace-pages.md) 在原 presentation 内批量重建页面，避免 `slides +create` 生成新链接。选择 action 和完整读-改-写流程见 [`weact-slides-edit-workflows.md`](referenc../weact-slides-edit-workflows.md)。
 
 ## 身份选择
 
@@ -81,11 +81,11 @@ weact-cli auth login --domain slides
 
 按需再读：
 
-- 创建：[`lark-slides-create.md`](referenc../weact-slides-create.md)
-- 编辑：[`lark-slides-edit-workflows.md`](referenc../weact-slides-edit-workflows.md)、[`lark-slides-replace-slide.md`](referenc../weact-slides-replace-slide.md)、[`lark-slides-replace-pages.md`](referenc../weact-slides-replace-pages.md)
-- 截图：[`lark-slides-screenshot.md`](referenc../weact-slides-screenshot.md)
-- 图片：[`lark-slides-media-upload.md`](referenc../weact-slides-media-upload.md)
-- 流程图 / 时序图 / 架构图 / 装饰图案：[`lark-slides-whiteboard.md`](referenc../weact-slides-whiteboard.md)
+- 创建：[`weact-slides-create.md`](referenc../weact-slides-create.md)
+- 编辑：[`weact-slides-edit-workflows.md`](referenc../weact-slides-edit-workflows.md)、[`weact-slides-replace-slide.md`](referenc../weact-slides-replace-slide.md)、[`weact-slides-replace-pages.md`](referenc../weact-slides-replace-pages.md)
+- 截图：[`weact-slides-screenshot.md`](referenc../weact-slides-screenshot.md)
+- 图片：[`weact-slides-media-upload.md`](referenc../weact-slides-media-upload.md)
+- 流程图 / 时序图 / 架构图 / 装饰图案：[`weact-slides-whiteboard.md`](referenc../weact-slides-whiteboard.md)
 - 图标：[`iconpark.md`](references/iconpark.md)、[`scripts/iconpark_tool.py`](scripts/iconpark_tool.py)
 - 模板：[`template-catalog.md`](references/template-catalog.md)、[`scripts/template_tool.py`](scripts/template_tool.py)
 - 排障：[`troubleshooting.md`](references/troubleshooting.md)
@@ -164,13 +164,13 @@ Step 1: 需求澄清 & 读取知识
 
 Step 2: 生成大纲 → 用户确认 → 写入 slide_plan.json
   - 生成结构化大纲供用户确认；如使用模板，标明基于哪个模板改写
-  - 新建 / 大幅改写必须先创建目录并写入 `.lark-slides/plan/<deck-or-task-id>/slide_plan.json`
+  - 新建 / 大幅改写必须先创建目录并写入 `.weact-slides/plan/<deck-or-task-id>/slide_plan.json`
   - plan 字段、路径命名、模板边界和 `asset_need` 结构按 planning-layer.md / asset-planning.md 执行
 
 Step 3: 按 slide_plan.json 生成 XML → 创建
   - 逐页消费 plan：key_message 定主结论，layout_type 定几何，visual_focus 定主视觉，text_density 定文本量
   - 缺少真实素材时必须用 `fallback_if_missing` 生成 XML-native 兜底视觉；不要留空
-  - 创建方式按“创建方式选择”判断；图片、复杂 XML、转义和 3350001 排查按 lark-slides-create.md、media-upload.md、troubleshooting.md 执行
+  - 创建方式按“创建方式选择”判断；图片、复杂 XML、转义和 3350001 排查按 weact-slides-create.md、media-upload.md、troubleshooting.md 执行
 
 Step 4: 审查 & 交付
   - 创建完成后，必须用 xml_presentations.get 读取全文 XML，并按 validation-checklist.md 做显式验证记录，包括 XML 文本重叠检查
@@ -281,7 +281,7 @@ weact-cli slides <resource> <method> [flags] # 调用 API
 
 ## 核心规则
 
-1. **先规划再写 XML**：新建演示文稿或大幅改写页面时，必须先写入 `.lark-slides/plan/<deck-or-task-id>/slide_plan.json`；模板、风格和大纲只能作为规划输入，不能绕过规划层
+1. **先规划再写 XML**：新建演示文稿或大幅改写页面时，必须先写入 `.weact-slides/plan/<deck-or-task-id>/slide_plan.json`；模板、风格和大纲只能作为规划输入，不能绕过规划层
 2. **创建流程**：简单短 XML（1-3 页、结构简单、特殊字符少）可用 `slides +create --slides '[...]'` 一步创建；复杂内容、含图片/中文大段文本/嵌套引号/较多特殊字符，或超过 10 页时，默认先 `slides +create` 创建空白 PPT，再用 `xml_presentation.slide.create` 逐页添加
 3. **`<slide>` 直接子元素只有 `<style>`、`<data>`、`<note>`**：文本和图形必须放在 `<data>` 内
 4. **文本通过 `<content>` 表达**：必须用 `<content><p>...</p></content>`，不能把文字直接写在 shape 内

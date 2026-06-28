@@ -4,16 +4,16 @@
 
 ## Calendar 域
 
-- **lark-calendar skill** 负责日历与日程管理，包括创建、查询、修改、删除日程等操作。
+- **weact-calendar skill** 负责日历与日程管理，包括创建、查询、修改、删除日程等操作。
 - **日程与会议的关系**：日程可以用于提前预约会议，确定会议时间、参与人、会议室、会议主题等信息。日程上可以关联飞书/Lark 视频会议。
 - **并非所有会议都通过日程发起**：即时会议不经过日程预约，直接创建。因此，仅查询日程数据无法覆盖所有会议，搜索历史会议应优先使用 `vc +search`。
 - **日程上的用户会议纪要**：用户可以在日程上绑定自己的会议纪要文档（MeetingNotes），用于手动记录会议相关信息。该文档与 AI 生成的智能纪要（`note_doc_token`）是不同的文档，相互独立。
 
-> **路由规则**：查询过去已结束的会议 → `lark-vc`；查询未来日程/待开的会 → `lark-calendar`；查询"今天有哪些会议" → 两者结合（`vc +search` 查已结束 + `calendar` 查未开始）。
+> **路由规则**：查询过去已结束的会议 → `weact-vc`；查询未来日程/待开的会 → `weact-calendar`；查询"今天有哪些会议" → 两者结合（`vc +search` 查已结束 + `calendar` 查未开始）。
 
 ## VC 域
 
-- **lark-vc skill** 负责视频会议管理，包括搜索历史会议、查询会议产物（智能纪要、逐字稿、妙记等）、查询参会人快照等操作。
+- **weact-vc skill** 负责视频会议管理，包括搜索历史会议、查询会议产物（智能纪要、逐字稿、妙记等）、查询参会人快照等操作。
 - **会议类型**：会议可以是日程会议（由日程发起，有对应的 `calendar_event_id`），也可以是即时会议等其他类型。
 
 ### 会议产物
@@ -30,7 +30,7 @@
 | 逐字稿 | `verbatim_doc_token` | 飞书文档 | 完整的逐句发言记录（含说话人、时间戳）— **仅 `note_display_type=normal` 时是可读的独立文档**；`unified` 纪要的逐字稿用 `note +transcript --note-id <note_id>` 拉取（见下方 [Note 域](#note-域)） |
 | 共享文档 | `shared_doc_token` | 飞书文档 | 会中投屏共享的文档信息 |
 
-此外，还存在**用户会议纪要（MeetingNotes）**，对应 `meeting_note` 字段。这是用户主动绑定到日程的纪要文档，通常用于会前记录会议相关内容，与智能纪要文档相互独立。仅通过 [`calendar +meeting --event-ids`](../../lark-calendar/references/lark-calendar-meeting.md) 路径返回。
+此外，还存在**用户会议纪要（MeetingNotes）**，对应 `meeting_note` 字段。这是用户主动绑定到日程的纪要文档，通常用于会前记录会议相关内容，与智能纪要文档相互独立。仅通过 [`calendar +meeting --event-ids`](../../weact-calendar/references/weact-calendar-meeting.md) 路径返回。
 
 #### 链路二：开启「录制」
 
@@ -87,7 +87,7 @@
 weact-cli vc +search --start "<YYYY-MM-DD>" --end "<YYYY-MM-DD>" --format json
 ```
 
-详细用法请阅读 [`lark-vc-search.md`](lark-vc-search.md)。
+详细用法请阅读 [`weact-vc-search.md`](weact-vc-search.md)。
 
 #### Step 2: 根据 meeting_id 查询产物
 
@@ -99,7 +99,7 @@ weact-cli vc +search --start "<YYYY-MM-DD>" --end "<YYYY-MM-DD>" --format json
 weact-cli vc +detail --meeting-ids '<meeting_id1>,<meeting_id2>'
 ```
 
-详细用法请阅读 [`lark-vc-detail.md`](lark-vc-detail.md)。
+详细用法请阅读 [`weact-vc-detail.md`](weact-vc-detail.md)。
 
 **优先路径：通过 `note_id` 获取纪要产物**
 
@@ -115,7 +115,7 @@ weact-cli note +detail --note-id <note_id>
 - 逐字稿（`verbatim_doc_token`）— 完整的会中发言记录（仅 `normal` 纪要可直接读取该文档）
 - 共享文档（`shared_doc_token`）— 会中投屏共享的文档
 
-拿到文档 token 后，再通过 Doc 域 `docs +fetch` 拉取文档正文内容（见 Step 3）。详细用法请阅读 [`lark-note-detail.md`](../../lark-note/references/lark-note-detail.md)。
+拿到文档 token 后，再通过 Doc 域 `docs +fetch` 拉取文档正文内容（见 Step 3）。详细用法请阅读 [`weact-note-detail.md`](../../weact-note/references/weact-note-detail.md)。
 
 **备选路径：通过 `minute_token` 获取妙记产物**
 
@@ -127,7 +127,7 @@ weact-cli minutes +detail --minute-tokens '<minute_token1>,<minute_token2>' \
   --summary --todo --chapter --keyword --transcript
 ```
 
-> **注意**：`minutes +detail` 需要**手动指定**要获取的产物 flag，可选 `--summary`（总结）、`--todo`（待办）、`--chapter`（章节）、`--keyword`（关键词）、`--transcript`（文字记录）。**未传任何产物 flag 时不会返回产物内容**，请按用户诉求按需指定。详细用法请阅读 [`lark-minutes-detail.md`](../../lark-minutes/references/lark-minutes-detail.md)。
+> **注意**：`minutes +detail` 需要**手动指定**要获取的产物 flag，可选 `--summary`（总结）、`--todo`（待办）、`--chapter`（章节）、`--keyword`（关键词）、`--transcript`（文字记录）。**未传任何产物 flag 时不会返回产物内容**，请按用户诉求按需指定。详细用法请阅读 [`weact-minutes-detail.md`](../../weact-minutes/references/weact-minutes-detail.md)。
 
 #### Step 3: 按 `note_display_type` 拉取正文 / 逐字稿
 
@@ -144,7 +144,7 @@ weact-cli docs +fetch --doc <verbatim_doc_token> --doc-format markdown
 weact-cli note +transcript --note-id <note_id>
 ```
 
-详细用法请参考 [lark-doc](../../lark-doc/SKILL.md) 与 [lark-note](../../lark-note/SKILL.md) skill。
+详细用法请参考 [weact-doc](../../weact-doc/SKILL.md) 与 [weact-note](../../weact-note/SKILL.md) skill。
 
 #### Step 4: 判断用户需要的产物内容
 
@@ -153,17 +153,17 @@ weact-cli note +transcript --note-id <note_id>
 
 ## Note 域
 
-- VC 只负责从 `meeting_id` 定位会议产物和 `note_id` / `minute_token`（[`vc +detail`](lark-vc-detail.md)）。
-- 已知 `note_id` 后切到 [lark-note](../../lark-note/SKILL.md)；逐字稿路由以 `lark-note` 的 `note_display_type` 规则为准。
-- 已知 `minute_token` 时，[`minutes +detail`](../../lark-minutes/references/lark-minutes-detail.md) 顶层会一并返回该妙记关联的 `note_id`（如有）；可直接传给 `note +detail` 取纪要文档 token，无需绕回 VC。
-- 仅有日程 `event_id` 时，先走 [`calendar +meeting`](../../lark-calendar/references/lark-calendar-meeting.md) 拿到 `meeting_id` 或用户绑定的 `meeting_note`，再按上述路径继续。
+- VC 只负责从 `meeting_id` 定位会议产物和 `note_id` / `minute_token`（[`vc +detail`](weact-vc-detail.md)）。
+- 已知 `note_id` 后切到 [weact-note](../../weact-note/SKILL.md)；逐字稿路由以 `weact-note` 的 `note_display_type` 规则为准。
+- 已知 `minute_token` 时，[`minutes +detail`](../../weact-minutes/references/weact-minutes-detail.md) 顶层会一并返回该妙记关联的 `note_id`（如有）；可直接传给 `note +detail` 取纪要文档 token，无需绕回 VC。
+- 仅有日程 `event_id` 时，先走 [`calendar +meeting`](../../weact-calendar/references/weact-calendar-meeting.md) 拿到 `meeting_id` 或用户绑定的 `meeting_note`，再按上述路径继续。
 - 只有自然语言纪要标题时，先走文档搜索与 `docs +fetch`；只有 `<vc-transcribe-tab vc-node-id="...">` 的 `vc-node-id` 可以进入 Note 域。
 - `doc_token` / Docx URL 不是 `note_id`。没有 `vc-node-id` 时不要反推 Note，继续按 Doc 域读取正文或正文中明确给出的逐字稿文档。
 
 ## Doc 域
 
-- **lark-doc skill** 负责飞书云文档管理，包括获取文档元信息、读取文档内容、创建和编辑文档等操作。
-- **会议产物的文档本质**：智能纪要（`note_doc_token`）和 `normal` 纪要的逐字稿（`verbatim_doc_token`）都是飞书文档，需要通过 `lark-doc` 的 API（如 `docs +fetch`）查询其内容和元信息；`unified` 纪要的逐字稿不是独立文档，用 `note +transcript` 拉取（[lark-note](../../lark-note/SKILL.md)）。
+- **weact-doc skill** 负责飞书云文档管理，包括获取文档元信息、读取文档内容、创建和编辑文档等操作。
+- **会议产物的文档本质**：智能纪要（`note_doc_token`）和 `normal` 纪要的逐字稿（`verbatim_doc_token`）都是飞书文档，需要通过 `weact-doc` 的 API（如 `docs +fetch`）查询其内容和元信息；`unified` 纪要的逐字稿不是独立文档，用 `note +transcript` 拉取（[weact-note](../../weact-note/SKILL.md)）。
 - **文档元信息查询**：获取文档名称、URL 等基本信息时，使用 `drive metas batch_query`；获取文档正文内容时，使用 `docs +fetch`。
 
 ## 三域关联总览

@@ -1,7 +1,7 @@
 ---
 name: weact-wiki
 version: 1.0.1
-description: "WeAct知识库：管理知识空间、空间成员和文档节点。创建和查询知识空间、查看和管理空间成员、管理节点层级结构、在知识库中组织文档和快捷方式。当用户需要在知识库中查找或创建文档、浏览知识空间结构、查看或管理空间成员、移动或复制节点时使用。当用户给出 doubao.com 的 /wiki/ URL/token 时，也应直接使用本 skill，不要因为域名不是WeAct而回退到 WebFetch；路由依据是 URL 路径模式和 token，而不是域名。不负责：上传文件到知识库节点下（走 lark-drive）、编辑文档/表格/Base 内容（走 lark-doc / lark-sheets / lark-base）。"
+description: "WeAct知识库：管理知识空间、空间成员和文档节点。创建和查询知识空间、查看和管理空间成员、管理节点层级结构、在知识库中组织文档和快捷方式。当用户需要在知识库中查找或创建文档、浏览知识空间结构、查看或管理空间成员、移动或复制节点时使用。当用户给出 doubao.com 的 /wiki/ URL/token 时，也应直接使用本 skill，不要因为域名不是WeAct而回退到 WebFetch；路由依据是 URL 路径模式和 token，而不是域名。不负责：上传文件到知识库节点下（走 weact-drive）、编辑文档/表格/Base 内容（走 weact-doc / weact-sheets / weact-base）。"
 metadata:
   requires:
     bins: ["weact-cli"]
@@ -104,7 +104,7 @@ weact-cli wiki <resource> <method> [flags]  # 调用 API
 
 ## 不在本 skill 范围
 
-- 上传 / 下载文件到知识库节点下 → [`lark-drive`](../weact-drive/SKILL.md)（`drive +upload --wiki-token`）
-- 编辑文档正文内容 → [`lark-doc`](../weact-doc/SKILL.md)
-- 表格 / 多维表格数据操作 → [`lark-sheets`](../weact-sheets/SKILL.md) / [`lark-base`](../weact-base/SKILL.md)
-- 按名称搜索文档 / Wiki / 表格文件、评论与权限管理 → [`lark-drive`](../weact-drive/SKILL.md)
+- 上传 / 下载文件到知识库节点下 → [`weact-drive`](../weact-drive/SKILL.md)（`drive +upload --wiki-token`）
+- 编辑文档正文内容 → [`weact-doc`](../weact-doc/SKILL.md)
+- 表格 / 多维表格数据操作 → [`weact-sheets`](../weact-sheets/SKILL.md) / [`weact-base`](../weact-base/SKILL.md)
+- 按名称搜索文档 / Wiki / 表格文件、评论与权限管理 → [`weact-drive`](../weact-drive/SKILL.md)

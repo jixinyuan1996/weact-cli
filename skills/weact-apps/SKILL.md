@@ -1,7 +1,7 @@
 ---
 name: weact-apps
 version: 1.0.0
-description: "妙搭（Spark/Miaoda）应用开发与托管：应用创建、HTML静态站点发布、本地全栈开发、云端生成迭代。当用户要开发/新建一个系统·工具·平台·应用，或要本地开发 / 云端开发 / 修改 / 部署 / 发布 / 上线 / 拿可分享链接，或用 HTML 做页面·网站·部署到妙搭，或提到妙搭/Spark/Miaoda（应用运行时域名形如 *.aiforce.cloud）、应用数据库、可见范围时使用。不负责普通云盘文件上传（lark-drive）、WeAct文档编辑（lark-doc）、原生幻灯片创建（lark-slides）。"
+description: "妙搭（Spark/Miaoda）应用开发与托管：应用创建、HTML静态站点发布、本地全栈开发、云端生成迭代。当用户要开发/新建一个系统·工具·平台·应用，或要本地开发 / 云端开发 / 修改 / 部署 / 发布 / 上线 / 拿可分享链接，或用 HTML 做页面·网站·部署到妙搭，或提到妙搭/Spark/Miaoda（应用运行时域名形如 *.aiforce.cloud）、应用数据库、可见范围时使用。不负责普通云盘文件上传（weact-drive）、WeAct文档编辑（weact-doc）、原生幻灯片创建（weact-slides）。"
 metadata:
   requires:
     bins: ["weact-cli"]
@@ -18,17 +18,17 @@ metadata:
 
 | 用户意图 | 先用 | 按需读取 |
 |---|---|---|
-| 创建**新**应用资产、拿 app_id | `+create` | [`lark-apps-create.md`](referenc../weact-apps-create.md) |
-| 找已有 app_id、按名字过滤应用 | `+list --keyword <name>` | [`lark-apps-list.md`](referenc../weact-apps-list.md) |
-| 改应用名或描述 | `+update` | [`lark-apps-update.md`](referenc../weact-apps-update.md) |
-| 发布本地 `index.html` 或静态目录为可访问 URL | `+html-publish` | [`lark-apps-html-publish.md`](referenc../weact-apps-html-publish.md) |
-| 开发已有应用 / 初始化本地仓库（开发方式已定为本地后；先解析 app_id，勿 `+create` 新建） | `+init`（或手动 `+git-credential-init` + 原生 git） | [`lark-apps-local-dev.md`](referenc../weact-apps-local-dev.md), [`lark-apps-init.md`](referenc../weact-apps-init.md), [`lark-apps-git-credential.md`](referenc../weact-apps-git-credential.md) |
-| 本地开发时 `.env.local` 损坏/丢失，重新拉取启动期环境变量 | `+env-pull` | [`lark-apps-env-pull.md`](referenc../weact-apps-env-pull.md) |
-| 看表、看 schema、跑 SQL、初始化 dev/online 多环境 DB | `+db-table-list`, `+db-table-get`, `+db-execute`, `+db-env-create` | 对应 `lark-apps-db-*.md` |
-| **部署/上线全栈应用**（"部署""上线""推上去并部署""发布到云端"）；查发布状态/历史 | `+release-create`（部署上线动作）, `+release-get`（轮询发布结果，finished 给 online_url / failed 给 error_logs）, `+release-list` | [`lark-apps-release-create.md`](referenc../weact-apps-release-create.md), [`lark-apps-release-get.md`](referenc../weact-apps-release-get.md), [`lark-apps-release-list.md`](referenc../weact-apps-release-list.md) |
+| 创建**新**应用资产、拿 app_id | `+create` | [`weact-apps-create.md`](referenc../weact-apps-create.md) |
+| 找已有 app_id、按名字过滤应用 | `+list --keyword <name>` | [`weact-apps-list.md`](referenc../weact-apps-list.md) |
+| 改应用名或描述 | `+update` | [`weact-apps-update.md`](referenc../weact-apps-update.md) |
+| 发布本地 `index.html` 或静态目录为可访问 URL | `+html-publish` | [`weact-apps-html-publish.md`](referenc../weact-apps-html-publish.md) |
+| 开发已有应用 / 初始化本地仓库（开发方式已定为本地后；先解析 app_id，勿 `+create` 新建） | `+init`（或手动 `+git-credential-init` + 原生 git） | [`weact-apps-local-dev.md`](referenc../weact-apps-local-dev.md), [`weact-apps-init.md`](referenc../weact-apps-init.md), [`weact-apps-git-credential.md`](referenc../weact-apps-git-credential.md) |
+| 本地开发时 `.env.local` 损坏/丢失，重新拉取启动期环境变量 | `+env-pull` | [`weact-apps-env-pull.md`](referenc../weact-apps-env-pull.md) |
+| 看表、看 schema、跑 SQL、初始化 dev/online 多环境 DB | `+db-table-list`, `+db-table-get`, `+db-execute`, `+db-env-create` | 对应 `weact-apps-db-*.md` |
+| **部署/上线全栈应用**（"部署""上线""推上去并部署""发布到云端"）；查发布状态/历史 | `+release-create`（部署上线动作）, `+release-get`（轮询发布结果，finished 给 online_url / failed 给 error_logs）, `+release-list` | [`weact-apps-release-create.md`](referenc../weact-apps-release-create.md), [`weact-apps-release-get.md`](referenc../weact-apps-release-get.md), [`weact-apps-release-list.md`](referenc../weact-apps-release-list.md) |
 | 设置或查看运行时可见范围 | `+access-scope-set`, `+access-scope-get` | 对应 access-scope reference |
-| 云端 Agent 生成/迭代应用（开发方式已定为云端后） | `+session-create` -> `+chat` -> `+session-get` | [`lark-apps-cloud-dev.md`](referenc../weact-apps-cloud-dev.md) |
-| 查看某次会话某一轮（turn）的回复消息（含仍在生成中的本轮）/ 导出上一轮模型回复（"这一轮回复了什么""上一轮的回复""导出某轮消息"） | 先 `+session-get`（取 `latest_turn.turn_id`）-> `+session-messages-list --turn-id <id>`（仅 user 身份；分页用 `--page-token`） | [`lark-apps-session-messages-list.md`](referenc../weact-apps-session-messages-list.md) |
+| 云端 Agent 生成/迭代应用（开发方式已定为云端后） | `+session-create` -> `+chat` -> `+session-get` | [`weact-apps-cloud-dev.md`](referenc../weact-apps-cloud-dev.md) |
+| 查看某次会话某一轮（turn）的回复消息（含仍在生成中的本轮）/ 导出上一轮模型回复（"这一轮回复了什么""上一轮的回复""导出某轮消息"） | 先 `+session-get`（取 `latest_turn.turn_id`）-> `+session-messages-list --turn-id <id>`（仅 user 身份；分页用 `--page-token`） | [`weact-apps-session-messages-list.md`](referenc../weact-apps-session-messages-list.md) |
 
 ## 选择开发路径（进意图路由前先判这步）
 
@@ -36,10 +36,10 @@ metadata:
 
 | 信号 | 判定 |
 |---|---|
-| 静态展示 / 单页 / PPT/demo / 无后端状态 | `app_type=html`，跳过本地/云端轴，开发完按 [`lark-apps-html-publish.md`](referenc../weact-apps-html-publish.md)（含"未提部署→先问是否发布"） |
+| 静态展示 / 单页 / PPT/demo / 无后端状态 | `app_type=html`，跳过本地/云端轴，开发完按 [`weact-apps-html-publish.md`](referenc../weact-apps-html-publish.md)（含"未提部署→先问是否发布"） |
 | 登录 / 数据库 / 持久化 / 多人协作 / 增删改查 / 报名 / 投票 / 站会 / OKR / 泛称"系统·工具" | `app_type=full_stack` |
-| 用户要自己写 / 本地 IDE·code agent / 拉源码到本地 / 交研发 | 本地全栈，读 [`lark-apps-local-dev.md`](referenc../weact-apps-local-dev.md) |
-| 让妙搭 AI 云端生成 / 对话式 / 自己不碰代码 | 云端会话，读 [`lark-apps-cloud-dev.md`](referenc../weact-apps-cloud-dev.md) |
+| 用户要自己写 / 本地 IDE·code agent / 拉源码到本地 / 交研发 | 本地全栈，读 [`weact-apps-local-dev.md`](referenc../weact-apps-local-dev.md) |
+| 让妙搭 AI 云端生成 / 对话式 / 自己不碰代码 | 云端会话，读 [`weact-apps-cloud-dev.md`](referenc../weact-apps-cloud-dev.md) |
 | 未表达"谁来写"偏好 | **必须先问**（本地代码开发 vs 云端 AI 生成）；选定前不擅自选边、不暗示默认，不得以"需求不模糊"为由跳过提问直接 `+init` / `git clone` / `+session-create` / 首轮 `+chat` |
 | 修改已有 + 当前目录是 `.spark/meta.json` 项目 | 直接继续本地按意图路由，不必问也不必判云端 |
 | 修改已有 + 有云端偏好 | 云端会话；未表达偏好且非本地项目 → 默认本地；判不准先问 |
@@ -75,4 +75,4 @@ metadata:
 ## 高影响动作：确认与预授权
 
 - **预授权判定**：判断用户是否表达了"放手做完、不用中途逐步问我"的意图——明确免确认（如"别问 / 直接做 / 自己定"），或要求一气呵成做到完成（如"做完部署上线给我"）。是 → 整个流程按合理默认往下走、不再逐步确认（含 clone 到派生目录、发布等）；否 → 缺失参数（如目录）该问就问、高影响动作先确认。
-- **禁止预授权判定底线**（即便已预授权也不豁免）：① 会删/丢数据或不可逆的 DB 操作（判据见 [`lark-apps-db-execute.md`](referenc../weact-apps-db-execute.md)）先 `--dry-run` 确认；② `+html-publish` 体积超限时（判据见 [`lark-apps-html-publish.md`](referenc../weact-apps-html-publish.md)），立即停止并转述超限项。
+- **禁止预授权判定底线**（即便已预授权也不豁免）：① 会删/丢数据或不可逆的 DB 操作（判据见 [`weact-apps-db-execute.md`](referenc../weact-apps-db-execute.md)）先 `--dry-run` 确认；② `+html-publish` 体积超限时（判据见 [`weact-apps-html-publish.md`](referenc../weact-apps-html-publish.md)），立即停止并转述超限项。

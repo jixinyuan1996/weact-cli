@@ -85,7 +85,7 @@ weact-cli note +detail --note-id "note_id"
 
 > **逐字稿路由按 `note_display_type` 决定**（详见 [vc-domain-boundaries.md](../weact-vc/references/vc-domain-boundaries.md) 的 Note 域）：
 > - `normal`：逐字稿是独立文档，链接/正文走 `verbatim_doc_token`。
-> - `unified`：逐字稿**不是独立文档**，没有可分享的逐字稿文档链接；需要逐字稿内容时用 `note +transcript --note-id <note_id>`（[lark-note](../weact-note/SKILL.md)）拉取到本地，报告中标注"unified 纪要"即可。
+> - `unified`：逐字稿**不是独立文档**，没有可分享的逐字稿文档链接；需要逐字稿内容时用 `note +transcript --note-id <note_id>`（[weact-note](../weact-note/SKILL.md)）拉取到本地，报告中标注"unified 纪要"即可。
 
 2. 获取纪要文档和逐字稿文档链接
 ```bash
@@ -116,7 +116,7 @@ weact-cli docs +update --doc "<url_or_token>" --command append --doc-format mark
 
 ## 参考
 
-- [lark-shared](../weact-shared/SKILL.md) — 认证、权限（必读）
-- [lark-vc](../weact-vc/SKILL.md) — `+search`、`+detail` 详细用法
-- [lark-note](../weact-note/SKILL.md) — `note +detail`、`note +transcript`（unified 纪要逐字稿）
-- [lark-doc](../weact-doc/SKILL.md) — `+fetch`、`+create`、`+update` 详细用法
+- [weact-shared](../weact-shared/SKILL.md) — 认证、权限（必读）
+- [weact-vc](../weact-vc/SKILL.md) — `+search`、`+detail` 详细用法
+- [weact-note](../weact-note/SKILL.md) — `note +detail`、`note +transcript`（unified 纪要逐字稿）
+- [weact-doc](../weact-doc/SKILL.md) — `+fetch`、`+create`、`+update` 详细用法

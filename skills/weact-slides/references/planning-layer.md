@@ -1,6 +1,6 @@
 # Planning Layer
 
-新建演示文稿或大幅改写页面时，必须先写 `.lark-slides/plan/<deck-or-task-id>/slide_plan.json`，再生成 XML。这个文件是 deck 的设计中间层，用来把叙事、页面角色、布局、视觉重点和文字密度固定下来，避免从用户提示直接跳到 XML。
+新建演示文稿或大幅改写页面时，必须先写 `.weact-slides/plan/<deck-or-task-id>/slide_plan.json`，再生成 XML。这个文件是 deck 的设计中间层，用来把叙事、页面角色、布局、视觉重点和文字密度固定下来，避免从用户提示直接跳到 XML。
 
 小型已有页编辑可豁免，例如只替换一个标题、改一个数字、插入一个块、上传并插入一张图。只要任务会重排多页、生成新 deck、替换整页结构，仍然需要规划层。
 
@@ -8,14 +8,14 @@
 
 1. 理解用户需求，必要时澄清主题、受众、页数、风格。
 2. 如果适合模板，先用 `template_tool.py search` 检索，锁定模板后用 `summarize` 获取主题和页型信息。
-3. 选择唯一 plan 目录：`.lark-slides/plan/<deck-or-task-id>/`。
-4. 先创建目录：`mkdir -p .lark-slides/plan/<deck-or-task-id>`。
-5. 写入 `.lark-slides/plan/<deck-or-task-id>/slide_plan.json`。
+3. 选择唯一 plan 目录：`.weact-slides/plan/<deck-or-task-id>/`。
+4. 先创建目录：`mkdir -p .weact-slides/plan/<deck-or-task-id>`。
+5. 写入 `.weact-slides/plan/<deck-or-task-id>/slide_plan.json`。
 6. 读取 `xml-schema-quick-ref.md`、`visual-planning.md` 和 `asset-planning.md`。
 7. 按 plan、visual planning 和 asset planning 规则逐页生成 XML，把 `layout_type`、`visual_focus`、`text_density` 转成具体页面几何和文本量约束，并把缺失素材转成可执行兜底视觉。
 8. 创建 PPT 后用 `xml_presentations.get` 回读，核对页面数量、关键元素和 plan 到 XML 的对应关系。
 
-模板不能代替 plan。模板搜索和摘要只能影响 `theme_style`、页面流、布局选择和局部布局骨架；最终仍必须有 `.lark-slides/plan/<deck-or-task-id>/slide_plan.json`。
+模板不能代替 plan。模板搜索和摘要只能影响 `theme_style`、页面流、布局选择和局部布局骨架；最终仍必须有 `.weact-slides/plan/<deck-or-task-id>/slide_plan.json`。
 
 ## Plan Path
 
@@ -29,17 +29,17 @@ Recommended IDs:
 
 Rules:
 
-- Do not reuse `.lark-slides/plan/slide_plan.json` as a shared path.
+- Do not reuse `.weact-slides/plan/slide_plan.json` as a shared path.
 - Create the directory before writing the file.
 - Reuse the same plan path for XML generation and post-create verification for that deck.
 
 ## Artifact Lifecycle
 
-`.lark-slides/` is local agent state. It supports recovery, iteration, and later edits, but it should not be treated as source code or committed by default.
+`.weact-slides/` is local agent state. It supports recovery, iteration, and later edits, but it should not be treated as source code or committed by default.
 
 Keep:
 
-- `.lark-slides/plan/<deck-or-task-id>/slide_plan.json` after successful creation or major rewrite. The plan is the editable design state for the deck.
+- `.weact-slides/plan/<deck-or-task-id>/slide_plan.json` after successful creation or major rewrite. The plan is the editable design state for the deck.
 - A small manifest when useful for follow-up work, such as `xml_presentation_id`, slide IDs, `revision_id`, plan path, and verification status.
 
 Clean or avoid keeping:

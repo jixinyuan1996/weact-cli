@@ -1,6 +1,6 @@
 # Base role permission JSON SSOT
 
-> **入口指南**: [lark-base-role-guide.md](lark-base-role-guide.md) | **相关命令**: `+role-create` · `+role-update` · `+role-get`
+> **入口指南**: [weact-base-role-guide.md](weact-base-role-guide.md) | **相关命令**: `+role-create` · `+role-update` · `+role-get`
 
 本文档是角色权限 JSON（AdvPermBaseRoleConfig）的单一事实来源（SSOT），供 `+role-create` 和 `+role-update` 构造 `--json` 参数时参考。
 
