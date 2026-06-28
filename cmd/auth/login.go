@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"sort"
 	"strings"
 	"time"
@@ -265,6 +266,13 @@ func authLoginRun(opts *LoginOptions) error {
 	if err != nil {
 		return err
 	}
+
+	// WeAct private deployments do not expose the device authorization endpoint.
+	// Fall back to authorization code flow with a local HTTP callback server.
+	if config.Brand == core.BrandWeAct {
+		return authLoginLoopback(opts, httpClient, config, finalScope, msg, f, log)
+	}
+
 	authResp, err := larkauth.RequestDeviceAuthorization(httpClient, config.AppID, config.AppSecret, config.Brand, finalScope, f.IOStreams.ErrOut)
 	if err != nil {
 		return errs.NewAuthenticationError(errs.SubtypeUnknown, "device authorization failed: %v", err).WithCause(err)
@@ -629,6 +637,58 @@ func normalizeScopeInput(raw string) string {
 		out = append(out, f)
 	}
 	return strings.Join(out, " ")
+}
+
+// authLoginLoopback handles auth login for WeAct brand using the OAuth 2.0
+// Authorization Code flow with a local HTTP callback server.
+func authLoginLoopback(opts *LoginOptions, httpClient *http.Client, config *core.CliConfig, finalScope string, msg *loginMsg, f *cmdutil.Factory, log func(string, ...interface{})) error {
+	result := larkauth.RunLoopbackFlow(opts.Ctx, httpClient, config.AppID, config.AppSecret, config.Brand, finalScope, f.IOStreams.ErrOut)
+
+	if !result.OK {
+		return errs.NewAuthenticationError(errs.SubtypeUnknown, "authorization failed: %s", result.Message)
+	}
+	if result.Token == nil {
+		return errs.NewAuthenticationError(errs.SubtypeTokenMissing, "authorization succeeded but no token returned")
+	}
+
+	log(msg.AuthSuccess)
+	sdk, err := f.LarkClient()
+	if err != nil {
+		return errs.NewInternalError(errs.SubtypeSDKError, "failed to get SDK: %v", err).WithCause(err)
+	}
+	openId, userName, err := getUserInfo(opts.Ctx, sdk, result.Token.AccessToken)
+	if err != nil {
+		return errs.NewAuthenticationError(errs.SubtypeUnknown, "failed to get user info: %v", err).WithCause(err)
+	}
+
+	scopeSummary := loadLoginScopeSummary(config.AppID, openId, finalScope, result.Token.Scope)
+
+	now := time.Now().UnixMilli()
+	storedToken := &larkauth.StoredUAToken{
+		UserOpenId:       openId,
+		AppId:            config.AppID,
+		AccessToken:      result.Token.AccessToken,
+		RefreshToken:     result.Token.RefreshToken,
+		ExpiresAt:        now + int64(result.Token.ExpiresIn)*1000,
+		RefreshExpiresAt: now + int64(result.Token.RefreshExpiresIn)*1000,
+		Scope:            result.Token.Scope,
+		GrantedAt:        now,
+	}
+	if err := larkauth.SetStoredToken(storedToken); err != nil {
+		return errs.NewInternalError(errs.SubtypeStorage, "failed to save token: %v", err).WithCause(err)
+	}
+
+	if err := syncLoginUserToProfile(config.ProfileName, config.AppID, openId, userName); err != nil {
+		_ = larkauth.RemoveStoredToken(config.AppID, openId)
+		return err
+	}
+
+	if issue := ensureRequestedScopesGranted(finalScope, result.Token.Scope, msg, scopeSummary); issue != nil {
+		return handleLoginScopeIssue(opts, msg, f, issue, openId, userName)
+	}
+
+	writeLoginSuccess(opts, msg, f, openId, userName, scopeSummary)
+	return nil
 }
 
 // suggestDomain finds the best "did you mean" match for an unknown domain.
