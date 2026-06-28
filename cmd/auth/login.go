@@ -708,10 +708,16 @@ func authLoginLoopback(opts *LoginOptions, httpClient *http.Client, config *core
 	}
 
 	if issue := ensureRequestedScopesGranted(finalScope, result.Token.Scope, msg, scopeSummary); issue != nil {
+		if !opts.JSON {
+			writeWeActCapabilitySummary(f.IOStreams.ErrOut, result.Token.Scope)
+		}
 		return handleLoginScopeIssue(opts, msg, f, issue, openId, userName)
 	}
 
 	writeLoginSuccess(opts, msg, f, openId, userName, scopeSummary)
+	if !opts.JSON {
+		writeWeActCapabilitySummary(f.IOStreams.ErrOut, result.Token.Scope)
+	}
 	return nil
 }
 
