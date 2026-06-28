@@ -13,13 +13,29 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"os"
 	"os/exec"
 	"runtime"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/larksuite/cli/internal/core"
 )
+
+// defaultLoopbackPort is the fixed OAuth callback port.
+// Override with WEACT_OAUTH_CALLBACK_PORT env var.
+// Register http://127.0.0.1:<port>/callback in the WeAct developer console.
+const defaultLoopbackPort = 18789
+
+func loopbackPort() int {
+	if s := os.Getenv("WEACT_OAUTH_CALLBACK_PORT"); s != "" {
+		if n, err := strconv.Atoi(s); err == nil && n > 0 && n < 65536 {
+			return n
+		}
+	}
+	return defaultLoopbackPort
+}
 
 type loopbackCallback struct {
 	code  string
@@ -35,13 +51,13 @@ func RunLoopbackFlow(ctx context.Context, httpClient *http.Client, appID, appSec
 		errOut = io.Discard
 	}
 
-	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	port := loopbackPort()
+	listener, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", port))
 	if err != nil {
-		return &DeviceFlowResult{OK: false, Message: fmt.Sprintf("failed to start local server: %v", err)}
+		return &DeviceFlowResult{OK: false, Message: fmt.Sprintf("failed to start local server on port %d: %v\n请检查端口是否被占用，或设置 WEACT_OAUTH_CALLBACK_PORT 使用其他端口", port, err)}
 	}
 	defer listener.Close()
 
-	port := listener.Addr().(*net.TCPAddr).Port
 	redirectURI := fmt.Sprintf("http://127.0.0.1:%d/callback", port)
 	state := loopbackRandomHex(16)
 
