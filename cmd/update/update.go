@@ -102,7 +102,7 @@ func NewCmdUpdate(f *cmdutil.Factory) *cobra.Command {
 		Long: `Update weact-cli to the latest version.
 
 Detects the installation method automatically:
-  - npm install: runs npm install -g @larksuite/cli@<version>
+  - npm install: runs npm install -g @weact-pipenet/weact-cli@<version>
   - manual/other: shows GitHub Releases download URL
 
 Use --json for structured output (for AI agents and scripts).
@@ -226,7 +226,7 @@ func doManualUpdate(opts *UpdateOptions, io *cmdutil.IOStreams, cur, latest stri
 	fmt.Fprintf(io.ErrOut, "To update manually, download the latest release:\n")
 	fmt.Fprintf(io.ErrOut, "  Release:   %s\n", releaseURL(latest))
 	fmt.Fprintf(io.ErrOut, "  Changelog: %s\n", changelogURL())
-	fmt.Fprintf(io.ErrOut, "\nOr install via npm (note: skills will not be synced):\n  npm install -g %s@%s\n  npx skills add larksuite/cli -y -g   # sync skills separately\n", selfupdate.NpmPackage, latest)
+	fmt.Fprintf(io.ErrOut, "\nOr install via npm (note: skills will not be synced):\n  npm install -g %s@%s\n  npx skills add jixinyuan1996/weact-cli -y -g   # sync skills separately\n", selfupdate.NpmPackage, latest)
 	emitSkillsTextHints(io, skillsResult)
 	return nil
 }
@@ -321,7 +321,7 @@ func verificationFailureHint(updater *selfupdate.Updater, latest string) string 
 	if updater.CanRestorePreviousVersion() {
 		return "the previous version has been restored"
 	}
-	return fmt.Sprintf("automatic rollback is unavailable on this platform; reinstall manually (skills will not be synced): npm install -g %s@%s && npx skills add larksuite/cli -y -g, or download %s", selfupdate.NpmPackage, latest, releaseURL(latest))
+	return fmt.Sprintf("automatic rollback is unavailable on this platform; reinstall manually (skills will not be synced): npm install -g %s@%s && npx skills add jixinyuan1996/weact-cli -y -g, or download %s", selfupdate.NpmPackage, latest, releaseURL(latest))
 }
 
 func runSkillsAndState(updater *selfupdate.Updater, io *cmdutil.IOStreams, stateVersion string, force bool) *skillscheck.SyncResult {
