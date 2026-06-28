@@ -37,7 +37,7 @@ const (
 )
 
 const (
-	NpmPackage = "@larksuite/cli"
+	NpmPackage = "@weact-pipenet/weact-cli"
 )
 
 const (

@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	repoURL         = "https://github.com/larksuite/cli"
+	repoURL         = "https://github.com/jixinyuan1996/weact-cli"
 	maxNpmOutput    = 2000
 	maxStderrDetail = 500
 	osWindows       = "windows"
