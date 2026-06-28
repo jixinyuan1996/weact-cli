@@ -4,6 +4,7 @@
 package credential
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -33,6 +34,14 @@ import (
 // The caller owns the context timeout.
 func FetchTAT(ctx context.Context, httpClient *http.Client, brand core.LarkBrand, appID, appSecret string) (string, error) {
 	ep := core.ResolveEndpoints(brand)
+
+	// WeAct private deployments do not expose the unified OAuth v3 token endpoint
+	// on the accounts domain. Fall back to the legacy internal endpoint on the open
+	// domain, which uses a JSON body and returns app_access_token instead of access_token.
+	if brand == core.BrandWeAct {
+		return fetchTATInternal(ctx, httpClient, ep.Open+"/open-apis/auth/v3/app_access_token/internal", appID, appSecret, string(brand))
+	}
+
 	endpoint := ep.Accounts + core.OAuthTokenV3Path
 
 	form := url.Values{}
@@ -99,4 +108,43 @@ func FetchTAT(ctx context.Context, httpClient *http.Client, brand core.LarkBrand
 		desc = result.Msg
 	}
 	return "", classifyTATResponseCode(result.Code, result.Error, desc, string(brand), appID)
+}
+
+// fetchTATInternal calls the legacy Feishu-compatible internal endpoint
+// (POST {open}/open-apis/auth/v3/app_access_token/internal) with a JSON body.
+// WeAct private deployments use this path; the response carries the token in
+// app_access_token instead of access_token.
+func fetchTATInternal(ctx context.Context, httpClient *http.Client, endpoint, appID, appSecret, brand string) (string, error) {
+	body, _ := json.Marshal(map[string]string{"app_id": appID, "app_secret": appSecret})
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, bytes.NewReader(body))
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := httpClient.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	raw, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+	if err != nil {
+		return "", fmt.Errorf("failed to read TAT response: %w", err)
+	}
+
+	var result struct {
+		Code           int    `json:"code"`
+		AppAccessToken string `json:"app_access_token"`
+		Msg            string `json:"msg"`
+	}
+	if err := json.Unmarshal(raw, &result); err != nil {
+		return "", fmt.Errorf("failed to parse TAT response (HTTP %d): %w", resp.StatusCode, err)
+	}
+
+	if result.Code == 0 && result.AppAccessToken != "" {
+		return result.AppAccessToken, nil
+	}
+
+	return "", classifyTATResponseCode(result.Code, "", result.Msg, brand, appID)
 }
