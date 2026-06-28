@@ -101,6 +101,7 @@ func runExistingAppForm(f *cmdutil.Factory, msg *initMsg) (*configInitResult, er
 				Options(
 					huh.NewOption(msg.Feishu, "feishu"),
 					huh.NewOption("Lark", "lark"),
+					huh.NewOption("WeAct", "weact"),
 				).
 				Value(&brand),
 		),
@@ -162,6 +163,7 @@ func runCreateAppFlow(ctx context.Context, f *cmdutil.Factory, brandOverride cor
 					Options(
 						huh.NewOption(msg.Feishu, "feishu"),
 						huh.NewOption("Lark", "lark"),
+						huh.NewOption("WeAct", "weact"),
 					).
 					Value(&brand),
 			),
@@ -174,6 +176,11 @@ func runCreateAppFlow(ctx context.Context, f *cmdutil.Factory, brandOverride cor
 			return nil, err
 		}
 		larkBrand = parseBrand(brand)
+	}
+
+	// WeAct private deployment does not expose /page/cli; fall back to manual entry.
+	if larkBrand == core.BrandWeAct {
+		return runWeActManualFlow(f, msg)
 	}
 
 	// Step 1: Request app registration (begin)
@@ -244,4 +251,25 @@ func runCreateAppFlow(ctx context.Context, f *cmdutil.Factory, brandOverride cor
 		AppID:     result.ClientID,
 		AppSecret: result.ClientSecret,
 	}, nil
+}
+
+// runWeActManualFlow guides WeAct users to create an app in the developer
+// console first, then collects App ID / App Secret interactively.
+// WeAct private deployments do not expose /page/cli, so the standard
+// device-code registration flow is unavailable.
+func runWeActManualFlow(f *cmdutil.Factory, msg *initMsg) (*configInitResult, error) {
+	consoleURL := core.GetenvOrDefault("WEACT_OPEN_ENDPOINT", "https://open.weact.pipechina.com.cn")
+	fmt.Fprintf(f.IOStreams.ErrOut,
+		"\nWeAct 私有部署不支持自动注册流程。\n请先在 WeAct 开发者后台创建自建应用：\n  %s\n创建完成后，将 App ID 和 App Secret 填入下方。\n\n",
+		consoleURL)
+
+	result, err := runExistingAppForm(f, msg)
+	if err != nil {
+		return nil, err
+	}
+	if result != nil {
+		result.Brand = core.BrandWeAct
+		result.Mode = "create"
+	}
+	return result, nil
 }
