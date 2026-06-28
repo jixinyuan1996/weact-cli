@@ -13,7 +13,7 @@ import (
 )
 
 // skillsEmbedFS embeds each skill's agent-readable content (SKILL.md +
-// references/, plus lark-whiteboard's routes/ and scenes/) so the CLI serves
+// references/, plus weact-whiteboard's routes/ and scenes/) so the CLI serves
 // content matching the binary version; machine-resource dirs (assets/, scripts/)
 // are excluded, saving ~3.3 MB. It's a whitelist — a new subdirectory type is
 // silently omitted until added here.
