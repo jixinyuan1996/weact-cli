@@ -1,5 +1,5 @@
 {
-  "name": "@weact/cli",
+  "name": "@weact-pipenet/weact-cli",
   "version": "1.0.0",
   "description": "The official CLI for WeAct open platform",
   "bin": {
