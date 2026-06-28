@@ -4,10 +4,12 @@
 package auth
 
 import (
+	"bufio"
 	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"sort"
 	"strings"
 	"time"
@@ -642,7 +644,29 @@ func normalizeScopeInput(raw string) string {
 // authLoginLoopback handles auth login for WeAct brand using the OAuth 2.0
 // Authorization Code flow with a local HTTP callback server.
 func authLoginLoopback(opts *LoginOptions, httpClient *http.Client, config *core.CliConfig, finalScope string, msg *loginMsg, f *cmdutil.Factory, log func(string, ...interface{})) error {
-	result := larkauth.RunLoopbackFlow(opts.Ctx, httpClient, config.AppID, config.AppSecret, config.Brand, finalScope, f.IOStreams.ErrOut)
+	// Prompt for redirect URI so it can match what is registered in the WeAct developer console.
+	fmt.Fprint(f.IOStreams.ErrOut, "请输入 WeAct 开发者后台已注册的回调地址（如 http://127.0.0.1:18789/callback）：\n> ")
+	var redirectURI string
+	if f.IOStreams.IsTerminal {
+		reader := bufio.NewReader(os.Stdin)
+		line, readErr := reader.ReadString('\n')
+		if readErr != nil {
+			return errs.NewValidationError(errs.SubtypeInvalidArgument, "读取回调地址失败: %v", readErr).WithCause(readErr)
+		}
+		redirectURI = strings.TrimSpace(line)
+	} else {
+		reader := bufio.NewReader(f.IOStreams.In)
+		line, readErr := reader.ReadString('\n')
+		if readErr != nil {
+			return errs.NewValidationError(errs.SubtypeInvalidArgument, "读取回调地址失败: %v", readErr).WithCause(readErr)
+		}
+		redirectURI = strings.TrimSpace(line)
+	}
+	if redirectURI == "" {
+		return errs.NewValidationError(errs.SubtypeInvalidArgument, "回调地址不能为空").WithParam("redirect_uri")
+	}
+
+	result := larkauth.RunLoopbackFlow(opts.Ctx, httpClient, config.AppID, config.AppSecret, config.Brand, finalScope, redirectURI, f.IOStreams.ErrOut)
 
 	if !result.OK {
 		return errs.NewAuthenticationError(errs.SubtypeUnknown, "authorization failed: %s", result.Message)

@@ -13,29 +13,13 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"os"
 	"os/exec"
 	"runtime"
-	"strconv"
 	"strings"
 	"time"
 
 	"github.com/larksuite/cli/internal/core"
 )
-
-// defaultLoopbackPort is the fixed OAuth callback port.
-// Override with WEACT_OAUTH_CALLBACK_PORT env var.
-// Register http://127.0.0.1:<port>/callback in the WeAct developer console.
-const defaultLoopbackPort = 18789
-
-func loopbackPort() int {
-	if s := os.Getenv("WEACT_OAUTH_CALLBACK_PORT"); s != "" {
-		if n, err := strconv.Atoi(s); err == nil && n > 0 && n < 65536 {
-			return n
-		}
-	}
-	return defaultLoopbackPort
-}
 
 type loopbackCallback struct {
 	code  string
@@ -44,30 +28,37 @@ type loopbackCallback struct {
 }
 
 // RunLoopbackFlow runs the OAuth 2.0 Authorization Code flow with a local
-// HTTP callback server. Used for WeAct private deployments that do not expose
-// the device authorization endpoint.
-func RunLoopbackFlow(ctx context.Context, httpClient *http.Client, appID, appSecret string, brand core.LarkBrand, scope string, errOut io.Writer) *DeviceFlowResult {
+// HTTP callback server. redirectURI must match exactly what is registered in
+// the WeAct developer console (e.g. http://127.0.0.1:18789/callback).
+func RunLoopbackFlow(ctx context.Context, httpClient *http.Client, appID, appSecret string, brand core.LarkBrand, scope, redirectURI string, errOut io.Writer) *DeviceFlowResult {
 	if errOut == nil {
 		errOut = io.Discard
 	}
 
-	port := loopbackPort()
-	listener, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", port))
+	parsed, parseErr := url.Parse(redirectURI)
+	if parseErr != nil || parsed.Hostname() == "" {
+		return &DeviceFlowResult{OK: false, Message: fmt.Sprintf("回调地址格式无效 %q", redirectURI)}
+	}
+	listenAddr := parsed.Hostname() + ":" + parsed.Port()
+	callbackPath := parsed.Path
+	if callbackPath == "" {
+		callbackPath = "/"
+	}
+
+	listener, err := net.Listen("tcp", listenAddr)
 	if err != nil {
-		return &DeviceFlowResult{OK: false, Message: fmt.Sprintf("failed to start local server on port %d: %v\n请检查端口是否被占用，或设置 WEACT_OAUTH_CALLBACK_PORT 使用其他端口", port, err)}
+		return &DeviceFlowResult{OK: false, Message: fmt.Sprintf("无法在 %s 启动本地服务: %v\n请检查端口是否被占用，或在开发者后台修改回调地址后重试", listenAddr, err)}
 	}
 	defer listener.Close()
 
-	redirectURI := fmt.Sprintf("http://127.0.0.1:%d/callback", port)
 	state := loopbackRandomHex(16)
-
 	ep := core.ResolveEndpoints(brand)
 	authURL := buildLoopbackAuthURL(ep.Open, appID, scope, state, redirectURI)
 
 	callbackCh := make(chan loopbackCallback, 1)
 	mux := http.NewServeMux()
 	srv := &http.Server{Handler: mux}
-	mux.HandleFunc("/callback", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(callbackPath, func(w http.ResponseWriter, r *http.Request) {
 		q := r.URL.Query()
 		cb := loopbackCallback{
 			code:  q.Get("code"),
@@ -167,7 +158,6 @@ func loopbackExchangeCode(ctx context.Context, httpClient *http.Client, brand co
 		return &DeviceFlowResult{OK: false, Message: fmt.Sprintf("no access_token in response (HTTP %d): %s", resp.StatusCode, body)}
 	}
 
-	// Handle both refresh_expires_in and refresh_token_expires_in field names.
 	refreshExpiresIn := getInt(data, "refresh_expires_in", 0)
 	if refreshExpiresIn == 0 {
 		refreshExpiresIn = getInt(data, "refresh_token_expires_in", 604800)
