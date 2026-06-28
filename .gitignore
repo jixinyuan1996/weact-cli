@@ -52,3 +52,5 @@ cover*.out
 
 lark-env.sh
 /automations/
+checksums.txt
+weact-cli
