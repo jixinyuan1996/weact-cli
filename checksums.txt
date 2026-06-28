@@ -1,0 +1,7 @@
+89f0d257fdc2a3697856d2b27aefb40c01ba89eaceecca9d39dc275d982d1b17  weact-cli-1.0.5-darwin-amd64.tar.gz
+9628382a471b36717f56723452bcaa4ed75cd7ce3ee674542ede03e7c93075b4  weact-cli-1.0.5-darwin-arm64.tar.gz
+9bcb438bbee1e3b8bf7be29413a48010e17e5d7ca2b81dcd2d112382093c5127  weact-cli-1.0.5-linux-amd64.tar.gz
+b32f51770c2784d3391f5c3a854fa4ee4cefc179086d2a6fe9c5ee2ee9bd4dd4  weact-cli-1.0.5-linux-arm64.tar.gz
+850409c5e4da395a22bc6a1174eb84c82941d155b952f106e4253b6452a955ce  weact-cli-1.0.5-linux-riscv64.tar.gz
+16e45bf0bc4c95802624bd9efaf91a8651e55f21995a1898c55b9c4dfeaa1629  weact-cli-1.0.5-windows-amd64.zip
+c118b04171bc66fb9bf24cf249c9222203d2f4dd8be74102ff802c3c421c030a  weact-cli-1.0.5-windows-arm64.zip
